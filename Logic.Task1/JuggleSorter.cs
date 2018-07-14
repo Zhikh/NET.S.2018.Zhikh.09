@@ -4,24 +4,52 @@ namespace Logic.Task1
 {
     public static class JuggleSort
     {
-        public enum Mode { Ascending, Decreasing }
-        public enum Value { None, Min, Max, Sum}
+        /// <summary>
+        /// Type of sorting
+        /// </summary>
+        public enum Mode
+        {
+            Ascending,
+            Decreasing
+        }
+
+        /// <summary>
+        /// Type of value for sorting order of subarrays in juggle array
+        /// </summary>
+        public enum Value
+        {
+            None,
+            Min,
+            Max,
+            Sum
+        }
 
         #region Public methods
+        /// <summary>
+        /// Sorts (ascending/decreasing) juggle array by min, max or sum value of subarrays
+        /// </summary>
+        /// <param name="array"> Array for sorting </param>
+        /// <param name="mode"> Ascending/decreasing </param>
+        /// <param name="value"> Min/max/sum </param>
         public static void Sort(int[][] array, Mode mode = Mode.Ascending, Value value = Value.None)
         {
+            if (array == null)
+            {
+                throw new ArgumentNullException("array");
+            }
+
             SortSubarrays(array);
             
             switch (value)
             {
                 case Value.Min:
-                    array.SortByMin();
+                    array.SortByValue(GetMin);
                     break;
                 case Value.Max:
-                    array.SortByMax();
+                    array.SortByValue(GetMax);
                     break;
                 case Value.Sum:
-                    array.SortBySum();
+                    array.SortByValue(GetSum);
                     break;
             }
 
@@ -33,61 +61,16 @@ namespace Logic.Task1
         #endregion
 
         #region Private methods
-        private static void SortByMin(this int[][] array)
-        {
-            
-        }
-        
-        private static void SortByMax(this int[][] array)
-        {
-           
-        }
-
-        private static void SortBySum(this int[][] array)
+        #region Methods for sorting
+        private static void SortByValue(this int[][] array, Func<int[], int> getValue)
         {
             int n = array.Length;
-            int[] sums = new int[n];
+            int[] values = new int[n];
 
             for (int i = 0;  i < n; i++)
             {
-                sums[i] = GetSum(array[i]);
+                values[i] = getValue(array[i]);
             }
-
-            SortByValue(array, sums);
-        }
-
-        private static int GetSum(int[] array)
-        {
-            int result = 0;
-
-            foreach (var value in array)
-            {
-                result += value;
-            }
-
-            return result;
-        }
-
-        private static void Reverse(this int[][] array)
-        {
-            int n = array.Length;
-            int[][] reversedArray = new int[n][];
-
-            int j = 0;
-            for (int i = n - 1; i >= 0; i--)
-            {
-                reversedArray[j++] = array[i];
-            }
-
-            for (int i = 0; i < n; i++)
-            {
-                array[i] = reversedArray[i];
-            }
-        }
-
-        private static void SortByValue(int[][] array, int[] values)
-        {
-            int n = values.Length;
 
             for (int i = 0; i < n; i++)
             {
@@ -117,6 +100,50 @@ namespace Logic.Task1
                 Sorter.Sort(element);
             }
         }
+        #endregion
+
+        #region Get values (min, max, sum)
+        private static int GetSum(int[] array)
+        {
+            int result = 0;
+
+            foreach (var value in array)
+            {
+                result += value;
+            }
+
+            return result;
+        }
+
+        private static int GetMin(int[] array)
+        {
+            return array[0];
+        }
+
+        private static int GetMax(int[] array)
+        {
+            return array[array.Length - 1];
+        }
+        #endregion
+
+        #region Additional methods
+        private static void Reverse(this int[][] array)
+        {
+            int n = array.Length;
+            int[][] reversedArray = new int[n][];
+
+            int j = 0;
+            for (int i = n - 1; i >= 0; i--)
+            {
+                reversedArray[j++] = array[i];
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                array[i] = reversedArray[i];
+            }
+        }
+        #endregion
         #endregion
     }
 }
