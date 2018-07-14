@@ -4,9 +4,7 @@ namespace Logic.Task1
 {
     public static class Sorter
     {
-        public enum Mode { Ascending, Decreasing }
-
-        public static void Sort<T>(T[] array, Mode mode = Mode.Ascending) where T : IComparable<T>
+        public static void Sort<T>(T[] array) where T : IComparable<T>
         {
             if (array == null)
             {
