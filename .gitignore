@@ -263,3 +263,4 @@ NET.S.2018.Zhikh.09.sln
 *.csproj
 *.config
 AssemblyInfo.cs
+*.StyleCop
