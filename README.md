@@ -11,7 +11,7 @@ Polinomial:
 ### ExtTraining.Summer.2018.1
 - refactor
 ## Tasks
-###Task 1
+### Task 1
 Implement the method of "bubble" sorting for juggle array(for integer values) with possibility of:
 - sorting (esc/dec) by min value of subarrays;
 - sorting (esc/dec) by max value of subarrays;
