@@ -6,11 +6,13 @@ namespace Logic.Task2.Services
     public sealed class PersonService : IService<Person>
     {
         private DataProvider _provider;
+        private int _id;
 
         #region Public API
         public PersonService()
         {
             _provider = DataProvider.Instance;
+            _id = 0;
         }
 
         public void Create(Person entity)
@@ -20,11 +22,13 @@ namespace Logic.Task2.Services
                 throw new ArgumentException("This person already exists!");
             }
 
+            entity.Id = _id++;
             _provider.Persons.Add(entity);
         }
 
-        public void Delete(Person entity)
+        public void Delete(int id)
         {
+            Person entity = GetById(id);
             if (_provider.Persons.FindFirst(entity) == null)
             {
                 throw new ArgumentException("This person doesn't exist!");
@@ -35,8 +39,26 @@ namespace Logic.Task2.Services
 
         public ICollection<Person> GetAll() => _provider.Persons;
 
+        public Person GetById(int id)
+        {
+            foreach (var entity in _provider.Persons)
+            {
+                if (entity.Id == id)
+                {
+                    return entity;
+                }
+            }
+
+            return null;
+        }
+
         public Person GetByValue(string value)
         {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException("Value can't be null or empty!");
+            }
+
             foreach (var element in _provider.Persons)
             {
                 if (element.Passport.SerialNumber == value)
@@ -65,9 +87,9 @@ namespace Logic.Task2.Services
             {
                 person.LastName = entity.FirstName;
             }
-            if (entity.Bill != null)
+            if (entity.Account != null)
             {
-                person.Bill = entity.Bill;
+                person.Account = entity.Account;
             }
             if (entity.Address != null)
             {

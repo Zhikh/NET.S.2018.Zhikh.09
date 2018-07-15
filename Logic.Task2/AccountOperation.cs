@@ -58,14 +58,21 @@ namespace Logic.Task2
             _accountService.Update(account);
         }
 
-        public static void Close(Account account)
+        public static void Close(string accounNumber)
         {
+            Account account = _accountService.GetByValue(accounNumber);
+
+            if (account == null)
+            {
+                throw new ArgumentException("This account doesn't exist!");
+            }
+
             if (account == null)
             {
                 throw new ArgumentNullException("Account can't be null!");
             }
 
-            _accountService.Delete(account);
+            _accountService.Delete(account.Id);
         }
     }
 }

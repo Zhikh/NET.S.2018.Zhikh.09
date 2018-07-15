@@ -6,10 +6,12 @@ namespace Logic.Task2
     public class AccountService : IService<Account>
     {
         private DataProvider _provider;
+        private int _id;
 
         public AccountService()
         {
             _provider = DataProvider.Instance;
+            _id = 0;
         }
 
         public void Create(Account entity)
@@ -19,12 +21,14 @@ namespace Logic.Task2
                 throw new ArgumentException("This account already exists!");
             }
 
+            entity.Id = _id++;
             _provider.Accounts.Add(entity);
         }
 
-        public void Delete(Account entity)
+        public void Delete(int id)
         {
-            if (_provider.Accounts.FindFirst(entity) == null)
+            Account entity = GetById(id);
+            if (GetById(id) == null)
             {
                 throw new ArgumentException("This account doesn't exist!");
             }
@@ -33,6 +37,19 @@ namespace Logic.Task2
         }
 
         public ICollection<Account> GetAll() => _provider.Accounts;
+
+        public Account GetById(int id)
+        {
+            foreach(var entity in _provider.Accounts)
+            {
+                if (entity.Id == id)
+                {
+                    return entity;
+                }
+            }
+
+            return null;
+        }
 
         public Account GetByValue(string value)
         {

@@ -21,6 +21,6 @@ namespace Logic.Task2
 
         public PassportData Passport { get; set; }
 
-        public ICollection<Account> Bill { get; set; }
+        public ICollection<Account> Account { get; set; }
     }
 }

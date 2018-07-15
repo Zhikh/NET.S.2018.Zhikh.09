@@ -4,7 +4,11 @@ namespace Logic.Task2
 {
     public sealed class DataProvider
     {
-        private DataProvider() { }
+        private DataProvider()
+        {
+            Accounts = new List<Account>();
+            Persons = new List<Person>();
+        }
 
         public ICollection<Account> Accounts { get; set; }
 
