@@ -79,20 +79,6 @@ namespace Logic.Task2.Tests
             }
         };
 
-        private Account _accountNullPerson = new Account
-        {
-            Number = "100456789",
-            Owner = null,
-            InvoiceAmount = 100,
-            Bonuses = 0,
-            AccountType = new AccountType
-            {
-                Name = ":)",
-                BalanceCost = 100,
-                ReplenishmentCost = 10
-            }
-        };
-
         private decimal _invoiceAmount = 1000;
         private int _bonuses = 0;
         private decimal[] _sourceData = { 10, 20, 50, 100 };
@@ -106,10 +92,6 @@ namespace Logic.Task2.Tests
         [Test]
         public void Open_NullEntity_ArgumentNullException()
             => Assert.Throws<ArgumentNullException>(() => AccountOperation.Open(null));
-
-        [Test]
-        public void Open_EntityWithNullOwner_ArgumentNullException()
-            => Assert.Throws<ArgumentException>(() => AccountOperation.Open(_accountNullPerson));
 
         [Test]
         public void Close_EmptyAccountNumber_ArgumentException()
@@ -137,9 +119,9 @@ namespace Logic.Task2.Tests
         {
             AccountOperation.Open(_anotherAccount);
 
-            var actual = _provider.Accounts.FindFirst(_anotherAccount);
+            var actual = _provider.Accounts.FindFirst(_account);
 
-            Assert.AreEqual(_anotherAccount, actual);
+            Assert.AreEqual(_account, actual);
         }
 
         [Test]
