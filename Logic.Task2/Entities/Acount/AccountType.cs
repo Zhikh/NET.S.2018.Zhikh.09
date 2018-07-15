@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 namespace Logic.Task2
 {
     // TODO: add checking for input data
-    public sealed class ContactData
+    public sealed class AccountType: BaseEntity
     {
-        public string Email { get; set; }
+        public string Name { get; set; }
 
-        public string ContactPhone { get; set; }
+        public decimal BalanceCost { get; set; }
+
+        public decimal ReplenishmentCost { get; set; }
     }
 }

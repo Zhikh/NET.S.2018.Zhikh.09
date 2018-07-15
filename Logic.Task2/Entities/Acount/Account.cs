@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 namespace Logic.Task2
 {
     // TODO: add checking for input data
-    public sealed class Account
+    public sealed class Account: BaseEntity
     {
-        // TODO: type (string or int?)
-        public int Number { get; set; }
+        public string Number { get; set; }
 
         public Person Owner { get; set; }
 

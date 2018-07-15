@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Logic.Task2
 {
     // TODO: add checking for input data
-    public sealed class AddressData
+    public sealed class AddressData: BaseEntity
     {
         // TODO: AdressType?
         // public AdressType { get; set; }
