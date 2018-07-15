@@ -31,11 +31,11 @@ namespace Logic.Task2
             _provider.Accounts.Remove(entity);
         }
 
-        public Account GetByValue(string value)
+        public Account GetByValue(Account value)
         {
             foreach (var element in _provider.Accounts)
             {
-                if (element.Number == value)
+                if (element.Number == value.Number)
                 {
                     return element;
                 }
@@ -46,7 +46,12 @@ namespace Logic.Task2
 
         public void Update(Account entity)
         {
-            Account account = GetByValue(entity.Number);
+            Account account = GetByValue(entity);
+
+            if (account == null)
+            {
+                throw new ArgumentException("This account doesn't exist!");
+            }
 
             if (entity.BillHistory != null)
             {

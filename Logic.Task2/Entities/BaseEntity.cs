@@ -8,6 +8,8 @@ namespace Logic.Task2
 {
     public abstract class BaseEntity
     {
+        public int Id { get; set; }
+
         public override bool Equals(object obj)
         {
             return Equals(obj as BaseEntity);
@@ -33,5 +35,4 @@ namespace Logic.Task2
             return GetType();
         }
     }
-}
 }

@@ -11,6 +11,6 @@ namespace Logic.Task2
         void Create(T entity);
         void Update(T entity);
         void Delete(T entity);
-        T GetByValue(string value);
+        T GetByValue(T value);
     }
 }
