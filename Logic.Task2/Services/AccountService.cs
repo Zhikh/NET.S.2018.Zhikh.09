@@ -16,6 +16,11 @@ namespace Logic.Task2
 
         public void Create(Account entity)
         {
+            if (entity == null)
+            {
+                throw new ArgumentNullException("Entity can't be null!");
+            }
+
             if (_provider.Accounts.FindFirst(entity) != null)
             {
                 throw new ArgumentException("This account already exists!");
@@ -53,6 +58,11 @@ namespace Logic.Task2
 
         public Account GetByValue(string value)
         {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException("Value can't be null or empty!");
+            }
+
             foreach (var element in _provider.Accounts)
             {
                 if (element.Number == value)
@@ -66,6 +76,11 @@ namespace Logic.Task2
 
         public void Update(Account entity)
         {
+            if (entity == null)
+            {
+                throw new ArgumentNullException("Entity can't be null!");
+            }
+
             Account account = GetByValue(entity.Number);
 
             if (account == null)
