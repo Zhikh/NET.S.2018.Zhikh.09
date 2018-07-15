@@ -5,8 +5,8 @@ namespace Logic.Task2.Services
 {
     public sealed class PersonService : IService<Person>
     {
-        private DataProvider _provider;
         private static int _id;
+        private DataProvider _provider;
 
         #region Public API
         public PersonService()
@@ -94,22 +94,27 @@ namespace Logic.Task2.Services
             {
                 person.LastName = entity.LastName;
             }
+
             if (!string.IsNullOrEmpty(entity.FirstName))
             {
                 person.LastName = entity.FirstName;
             }
+
             if (entity.Account != null)
             {
                 person.Account = entity.Account;
             }
+
             if (entity.Address != null)
             {
                 UpdateAdress(person.Address, entity.Address);
             }
+
             if (entity.Contact != null)
             {
                 UpdateContact(person.Contact, entity.Contact);
             }
+
             if (entity.Passport != null)
             {
                 UpdatePassport(person.Passport, entity.Passport);
@@ -124,14 +129,17 @@ namespace Logic.Task2.Services
             {
                 entity.Country = updatedEntity.Country;
             }
+
             if (!string.IsNullOrEmpty(updatedEntity.State))
             {
                 entity.State = updatedEntity.State;
             }
+
             if (!string.IsNullOrEmpty(updatedEntity.City))
             {
                 entity.City = updatedEntity.City;
             }
+
             if (!string.IsNullOrEmpty(updatedEntity.Street))
             {
                 entity.Street = updatedEntity.Street;
@@ -144,6 +152,7 @@ namespace Logic.Task2.Services
             {
                 entity.ContactPhone = updatedEntity.ContactPhone;
             }
+
             if (!string.IsNullOrEmpty(updatedEntity.Email))
             {
                 entity.ContactPhone = updatedEntity.Email;
@@ -156,6 +165,7 @@ namespace Logic.Task2.Services
             {
                 entity.IdentityNumber = updatedEntity.IdentityNumber;
             }
+
             if (!string.IsNullOrEmpty(updatedEntity.SerialNumber))
             {
                 entity.IdentityNumber = updatedEntity.SerialNumber;

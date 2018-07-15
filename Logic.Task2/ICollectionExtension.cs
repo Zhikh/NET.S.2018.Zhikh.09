@@ -5,7 +5,7 @@ namespace Logic.Task2
 {
     public static class ICollectionExtension
     {
-        public static T FindFirst<T>(this ICollection<T> collection, T value) where T: class
+        public static T FindFirst<T>(this ICollection<T> collection, T value) where T : class
         {
             if (value == null)
             {
@@ -17,7 +17,7 @@ namespace Logic.Task2
                     throw new ArgumentNullException("Collection can't be null!");
             }
 
-            foreach(var element in collection)
+            foreach (var element in collection)
             {
                 if (element.Equals(value))
                 {

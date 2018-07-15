@@ -5,8 +5,8 @@ namespace Logic.Task2
 {
     public class AccountService : IService<Account>
     {
-        private DataProvider _provider;
         private static int _id;
+        private DataProvider _provider;
 
         public AccountService()
         {
@@ -51,7 +51,7 @@ namespace Logic.Task2
 
         public Account GetById(int id)
         {
-            foreach(var entity in _provider.Accounts)
+            foreach (var entity in _provider.Accounts)
             {
                 if (entity.Id == id)
                 {
@@ -98,10 +98,12 @@ namespace Logic.Task2
             {
                 account.AccountType = entity.AccountType;
             }
+
             if (entity.Bonuses != 0)
             {
                 account.Bonuses = entity.Bonuses;
             }
+
             if (entity.InvoiceAmount != 0)
             {
                 account.InvoiceAmount = entity.InvoiceAmount;

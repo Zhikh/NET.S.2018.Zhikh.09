@@ -24,7 +24,7 @@ namespace Logic.Task2.Tests
                 },
                 Contact = new ContactData
                 {
-                    Email = "podg@t.t",
+                    Email = "podg@test.com",
                     ContactPhone = "+ 375 29 399 05 33"
                 },
                 Address = new AdressData
@@ -58,7 +58,7 @@ namespace Logic.Task2.Tests
                 },
                 Contact = new ContactData
                 {
-                    Email = "podg@t.t",
+                    Email = "podg@test.com",
                     ContactPhone = "+ 375 29 399 05 33"
                 },
                 Address = new AdressData

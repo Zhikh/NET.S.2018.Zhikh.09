@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Logic.Task2
 {
-    public sealed class ContactData: BaseEntity
+    public sealed class ContactData
     {
         private readonly string _emailPattern = @"([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})";
 
@@ -16,6 +16,7 @@ namespace Logic.Task2
             {
                 return _email;
             }
+
             set
             {
                 if (string.IsNullOrEmpty(value))
@@ -23,7 +24,7 @@ namespace Logic.Task2
                     throw new ArgumentException("Email can't be null or empty!");
                 }
 
-                if(!Regex.IsMatch(value, _emailPattern, RegexOptions.IgnoreCase))
+                if (!Regex.IsMatch(value, _emailPattern, RegexOptions.IgnoreCase))
                 {
                     throw new ArgumentException("Email doesn't correct!");
                 }
@@ -38,12 +39,14 @@ namespace Logic.Task2
             {
                 return _phone;
             }
+
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
                     throw new ArgumentException("Phone number can't be null or empty!");
                 }
+
                 _phone = value;
             }
         }

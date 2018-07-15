@@ -10,15 +10,15 @@ namespace Logic.Task2
             Persons = new List<Person>();
         }
 
+        public static DataProvider Instance { get => Nested.Instance; }
+
         public ICollection<Account> Accounts { get; set; }
 
         public ICollection<Person> Persons { get; set; }
-
-        public static DataProvider Instance { get => Nested.instance; }
         
         private class Nested
         {
-            internal static readonly DataProvider instance = new DataProvider();
+            internal static readonly DataProvider Instance = new DataProvider();
         }
     }
 }

@@ -2,8 +2,7 @@
 
 namespace Logic.Task2
 {
-    // TODO: add checking for input data
-    public sealed class PassportData: BaseEntity
+    public sealed class PassportData
     {
         private string _serialNumber;
         private string _identityNumber;
@@ -14,6 +13,7 @@ namespace Logic.Task2
             {
                 return _serialNumber;
             }
+
             set
             {
                 if (string.IsNullOrEmpty(value))
@@ -31,6 +31,7 @@ namespace Logic.Task2
             {
                 return _identityNumber;
             }
+
             set
             {
                 if (string.IsNullOrEmpty(value))

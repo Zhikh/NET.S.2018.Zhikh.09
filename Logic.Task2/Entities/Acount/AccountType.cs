@@ -2,7 +2,7 @@
 
 namespace Logic.Task2
 {
-    public sealed class AccountType: BaseEntity
+    public sealed class AccountType
     {
         private string _name;
 
@@ -10,8 +10,9 @@ namespace Logic.Task2
         {
             get
             {
-                return _name;
+                return this._name;
             }
+
             set
             {
                 if (string.IsNullOrEmpty(value))
@@ -19,7 +20,7 @@ namespace Logic.Task2
                     throw new ArgumentException("Name can't be null or empty!");
                 }
 
-                _name = value;
+                this._name = value;
             }
         }
 

@@ -2,7 +2,7 @@
 
 namespace Logic.Task2
 {
-    public sealed class AdressData: BaseEntity
+    public sealed class AdressData
     {
         private string _country;
         private string _state;
@@ -16,8 +16,9 @@ namespace Logic.Task2
         {
             get
             {
-                return _country;
+                return this._country;
             }
+
             set
             {
                 if (string.IsNullOrEmpty(value))
@@ -25,7 +26,7 @@ namespace Logic.Task2
                     throw new ArgumentException("Country can't be null or empty!");
                 }
 
-                _country = value;
+                this._country = value;
             }
         }
         
@@ -33,8 +34,9 @@ namespace Logic.Task2
         {
             get
             {
-                return _state;
+                return this._state;
             }
+
             set
             {
                 if (string.IsNullOrEmpty(value))
@@ -42,7 +44,7 @@ namespace Logic.Task2
                     throw new ArgumentException("State can't be null or empty!");
                 }
 
-                _state = value;
+                this._state = value;
             }
         }
 
@@ -50,8 +52,9 @@ namespace Logic.Task2
         {
             get
             {
-                return _city;
+                return this._city;
             }
+
             set
             {
                 if (string.IsNullOrEmpty(value))
@@ -59,7 +62,7 @@ namespace Logic.Task2
                     throw new ArgumentException("City can't be null or empty!");
                 }
 
-                _city = value;
+                this._city = value;
             }
         }
         #endregion
@@ -68,8 +71,9 @@ namespace Logic.Task2
         {
             get
             {
-                return _street;
+                return this._street;
             }
+
             set
             {
                 if (string.IsNullOrEmpty(value))
@@ -77,7 +81,7 @@ namespace Logic.Task2
                     throw new ArgumentException("Street can't be null or empty!");
                 }
 
-                _street = value;
+                this._street = value;
             }
         }
     }

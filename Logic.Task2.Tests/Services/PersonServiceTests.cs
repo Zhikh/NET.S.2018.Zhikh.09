@@ -25,7 +25,7 @@ namespace Logic.Task2.Tests
                 },
                 Contact = new ContactData
                 {
-                    Email = "dfdg@t.t",
+                    Email = "dfdg@test.com",
                     ContactPhone = "+ 375 33 333 33 33"
                 },
                 Address = new AdressData
@@ -47,7 +47,7 @@ namespace Logic.Task2.Tests
                 },
                 Contact = new ContactData
                 {
-                    Email = "dfdg@t.t",
+                    Email = "dfdg@test.com",
                     ContactPhone = "+ 375 44 343 33 33"
                 },
                 Address = new AdressData
@@ -69,7 +69,7 @@ namespace Logic.Task2.Tests
                 },
                 Contact = new ContactData
                 {
-                    Email = "doodg@t.t",
+                    Email = "doodg@test.com",
                     ContactPhone = "+ 375 44 343 55 33"
                 },
                 Address = new AdressData
@@ -92,7 +92,7 @@ namespace Logic.Task2.Tests
             },
             Contact = new ContactData
             {
-                Email = "podg@t.t",
+                Email = "podg@test.com",
                 ContactPhone = "+ 375 29 303 55 33"
             },
             Address = new AdressData

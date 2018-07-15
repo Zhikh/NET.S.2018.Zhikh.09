@@ -3,8 +3,7 @@ using System.Collections.Generic;
 
 namespace Logic.Task2
 {
-    // TODO: add checking for input data
-    public sealed class Person: BaseEntity
+    public sealed class Person
     {
         private string _firstName;
         private string _lastName;
@@ -12,18 +11,22 @@ namespace Logic.Task2
         private ContactData _contactData;
         private PassportData _passportData;
 
+        public int Id { get; set; }
+
         public string FirstName
         {
             get
             {
                 return _firstName;
             }
+
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
                     throw new ArgumentException("First name can't be null or empty!");
                 }
+
                 _firstName = value;
             }
         }
@@ -34,12 +37,14 @@ namespace Logic.Task2
             {
                 return _lastName;
             }
+
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
                     throw new ArgumentException("Last name can't be null or empty!");
                 }
+
                 _lastName = value;
             }
         }
@@ -52,6 +57,7 @@ namespace Logic.Task2
             {
                 return _adressData;
             }
+
             set
             {
                 _adressData = value ?? throw new ArgumentException("Adress entity can't be null or empty!");
@@ -64,17 +70,20 @@ namespace Logic.Task2
             {
                 return _contactData;
             }
+
             set
             {
                 _contactData = value ?? throw new ArgumentException("Contact entity can't be null or empty!");
             }
         }
+
         public PassportData Passport
         {
             get
             {
                 return _passportData;
             }
+
             set
             {
                 _passportData = value ?? throw new ArgumentException("Passport entity can't be null or empty!");
@@ -100,14 +109,14 @@ namespace Logic.Task2
         public override int GetHashCode()
         {
             var hashCode = 681110399;
-            hashCode = hashCode * -1521134295 + base.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(FirstName);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(LastName);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(SecondName);
-            hashCode = hashCode * -1521134295 + EqualityComparer<AdressData>.Default.GetHashCode(Address);
-            hashCode = hashCode * -1521134295 + EqualityComparer<ContactData>.Default.GetHashCode(Contact);
-            hashCode = hashCode * -1521134295 + EqualityComparer<PassportData>.Default.GetHashCode(Passport);
-            hashCode = hashCode * -1521134295 + EqualityComparer<ICollection<Account>>.Default.GetHashCode(Account);
+            hashCode = (hashCode * -1521134295) + base.GetHashCode();
+            hashCode = (hashCode * -1521134295) + EqualityComparer<string>.Default.GetHashCode(FirstName);
+            hashCode = (hashCode * -1521134295) + EqualityComparer<string>.Default.GetHashCode(LastName);
+            hashCode = (hashCode * -1521134295) + EqualityComparer<string>.Default.GetHashCode(SecondName);
+            hashCode = (hashCode * -1521134295) + EqualityComparer<AdressData>.Default.GetHashCode(Address);
+            hashCode = (hashCode * -1521134295) + EqualityComparer<ContactData>.Default.GetHashCode(Contact);
+            hashCode = (hashCode * -1521134295) + EqualityComparer<PassportData>.Default.GetHashCode(Passport);
+            hashCode = (hashCode * -1521134295) + EqualityComparer<ICollection<Account>>.Default.GetHashCode(Account);
             return hashCode;
         }
     }
