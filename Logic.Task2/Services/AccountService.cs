@@ -6,7 +6,7 @@ namespace Logic.Task2
     public class AccountService : IService<Account>
     {
         private DataProvider _provider;
-        private int _id;
+        private static int _id;
 
         public AccountService()
         {
