@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Logic.Task2
 {
-    public sealed class BillHistory
+    public sealed class AccountHistory
     {
 
     }

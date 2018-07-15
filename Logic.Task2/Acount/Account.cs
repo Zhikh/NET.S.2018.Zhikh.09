@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Logic.Task2
 {
     // TODO: add checking for input data
-    public sealed class Bill
+    public sealed class Account
     {
         // TODO: type (string or int?)
         public int Number { get; set; }
@@ -18,8 +18,8 @@ namespace Logic.Task2
 
         public int Bonuses { get; set; }
 
-        public BillType BillType { get; set; }
+        public AccountType BillType { get; set; }
 
-        public BillHistory BillHistory { get; set; }
+        public AccountHistory BillHistory { get; set; }
     }
 }

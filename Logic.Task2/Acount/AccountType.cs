@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Logic.Task2
 {
     // TODO: add checking for input data
-    public sealed class BillType
+    public sealed class AccountType
     {
         public string Name { get; set; }
 
