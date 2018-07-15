@@ -15,6 +15,10 @@ namespace Logic.Task2.Services
             _id = 0;
         }
 
+        /// <summary>
+        /// Creates new person
+        /// </summary>
+        /// <param name="entity"> New person </param>
         public void Create(Person entity)
         {
             if (entity == null)
@@ -37,6 +41,10 @@ namespace Logic.Task2.Services
             _provider.Persons.Add(entity);
         }
 
+        /// <summary>
+        /// Deletes person by id
+        /// </summary>
+        /// <param name="id"> Person's id </param>
         public void Delete(int id)
         {
             Person entity = GetById(id);
@@ -48,6 +56,10 @@ namespace Logic.Task2.Services
             _provider.Persons.Remove(entity);
         }
 
+        /// <summary>
+        /// Gets all persons
+        /// </summary>
+        /// <returns> Persons </returns>
         public ICollection<Person> GetAll() => _provider.Persons;
 
         public Person GetById(int id)
@@ -63,6 +75,11 @@ namespace Logic.Task2.Services
             return null;
         }
 
+        /// <summary>
+        /// Gets persons by serial number of passport
+        /// </summary>
+        /// <param name="value"> Serial number of passport </param>
+        /// <returns> Person </returns>
         public Person GetByValue(string value)
         {
             if (string.IsNullOrEmpty(value))
@@ -81,6 +98,10 @@ namespace Logic.Task2.Services
             return null;
         }
 
+        /// <summary>
+        /// Updates person
+        /// </summary>
+        /// <param name="entity"> Updated person </param>
         public void Update(Person entity)
         {
             Person person = _provider.Persons.FindFirst(entity);

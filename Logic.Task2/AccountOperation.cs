@@ -6,6 +6,10 @@ namespace Logic.Task2
     {
         private static AccountService _accountService = new AccountService();
 
+        /// <summary>
+        /// Opens account
+        /// </summary>
+        /// <param name="account"> Account entity </param>
         public static void Open(Account account)
         {
             if (account == null)
@@ -16,6 +20,11 @@ namespace Logic.Task2
             _accountService.Create(account);
         }
 
+        /// <summary>
+        /// It is the operation of withdrawing money from the account.
+        /// </summary>
+        /// <param name="accounNumber"> Number of account </param>
+        /// <param name="value"> Amount of money </param>
         public static void Debit(string accounNumber, decimal value)
         {
             if (string.IsNullOrEmpty(accounNumber))
@@ -47,6 +56,11 @@ namespace Logic.Task2
             _accountService.Update(account);
         }
 
+        /// <summary>
+        /// It is the operation of account replenishment.
+        /// </summary>
+        /// <param name="accounNumber"> Number of account </param>
+        /// <param name="value"> Amount of money </param>
         public static void Credit(string accounNumber, decimal value)
         {
             if (string.IsNullOrEmpty(accounNumber))
@@ -68,6 +82,10 @@ namespace Logic.Task2
             _accountService.Update(account);
         }
 
+        /// <summary>
+        /// It is the operation of closing the account.
+        /// </summary>
+        /// <param name="accounNumber"> Number of account </param>
         public static void Close(string accounNumber)
         {
             if (string.IsNullOrEmpty(accounNumber))

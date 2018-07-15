@@ -5,15 +5,22 @@ namespace Logic.Task2
 {
     public class AccountService : IService<Account>
     {
+        #region Fields
         private static int _id;
         private DataProvider _provider;
+        #endregion
 
+        #region Methods
         public AccountService()
         {
             _provider = DataProvider.Instance;
             _id = 0;
         }
 
+        /// <summary>
+        /// Creates new account
+        /// </summary>
+        /// <param name="entity"> Account entity </param>
         public void Create(Account entity)
         {
             if (entity == null)
@@ -36,6 +43,10 @@ namespace Logic.Task2
             _provider.Accounts.Add(entity);
         }
 
+        /// <summary>
+        /// Delete account by id
+        /// </summary>
+        /// <param name="id"> Account id </param>
         public void Delete(int id)
         {
             Account entity = GetById(id);
@@ -47,6 +58,10 @@ namespace Logic.Task2
             _provider.Accounts.Remove(entity);
         }
 
+        /// <summary>
+        /// Gets all accounts
+        /// </summary>
+        /// <returns> Accounts </returns>
         public ICollection<Account> GetAll() => _provider.Accounts;
 
         public Account GetById(int id)
@@ -62,6 +77,11 @@ namespace Logic.Task2
             return null;
         }
 
+        /// <summary>
+        /// Get account by its number
+        /// </summary>
+        /// <param name="value"> Number of account </param>
+        /// <returns> Account </returns>
         public Account GetByValue(string value)
         {
             if (string.IsNullOrEmpty(value))
@@ -80,6 +100,10 @@ namespace Logic.Task2
             return null;
         }
 
+        /// <summary>
+        /// Update account
+        /// </summary>
+        /// <param name="entity"> Update entity </param>
         public void Update(Account entity)
         {
             if (entity == null)
@@ -109,5 +133,6 @@ namespace Logic.Task2
                 account.InvoiceAmount = entity.InvoiceAmount;
             }
         }
+        #endregion
     }
 }
