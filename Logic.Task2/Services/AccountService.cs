@@ -93,11 +93,7 @@ namespace Logic.Task2
             {
                 throw new ArgumentException("This account doesn't exist!");
             }
-
-            if (entity.BillHistory != null)
-            {
-                account.BillHistory = entity.BillHistory;
-            }
+            
             if (entity.AccountType != null)
             {
                 account.AccountType = entity.AccountType;

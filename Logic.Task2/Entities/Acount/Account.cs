@@ -63,7 +63,7 @@ namespace Logic.Task2
                    EqualityComparer<Person>.Default.Equals(Owner, account.Owner) &&
                    InvoiceAmount == account.InvoiceAmount &&
                    Bonuses == account.Bonuses &&
-                   EqualityComparer<AccountType>.Default.Equals(AccountType, account.AccountType));
+                   EqualityComparer<AccountType>.Default.Equals(AccountType, account.AccountType);
         }
 
         public override int GetHashCode()
