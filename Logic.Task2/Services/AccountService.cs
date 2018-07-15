@@ -31,11 +31,11 @@ namespace Logic.Task2
             _provider.Accounts.Remove(entity);
         }
 
-        public Account GetByValue(Account value)
+        public Account GetByValue(string value)
         {
             foreach (var element in _provider.Accounts)
             {
-                if (element.Number == value.Number)
+                if (element.Number == value)
                 {
                     return element;
                 }
@@ -46,7 +46,7 @@ namespace Logic.Task2
 
         public void Update(Account entity)
         {
-            Account account = GetByValue(entity);
+            Account account = GetByValue(entity.Number);
 
             if (account == null)
             {

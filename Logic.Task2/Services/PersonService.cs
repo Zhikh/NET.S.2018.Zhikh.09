@@ -32,11 +32,11 @@ namespace Logic.Task2.Services
             _provider.Persons.Remove(entity);
         }
 
-        public Person GetByValue(Person value)
+        public Person GetByValue(string value)
         {
             foreach (var element in _provider.Persons)
             {
-                if (element.Passport == value.Passport)
+                if (element.Passport.SerialNumber == value)
                 {
                     return element;
                 }
