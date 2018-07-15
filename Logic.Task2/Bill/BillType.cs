@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace Logic.Task2
 {
-    class BillType
+    // TODO: add checking for input data
+    public sealed class BillType
     {
+        public string Name { get; set; }
+
+        public decimal BalanceCost { get; set; }
+
+        public decimal ReplenishmentCost { get; set; }
     }
 }

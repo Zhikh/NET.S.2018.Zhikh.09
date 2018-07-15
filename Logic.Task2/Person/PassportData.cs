@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Logic.Task2
 {
-    class PassportData
+    // TODO: add checking for input data
+    public sealed class PassportData
     {
+        public string SerialNumber { get; set; }
+        
+        public string IdentityNumber { get; set; }
     }
 }

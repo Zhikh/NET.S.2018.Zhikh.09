@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Logic.Task2.Bill
+namespace Logic.Task2
 {
-    class BillHistory
+    public sealed class BillHistory
     {
+
     }
 }
