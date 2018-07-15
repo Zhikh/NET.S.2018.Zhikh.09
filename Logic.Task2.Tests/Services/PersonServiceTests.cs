@@ -28,7 +28,7 @@ namespace Logic.Task2.Tests
                     Email = "dfdg@t.t",
                     ContactPhone = "+ 375 33 333 33 33"
                 },
-                Address = new AddressData
+                Address = new AdressData
                 {
                     Country = "Somewhere",
                     State = "Somewhere",
@@ -50,7 +50,7 @@ namespace Logic.Task2.Tests
                     Email = "dfdg@t.t",
                     ContactPhone = "+ 375 44 343 33 33"
                 },
-                Address = new AddressData
+                Address = new AdressData
                 {
                     Country = "Somewhere",
                     State = "Somewhere",
@@ -72,7 +72,7 @@ namespace Logic.Task2.Tests
                     Email = "doodg@t.t",
                     ContactPhone = "+ 375 44 343 55 33"
                 },
-                Address = new AddressData
+                Address = new AdressData
                 {
                     Country = "Somewhere",
                     State = "Somewhere",
@@ -95,7 +95,7 @@ namespace Logic.Task2.Tests
                 Email = "podg@t.t",
                 ContactPhone = "+ 375 29 303 55 33"
             },
-            Address = new AddressData
+            Address = new AdressData
             {
                 Country = "Somewhere",
                 State = "Somewhere",

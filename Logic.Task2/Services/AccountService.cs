@@ -22,7 +22,7 @@ namespace Logic.Task2
             }
 
             if (string.IsNullOrEmpty(entity.Number) || entity.Owner == null ||
-                entity.BillType == null)
+                entity.AccountType == null)
             {
                 throw new ArgumentException("Entity account has unfilled field!");
             }
@@ -98,9 +98,9 @@ namespace Logic.Task2
             {
                 account.BillHistory = entity.BillHistory;
             }
-            if (entity.BillType != null)
+            if (entity.AccountType != null)
             {
-                account.BillType = entity.BillType;
+                account.AccountType = entity.AccountType;
             }
             if (entity.Bonuses != 0)
             {

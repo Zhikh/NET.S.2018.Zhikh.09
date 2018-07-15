@@ -118,7 +118,7 @@ namespace Logic.Task2.Services
         #endregion
 
         #region Private methods
-        private void UpdateAdress(AddressData entity, AddressData updatedEntity)
+        private void UpdateAdress(AdressData entity, AdressData updatedEntity)
         {
             if (!string.IsNullOrEmpty(updatedEntity.Country))
             {

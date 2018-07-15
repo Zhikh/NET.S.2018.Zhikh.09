@@ -1,25 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Logic.Task2
 {
-    // TODO: add checking for input data
     public sealed class Account: BaseEntity
     {
-        public string Number { get; set; }
+        private Person _owner;
+        private string _number;
+        private AccountType _accountType;
 
-        public Person Owner { get; set; }
+        public string Number
+        {
+            get
+            {
+                return _number;
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentException("Number can't be null or empty!");
+                }
+
+                _number = value;
+            }
+        }
+
+        public Person Owner
+        {
+            get
+            {
+                return _owner;
+            }
+            set
+            {
+                _owner = value ?? throw new ArgumentException("Owner can't be null!");
+            }
+        }
 
         public decimal InvoiceAmount { get; set; }
 
         public int Bonuses { get; set; }
 
-        public AccountType BillType { get; set; }
-
-        public AccountHistory BillHistory { get; set; }
+        public AccountType AccountType
+        {
+            get
+            {
+                return _accountType;
+            }
+            set
+            {
+                _accountType = value ?? throw new ArgumentException("Account type can't be null!");
+            }
+        }
 
         public override bool Equals(object obj)
         {
@@ -30,8 +63,7 @@ namespace Logic.Task2
                    EqualityComparer<Person>.Default.Equals(Owner, account.Owner) &&
                    InvoiceAmount == account.InvoiceAmount &&
                    Bonuses == account.Bonuses &&
-                   EqualityComparer<AccountType>.Default.Equals(BillType, account.BillType) &&
-                   EqualityComparer<AccountHistory>.Default.Equals(BillHistory, account.BillHistory);
+                   EqualityComparer<AccountType>.Default.Equals(AccountType, account.AccountType));
         }
 
         public override int GetHashCode()
@@ -42,8 +74,7 @@ namespace Logic.Task2
             hashCode = hashCode * -1521134295 + EqualityComparer<Person>.Default.GetHashCode(Owner);
             hashCode = hashCode * -1521134295 + InvoiceAmount.GetHashCode();
             hashCode = hashCode * -1521134295 + Bonuses.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<AccountType>.Default.GetHashCode(BillType);
-            hashCode = hashCode * -1521134295 + EqualityComparer<AccountHistory>.Default.GetHashCode(BillHistory);
+            hashCode = hashCode * -1521134295 + EqualityComparer<AccountType>.Default.GetHashCode(AccountType);
             return hashCode;
         }
     }

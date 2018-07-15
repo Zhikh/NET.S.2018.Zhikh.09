@@ -26,7 +26,7 @@ namespace Logic.Task2.Tests
                     Email = "podg@t.t",
                     ContactPhone = "+ 375 29 399 05 33"
                 },
-                Address = new AddressData
+                Address = new AdressData
                 {
                     Country = "Somewhere",
                     State = "Somewhere",
@@ -36,7 +36,7 @@ namespace Logic.Task2.Tests
             },
             InvoiceAmount = 1000,
             Bonuses = 0,
-            BillType = new AccountType
+            AccountType = new AccountType
             {
                 Name = ":)",
                 BalanceCost = 100,
@@ -61,7 +61,7 @@ namespace Logic.Task2.Tests
                     Email = "podg@t.t",
                     ContactPhone = "+ 375 29 399 05 33"
                 },
-                Address = new AddressData
+                Address = new AdressData
                 {
                     Country = "Somewhere",
                     State = "Somewhere",
@@ -71,7 +71,7 @@ namespace Logic.Task2.Tests
             },
             InvoiceAmount = 1000,
             Bonuses = 0,
-            BillType = new AccountType
+            AccountType = new AccountType
             {
                 Name = ":)",
                 BalanceCost = 100,
@@ -85,7 +85,7 @@ namespace Logic.Task2.Tests
             Owner = null,
             InvoiceAmount = 100,
             Bonuses = 0,
-            BillType = new AccountType
+            AccountType = new AccountType
             {
                 Name = ":)",
                 BalanceCost = 100,

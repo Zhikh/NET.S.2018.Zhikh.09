@@ -1,15 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Logic.Task2
 {
-    // TODO: add checking for input data
     public sealed class AccountType: BaseEntity
     {
-        public string Name { get; set; }
+        private string _name;
+
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentException("Name can't be null or empty!");
+                }
+
+                _name = value;
+            }
+        }
 
         public decimal BalanceCost { get; set; }
 

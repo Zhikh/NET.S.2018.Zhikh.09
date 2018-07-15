@@ -40,7 +40,7 @@ namespace Logic.Task2
                 throw new ArgumentException("There is not enough money to perform the operation!");
             }
 
-            account.Bonuses -= (int)(value / account.BillType.BalanceCost);
+            account.Bonuses -= (int)(value / account.AccountType.BalanceCost);
 
             account.InvoiceAmount -= value;
 
@@ -61,7 +61,7 @@ namespace Logic.Task2
                 throw new ArgumentException("This account doesn't exist!");
             }
 
-            account.Bonuses += (int)(value / account.BillType.ReplenishmentCost);
+            account.Bonuses += (int)(value / account.AccountType.ReplenishmentCost);
 
             account.InvoiceAmount += value;
 

@@ -1,25 +1,85 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Logic.Task2
 {
     // TODO: add checking for input data
     public sealed class Person: BaseEntity
     {
-        public string FirstName { get; set; }
-        
-        public string LastName { get; set; }
-        
+        private string _firstName;
+        private string _lastName;
+        private AdressData _adressData;
+        private ContactData _contactData;
+        private PassportData _passportData;
+
+        public string FirstName
+        {
+            get
+            {
+                return _firstName;
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentException("First name can't be null or empty!");
+                }
+                _firstName = value;
+            }
+        }
+
+        public string LastName
+        {
+            get
+            {
+                return _lastName;
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentException("Last name can't be null or empty!");
+                }
+                _lastName = value;
+            }
+        }
+
         public string SecondName { get; set; }
 
-        public AddressData Address { get; set; }
+        public AdressData Address
+        {
+            get
+            {
+                return _adressData;
+            }
+            set
+            {
+                _adressData = value ?? throw new ArgumentException("Adress entity can't be null or empty!");
+            }
+        }
 
-        public ContactData Contact { get; set; }
-
-        public PassportData Passport { get; set; }
+        public ContactData Contact
+        {
+            get
+            {
+                return _contactData;
+            }
+            set
+            {
+                _contactData = value ?? throw new ArgumentException("Contact entity can't be null or empty!");
+            }
+        }
+        public PassportData Passport
+        {
+            get
+            {
+                return _passportData;
+            }
+            set
+            {
+                _passportData = value ?? throw new ArgumentException("Passport entity can't be null or empty!");
+            }
+        }
 
         public ICollection<Account> Account { get; set; }
 
@@ -31,7 +91,7 @@ namespace Logic.Task2
                    FirstName == person.FirstName &&
                    LastName == person.LastName &&
                    SecondName == person.SecondName &&
-                   EqualityComparer<AddressData>.Default.Equals(Address, person.Address) &&
+                   EqualityComparer<AdressData>.Default.Equals(Address, person.Address) &&
                    EqualityComparer<ContactData>.Default.Equals(Contact, person.Contact) &&
                    EqualityComparer<PassportData>.Default.Equals(Passport, person.Passport) &&
                    EqualityComparer<ICollection<Account>>.Default.Equals(Account, person.Account);
@@ -44,7 +104,7 @@ namespace Logic.Task2
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(FirstName);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(LastName);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(SecondName);
-            hashCode = hashCode * -1521134295 + EqualityComparer<AddressData>.Default.GetHashCode(Address);
+            hashCode = hashCode * -1521134295 + EqualityComparer<AdressData>.Default.GetHashCode(Address);
             hashCode = hashCode * -1521134295 + EqualityComparer<ContactData>.Default.GetHashCode(Contact);
             hashCode = hashCode * -1521134295 + EqualityComparer<PassportData>.Default.GetHashCode(Passport);
             hashCode = hashCode * -1521134295 + EqualityComparer<ICollection<Account>>.Default.GetHashCode(Account);
