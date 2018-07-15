@@ -21,6 +21,12 @@ namespace Logic.Task2
                 throw new ArgumentNullException("Entity can't be null!");
             }
 
+            if (string.IsNullOrEmpty(entity.Number) || entity.Owner == null ||
+                entity.BillType == null)
+            {
+                throw new ArgumentException("Entity account has unfilled field!");
+            }
+
             if (_provider.Accounts.FindFirst(entity) != null)
             {
                 throw new ArgumentException("This account already exists!");

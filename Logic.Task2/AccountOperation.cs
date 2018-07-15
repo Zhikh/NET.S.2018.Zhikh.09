@@ -18,6 +18,11 @@ namespace Logic.Task2
 
         public static void Debit(string accounNumber, decimal value)
         {
+            if (string.IsNullOrEmpty(accounNumber))
+            {
+                throw new ArgumentException("Account number can't be null or empty!");
+            }
+
             Account account = _accountService.GetByValue(accounNumber);
 
             if (account == null)
@@ -44,6 +49,11 @@ namespace Logic.Task2
 
         public static void Credit(string accounNumber, decimal value)
         {
+            if (string.IsNullOrEmpty(accounNumber))
+            {
+                throw new ArgumentException("Account number can't be null or empty!");
+            }
+
             Account account = _accountService.GetByValue(accounNumber);
 
             if (account == null)
@@ -60,6 +70,11 @@ namespace Logic.Task2
 
         public static void Close(string accounNumber)
         {
+            if (string.IsNullOrEmpty(accounNumber))
+            {
+                throw new ArgumentException("Account number can't be null or empty!");
+            }
+
             Account account = _accountService.GetByValue(accounNumber);
 
             if (account == null)
