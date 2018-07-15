@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Logic.Task2.Services
 {
@@ -31,6 +32,8 @@ namespace Logic.Task2.Services
 
             _provider.Persons.Remove(entity);
         }
+
+        public ICollection<Person> GetAll() => _provider.Persons;
 
         public Person GetByValue(string value)
         {

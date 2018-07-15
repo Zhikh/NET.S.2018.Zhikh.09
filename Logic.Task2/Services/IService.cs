@@ -12,5 +12,6 @@ namespace Logic.Task2
         void Update(T entity);
         void Delete(T entity);
         T GetByValue(string value);
+        ICollection<T> GetAll();
     }
 }
