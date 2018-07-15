@@ -150,15 +150,15 @@ namespace Logic.Task2.Tests
             {
                 AccountOperation.Open(_account);
             }
-            account.InvoiceAmount = _invoiceAmount;
-            account.Bonuses = _bonuses;
+            _account.InvoiceAmount = _invoiceAmount;
+            _account.Bonuses = _bonuses;
 
             for (int i = 0; i < _sourceData.Length; i++)
             {
-                AccountOperation.Debit(account.Number, _sourceData[i]);
+                AccountOperation.Debit(_account.Number, _sourceData[i]);
 
-                Assert.AreEqual(_debitBonuses[i], account.InvoiceAmount);
-                Assert.AreEqual(_debitBonuses[i], account.Bonuses);
+                Assert.AreEqual(_debitResult[i], _account.InvoiceAmount);
+                Assert.AreEqual(_debitBonuses[i], _account.Bonuses);
             }
         }
 
@@ -170,15 +170,15 @@ namespace Logic.Task2.Tests
             {
                 AccountOperation.Open(_account);
             }
-            account.InvoiceAmount = _invoiceAmount;
-            account.Bonuses = _bonuses;
+            _account.InvoiceAmount = _invoiceAmount;
+            _account.Bonuses = _bonuses;
 
             for (int i = 0; i < _sourceData.Length; i++)
             {
-                AccountOperation.Credit(account.Number, _sourceData[i]);
+                AccountOperation.Credit(_account.Number, _sourceData[i]);
 
-                Assert.AreEqual(_creditResult[i], account.InvoiceAmount);
-                Assert.AreEqual(_creditBonuses[i], account.Bonuses);
+                Assert.AreEqual(_creditResult[i], _account.InvoiceAmount);
+                Assert.AreEqual(_creditBonuses[i], _account.Bonuses);
             }
         }
 
