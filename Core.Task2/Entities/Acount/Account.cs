@@ -1,33 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using Core.Task2.Strategies;
 
-namespace Logic.Task2
+namespace Core.Task2.Entities
 {
     public sealed class Account
     {
         private Person _owner;
         private string _number;
         private AccountType _accountType;
+        private static int _id = 0;
 
-        public int Id { get; set; }
-
-        public string Number
+        public Account(IAccountNumberGenerator _strategy)
         {
-            get
-            {
-                return this._number;
-            }
+            AccountNumberGenerator = _strategy;
+            Id = _id++;
 
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                {
-                    throw new ArgumentException("Number can't be null or empty!");
-                }
-
-                this._number = value;
-            }
+            Number = AccountNumberGenerator.GenerateNumber(Id);
         }
+
+        public IAccountNumberGenerator AccountNumberGenerator { get; set; }
+
+        public int Id { get; private set; }
+
+        public string Number { get;}
 
         public Person Owner
         {

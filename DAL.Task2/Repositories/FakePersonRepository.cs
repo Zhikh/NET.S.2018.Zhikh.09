@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using Core.Task2.Entities;
 
-namespace Logic.Task2.Services
+namespace DAL.Task2.Repositories
 {
-    public sealed class PersonService : IService<Person>
+    public class FakePersonRepository : IRepository<Person>
     {
-        private static int _id;
-        private DataProvider _provider;
+        private ICollection<Person> Entities { get; set; }
 
-        #region Public API
-        public PersonService()
+        public FakePersonRepository()
         {
-            _provider = DataProvider.Instance;
-            _id = 0;
+            Entities = new List<Person>();
         }
 
+        #region Public API
         /// <summary>
         /// Creates new person
         /// </summary>
@@ -32,13 +31,12 @@ namespace Logic.Task2.Services
                 throw new ArgumentException("Entity person has unfilled field!");
             }
 
-            if (_provider.Persons.FindFirst(entity) != null)
+            if (Entities.FindFirst(entity) != null)
             {
                 throw new ArgumentException("This person already exists!");
             }
-
-            entity.Id = _id++;
-            _provider.Persons.Add(entity);
+            
+            Entities.Add(entity);
         }
 
         /// <summary>
@@ -48,23 +46,23 @@ namespace Logic.Task2.Services
         public void Delete(int id)
         {
             Person entity = GetById(id);
-            if (_provider.Persons.FindFirst(entity) == null)
+            if (Entities.FindFirst(entity) == null)
             {
                 throw new ArgumentException("This person doesn't exist!");
             }
 
-            _provider.Persons.Remove(entity);
+            Entities.Remove(entity);
         }
 
         /// <summary>
         /// Gets all persons
         /// </summary>
         /// <returns> Persons </returns>
-        public ICollection<Person> GetAll() => _provider.Persons;
+        public ICollection<Person> GetAll() => Entities;
 
         public Person GetById(int id)
         {
-            foreach (var entity in _provider.Persons)
+            foreach (var entity in Entities)
             {
                 if (entity.Id == id)
                 {
@@ -87,11 +85,11 @@ namespace Logic.Task2.Services
                 throw new ArgumentNullException("Value can't be null or empty!");
             }
 
-            foreach (var element in _provider.Persons)
+            foreach (var entity in Entities)
             {
-                if (element.Passport.SerialNumber == value)
+                if (entity.Passport.SerialNumber == value)
                 {
-                    return element;
+                    return entity;
                 }
             }
 
@@ -104,7 +102,7 @@ namespace Logic.Task2.Services
         /// <param name="entity"> Updated person </param>
         public void Update(Person entity)
         {
-            Person person = _provider.Persons.FindFirst(entity);
+            Person person = Entities.FindFirst(entity);
 
             if (person == null)
             {
@@ -121,9 +119,9 @@ namespace Logic.Task2.Services
                 person.LastName = entity.FirstName;
             }
 
-            if (entity.Account != null)
+            if (entity.Accounts != null)
             {
-                person.Account = entity.Account;
+                person.Accounts = entity.Accounts;
             }
 
             if (entity.Address != null)

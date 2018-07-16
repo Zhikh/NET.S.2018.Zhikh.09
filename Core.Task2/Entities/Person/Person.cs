@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Logic.Task2
+namespace Core.Task2.Entities
 {
     public sealed class Person
     {
@@ -10,8 +10,15 @@ namespace Logic.Task2
         private AdressData _adressData;
         private ContactData _contactData;
         private PassportData _passportData;
+        private static int _id = 0;
 
-        public int Id { get; set; }
+        public Person()
+        {
+            Id = _id++;
+            Accounts = new List<Account>();
+        }
+
+        public int Id { get; private set; }
 
         public string FirstName
         {
@@ -90,7 +97,7 @@ namespace Logic.Task2
             }
         }
 
-        public ICollection<Account> Account { get; set; }
+        public ICollection<Account> Accounts { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -103,7 +110,7 @@ namespace Logic.Task2
                    EqualityComparer<AdressData>.Default.Equals(Address, person.Address) &&
                    EqualityComparer<ContactData>.Default.Equals(Contact, person.Contact) &&
                    EqualityComparer<PassportData>.Default.Equals(Passport, person.Passport) &&
-                   EqualityComparer<ICollection<Account>>.Default.Equals(Account, person.Account);
+                   EqualityComparer<ICollection<Account>>.Default.Equals(Accounts, person.Accounts);
         }
 
         public override int GetHashCode()
@@ -116,7 +123,7 @@ namespace Logic.Task2
             hashCode = (hashCode * -1521134295) + EqualityComparer<AdressData>.Default.GetHashCode(Address);
             hashCode = (hashCode * -1521134295) + EqualityComparer<ContactData>.Default.GetHashCode(Contact);
             hashCode = (hashCode * -1521134295) + EqualityComparer<PassportData>.Default.GetHashCode(Passport);
-            hashCode = (hashCode * -1521134295) + EqualityComparer<ICollection<Account>>.Default.GetHashCode(Account);
+            hashCode = (hashCode * -1521134295) + EqualityComparer<ICollection<Account>>.Default.GetHashCode(Accounts);
             return hashCode;
         }
     }

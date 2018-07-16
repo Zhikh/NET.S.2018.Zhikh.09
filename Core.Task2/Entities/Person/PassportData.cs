@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Logic.Task2
+namespace Core.Task2.Entities
 {
     public sealed class PassportData
     {

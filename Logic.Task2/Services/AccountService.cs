@@ -1,138 +1,122 @@
 ﻿using System;
-using System.Collections.Generic;
+using Core.Task2.Entities;
+using DAL.Task2;
+using DAL.Task2.Repositories;
 
 namespace Logic.Task2
 {
-    public class AccountService : IService<Account>
+    public class AccountService : IAccountService<Account>
     {
-        #region Fields
-        private static int _id;
-        private DataProvider _provider;
-        #endregion
+        public IRepository<Account> _accountRepository { get; set; }
+        private IRepository<Person> _personRepository;
 
-        #region Methods
         public AccountService()
         {
-            _provider = DataProvider.Instance;
-            _id = 0;
+            _accountRepository = new FakeAccountRepository();
+            _personRepository = new FakePersonRepository();
         }
 
         /// <summary>
-        /// Creates new account
+        /// It is the operation of closing the account.
         /// </summary>
-        /// <param name="entity"> Account entity </param>
-        public void Create(Account entity)
+        /// <param name="accounNumber"> Number of account </param>
+        public void Close(string accounNumber)
         {
-            if (entity == null)
+            if (string.IsNullOrEmpty(accounNumber))
             {
-                throw new ArgumentNullException("Entity can't be null!");
+                throw new ArgumentException("Account number can't be null or empty!");
             }
 
-            if (string.IsNullOrEmpty(entity.Number) || entity.Owner == null ||
-                entity.AccountType == null)
-            {
-                throw new ArgumentException("Entity account has unfilled field!");
-            }
-
-            if (_provider.Accounts.FindFirst(entity) != null)
-            {
-                throw new ArgumentException("This account already exists!");
-            }
-
-            entity.Id = _id++;
-            _provider.Accounts.Add(entity);
-        }
-
-        /// <summary>
-        /// Delete account by id
-        /// </summary>
-        /// <param name="id"> Account id </param>
-        public void Delete(int id)
-        {
-            Account entity = GetById(id);
-            if (GetById(id) == null)
-            {
-                throw new ArgumentException("This account doesn't exist!");
-            }
-
-            _provider.Accounts.Remove(entity);
-        }
-
-        /// <summary>
-        /// Gets all accounts
-        /// </summary>
-        /// <returns> Accounts </returns>
-        public ICollection<Account> GetAll() => _provider.Accounts;
-
-        public Account GetById(int id)
-        {
-            foreach (var entity in _provider.Accounts)
-            {
-                if (entity.Id == id)
-                {
-                    return entity;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Get account by its number
-        /// </summary>
-        /// <param name="value"> Number of account </param>
-        /// <returns> Account </returns>
-        public Account GetByValue(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                throw new ArgumentNullException("Value can't be null or empty!");
-            }
-
-            foreach (var element in _provider.Accounts)
-            {
-                if (element.Number == value)
-                {
-                    return element;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Update account
-        /// </summary>
-        /// <param name="entity"> Update entity </param>
-        public void Update(Account entity)
-        {
-            if (entity == null)
-            {
-                throw new ArgumentNullException("Entity can't be null!");
-            }
-
-            Account account = GetByValue(entity.Number);
+            Account account = _accountRepository.GetByValue(accounNumber);
 
             if (account == null)
             {
                 throw new ArgumentException("This account doesn't exist!");
             }
-            
-            if (entity.AccountType != null)
+
+            if (account == null)
             {
-                account.AccountType = entity.AccountType;
+                throw new ArgumentNullException("Account can't be null!");
             }
 
-            if (entity.Bonuses != 0)
-            {
-                account.Bonuses = entity.Bonuses;
-            }
-
-            if (entity.InvoiceAmount != 0)
-            {
-                account.InvoiceAmount = entity.InvoiceAmount;
-            }
+            _accountRepository.Delete(account.Id);
         }
-        #endregion
+
+        /// <summary>
+        /// It is the operation of account replenishment.
+        /// </summary>
+        /// <param name="accounNumber"> Number of account </param>
+        /// <param name="value"> Amount of money </param>
+        public void Deposit(string accounNumber, decimal value)
+        {
+            Account account = _accountRepository.GetByValue(accounNumber);
+
+            if (account == null)
+            {
+                throw new ArgumentException("This account doesn't exist!");
+            }
+
+            account.Bonuses += (int)(value / account.AccountType.ReplenishmentCost);
+            account.InvoiceAmount += value;
+            _accountRepository.Update(account);
+        }
+
+        /// <summary>
+        /// Opens account
+        /// </summary>
+        /// <param name="account"> Account entity </param>
+        public void Open(Account entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException("Account can't be null!");
+            }
+
+            if (entity.Owner == null)
+            {
+                throw new ArgumentNullException("Owner of account can't be null!");
+            }
+
+            Person person = _personRepository.GetAll().FindFirst(entity.Owner);
+
+            if (person == null)
+            {
+                person = entity.Owner;
+                _personRepository.Create(person);
+            }
+
+            _accountRepository.Create(entity);
+
+            person.Accounts.Add(entity);
+        }
+
+        /// <summary>
+        /// It is the operation of withdrawing money from the account.
+        /// </summary>
+        /// <param name="accounNumber"> Number of account </param>
+        /// <param name="value"> Amount of money </param>
+        public void Withdraw(string accounNumber, decimal value)
+        {
+            Account account = _accountRepository.GetByValue(accounNumber);
+
+            if (account == null)
+            {
+                throw new ArgumentException("This account doesn't exist!");
+            }
+
+            if (account.InvoiceAmount == 0)
+            {
+                throw new ArgumentException("The invoice is empty!");
+            }
+
+            if (account.InvoiceAmount - value < 0)
+            {
+                throw new ArgumentException("There is not enough money to perform the operation!");
+            }
+
+            account.Bonuses -= (int)(value / account.AccountType.BalanceCost);
+            account.InvoiceAmount -= value;
+            _accountRepository.Update(account);
+        }
     }
 }

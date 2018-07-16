@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Logic.Task2
+namespace DAL.Task2
 {
     public static class ICollectionExtension
     {
