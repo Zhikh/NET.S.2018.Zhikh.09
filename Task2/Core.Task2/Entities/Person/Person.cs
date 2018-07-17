@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Core.Task2.Entities
 {
-    public sealed class Person
+    public sealed class Person : BaseEntity
     {
         private AdressData _adressData;
         private ContactData _contactData;
@@ -17,8 +17,6 @@ namespace Core.Task2.Entities
             Id = _id++;
             Accounts = new List<Account>();
         }
-
-        public int Id { get; private set; }
 
         public string FirstName
         {

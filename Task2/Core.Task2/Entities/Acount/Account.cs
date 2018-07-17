@@ -4,7 +4,7 @@ using Core.Task2.Strategies;
 
 namespace Core.Task2.Entities
 {
-    public sealed class Account
+    public sealed class Account: BaseEntity
     {
         private Person _owner;
         private AccountType _accountType;
@@ -21,8 +21,6 @@ namespace Core.Task2.Entities
         }
 
         public IAccountNumberGenerator AccountNumberGenerator { get; set; }
-
-        public int Id { get; private set; }
 
         public string Number { get;}
 

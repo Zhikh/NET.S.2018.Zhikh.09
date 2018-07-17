@@ -1,4 +1,6 @@
-﻿namespace Core.Task2.Strategies
+﻿using System;
+
+namespace Core.Task2.Strategies
 {
     public sealed class FakeAccountNumberGenerator : IAccountNumberGenerator
     {
@@ -15,8 +17,10 @@
         {
             string result = id.ToString();
             int n = _accountNumberLength - result.Length;
+
             if ( n < 0)
             {
+                throw new ArgumentException(nameof(id) + " isn't valid for generating of account number!");
             }
             result = result.Insert(0, new string('0', n));
 

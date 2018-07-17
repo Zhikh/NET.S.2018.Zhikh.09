@@ -118,7 +118,7 @@ namespace UI.Task2.ConsoleApp
                 IAccountService<Account> service = new AccountService();
 
                 service.Open(_newAccountData);
-                PrintAllAccounts(service.);
+                PrintAllAccounts(service._accountRepository);
 
                 Console.ReadKey();
             }
