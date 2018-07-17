@@ -41,5 +41,11 @@ namespace DAL.Task2.Repositories
         /// </summary>
         /// <returns></returns>
         ICollection<TEntity> GetAll();
+
+        /// <summary>
+        /// Save changes in one transaction
+        /// </summary>
+        /// <returns></returns>
+        void Save();
     }
 }
