@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Diagnostics;
 using Core.Task2.Entities;
 using Core.Task2.Strategies;
 using DAL.Task2.Repositories;
 using Logic.Task2;
+using static UI.Task2.ConsoleApp.AccountOperation;
 
 namespace UI.Task2.ConsoleApp
 {
     class Program
     {
+        #region Test data
         private static Account _accountData = new Account(new FakeAccountNumberGenerator())
         {
             Owner = new Person
@@ -107,6 +110,8 @@ namespace UI.Task2.ConsoleApp
                 ReplenishmentCost = 10
             }
         };
+        #endregion
+
         static void Main(string[] args)
         {
             try
@@ -120,12 +125,58 @@ namespace UI.Task2.ConsoleApp
                 service.Open(_newAccountData);
                 PrintAllAccounts(service._accountRepository);
 
+                CheckByInput(service);
+
                 Console.ReadKey();
             }
             catch (ArgumentException ex)
             {
-                Console.WriteLine(ex.Message);
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+                Console.WriteLine("Smth's gone wrong!");
             }
+        }
+
+        private static void CheckByInput(IAccountService<Account> service)
+        {
+            bool IsExit = false;
+            Operation operation = Operation.Exit;
+
+            do
+            {
+                Console.WriteLine($"Check operation: " +
+                    $"\n {(int)Operation.Open} - {Operation.Open} " +
+                    $"\n {(int)Operation.Deposit} - {Operation.Deposit}  " +
+                    $"\n {(int)Operation.Withdraw} - {Operation.Withdraw}  " +
+                    $"\n {(int)Operation.Close} - {Operation.Close} " +
+                    $"\n {(int)Operation.Exit} - {Operation.Exit} ");
+
+                if (int.TryParse(Console.ReadLine(), out int temp))
+                {
+                    operation = (Operation)Enum.ToObject(typeof(Operation), temp); 
+                }
+
+                switch (operation)
+                {
+                    case Operation.Open:
+                        Open(service);
+                        break;
+                    case Operation.Deposit:
+                        Deposite(service);
+                        break;
+                    case Operation.Withdraw:
+                        Withdraw(service);
+                        break;
+                    case Operation.Close:
+                        Close(service);
+                        break;
+                    default:
+                        IsExit = true;
+                        break;
+                }
+                PrintAllAccounts(service._accountRepository);
+            }
+            while (!IsExit);
         }
 
         private static void CheckCreationByRepository(IRepository<Account> repository)
