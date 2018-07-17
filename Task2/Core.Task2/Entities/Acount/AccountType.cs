@@ -10,17 +10,17 @@ namespace Core.Task2.Entities
         {
             get
             {
-                return this._name;
+                return _name;
             }
 
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentException("Name can't be null or empty!");
+                    throw new ArgumentException(nameof(Name) + "can't be null or empty!");
                 }
 
-                this._name = value;
+                _name = value;
             }
         }
 

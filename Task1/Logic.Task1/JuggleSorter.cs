@@ -2,6 +2,7 @@
 
 namespace Logic.Task1
 {
+    // TODO: ICompare { CompareTo } 
     public static class JuggleSort
     {
         /// <summary>
@@ -31,6 +32,7 @@ namespace Logic.Task1
         /// <param name="array"> Array for sorting </param>
         /// <param name="mode"> Ascending/decreasing </param>
         /// <param name="value"> Min/max/sum </param>
+        // Sort(int[][], IComparer)
         public static void Sort(int[][] array, Mode mode = Mode.Ascending, Value value = Value.None)
         {
             if (array == null)

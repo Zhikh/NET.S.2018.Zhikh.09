@@ -7,13 +7,14 @@ namespace Core.Task2.Entities
     public sealed class Account
     {
         private Person _owner;
-        private string _number;
         private AccountType _accountType;
+        private string _number;
         private static int _id = 0;
 
-        public Account(IAccountNumberGenerator _strategy)
+        public Account(IAccountNumberGenerator strategy)
         {
-            AccountNumberGenerator = _strategy;
+            AccountNumberGenerator = strategy ?? throw new ArgumentNullException(nameof(strategy) + " can't be null!");
+
             Id = _id++;
 
             Number = AccountNumberGenerator.GenerateNumber(Id);
@@ -29,12 +30,12 @@ namespace Core.Task2.Entities
         {
             get
             {
-                return this._owner;
+                return _owner;
             }
 
             set
             {
-                this._owner = value ?? throw new ArgumentException("Owner can't be null!");
+                _owner = value ?? throw new ArgumentException("Owner can't be null!");
             }
         }
 
@@ -46,12 +47,12 @@ namespace Core.Task2.Entities
         {
             get
             {
-                return this._accountType;
+                return _accountType;
             }
 
             set
             {
-                this._accountType = value ?? throw new ArgumentException("Account type can't be null!");
+                _accountType = value ?? throw new ArgumentException("Account type can't be null!");
             }
         }
 

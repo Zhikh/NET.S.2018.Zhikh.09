@@ -21,12 +21,12 @@ namespace Core.Task2.Entities
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentException("Email can't be null or empty!");
+                    throw new ArgumentException(nameof(Email) + " can't be null or empty!");
                 }
 
                 if (!Regex.IsMatch(value, _emailPattern, RegexOptions.IgnoreCase))
                 {
-                    throw new ArgumentException("Email doesn't correct!");
+                    throw new ArgumentException(nameof(Email) + " doesn't correct!");
                 }
 
                 _email = value;
@@ -44,7 +44,7 @@ namespace Core.Task2.Entities
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentException("Phone number can't be null or empty!");
+                    throw new ArgumentException(nameof(ContactPhone) + " can't be null or empty!");
                 }
 
                 _phone = value;

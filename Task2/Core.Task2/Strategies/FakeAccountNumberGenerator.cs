@@ -15,7 +15,9 @@
         {
             string result = id.ToString();
             int n = _accountNumberLength - result.Length;
-
+            if ( n < 0)
+            {
+            }
             result = result.Insert(0, new string('0', n));
 
             return result;

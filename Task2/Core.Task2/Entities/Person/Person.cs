@@ -5,11 +5,11 @@ namespace Core.Task2.Entities
 {
     public sealed class Person
     {
-        private string _firstName;
-        private string _lastName;
         private AdressData _adressData;
         private ContactData _contactData;
         private PassportData _passportData;
+        private string _firstName;
+        private string _lastName;
         private static int _id = 0;
 
         public Person()
@@ -31,7 +31,7 @@ namespace Core.Task2.Entities
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentException("First name can't be null or empty!");
+                    throw new ArgumentException(nameof(FirstName) + " can't be null or empty!");
                 }
 
                 _firstName = value;
@@ -49,7 +49,7 @@ namespace Core.Task2.Entities
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentException("Last name can't be null or empty!");
+                    throw new ArgumentException(nameof(LastName) + " can't be null or empty!");
                 }
 
                 _lastName = value;
@@ -67,7 +67,7 @@ namespace Core.Task2.Entities
 
             set
             {
-                _adressData = value ?? throw new ArgumentException("Adress entity can't be null or empty!");
+                _adressData = value ?? throw new ArgumentException(nameof(Address) + " can't be null or empty!");
             }
         }
 
@@ -80,7 +80,7 @@ namespace Core.Task2.Entities
 
             set
             {
-                _contactData = value ?? throw new ArgumentException("Contact entity can't be null or empty!");
+                _contactData = value ?? throw new ArgumentException(nameof(Contact) + " can't be null or empty!");
             }
         }
 
@@ -93,11 +93,11 @@ namespace Core.Task2.Entities
 
             set
             {
-                _passportData = value ?? throw new ArgumentException("Passport entity can't be null or empty!");
+                _passportData = value ?? throw new ArgumentException(nameof(Passport) + " can't be null or empty!");
             }
         }
 
-        public ICollection<Account> Accounts { get; set; }
+        public ICollection<Account> Accounts { get;}
 
         public override bool Equals(object obj)
         {

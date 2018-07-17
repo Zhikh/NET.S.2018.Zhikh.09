@@ -16,17 +16,17 @@ namespace Core.Task2.Entities
         {
             get
             {
-                return this._country;
+                return _country;
             }
 
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentException("Country can't be null or empty!");
+                    throw new ArgumentException(nameof(Country) + " can't be null or empty!");
                 }
 
-                this._country = value;
+                _country = value;
             }
         }
         
@@ -34,17 +34,17 @@ namespace Core.Task2.Entities
         {
             get
             {
-                return this._state;
+                return _state;
             }
 
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentException("State can't be null or empty!");
+                    throw new ArgumentException(nameof(State) + " can't be null or empty!");
                 }
 
-                this._state = value;
+                _state = value;
             }
         }
 
@@ -52,17 +52,17 @@ namespace Core.Task2.Entities
         {
             get
             {
-                return this._city;
+                return _city;
             }
 
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentException("City can't be null or empty!");
+                    throw new ArgumentException(nameof(City) + " can't be null or empty!");
                 }
 
-                this._city = value;
+                _city = value;
             }
         }
         #endregion
@@ -71,17 +71,17 @@ namespace Core.Task2.Entities
         {
             get
             {
-                return this._street;
+                return _street;
             }
 
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentException("Street can't be null or empty!");
+                    throw new ArgumentException(nameof(Street) + " can't be null or empty!");
                 }
 
-                this._street = value;
+                _street = value;
             }
         }
     }

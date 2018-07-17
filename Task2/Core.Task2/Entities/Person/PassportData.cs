@@ -18,7 +18,7 @@ namespace Core.Task2.Entities
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentException("Serial number can't be null or empty!");
+                    throw new ArgumentException(nameof(SerialNumber) + " can't be null or empty!");
                 }
 
                 _serialNumber = value;
@@ -36,7 +36,7 @@ namespace Core.Task2.Entities
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentException("Identity number can't be null or empty!");
+                    throw new ArgumentException(nameof(IdentityNumber) + " can't be null or empty!");
                 }
 
                 _identityNumber = value;
