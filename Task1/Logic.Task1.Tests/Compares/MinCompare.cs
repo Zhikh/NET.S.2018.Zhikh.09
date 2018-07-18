@@ -9,12 +9,12 @@
 
             if (leftMin > rightMin)
             {
-                return -1;
+                return 1;
             }
 
             if (leftMin < rightMin)
             {
-                return 1;
+                return -1;
             }
 
             return 0;

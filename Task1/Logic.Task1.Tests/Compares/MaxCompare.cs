@@ -7,12 +7,12 @@
             int leftMax = left.GetMax();
             int rightMax = right.GetMax();
 
-            if (leftMax > rightMax)
+            if (leftMax < rightMax)
             {
                 return -1;
             }
 
-            if (leftMax < rightMax)
+            if (leftMax > rightMax)
             {
                 return 1;
             }
