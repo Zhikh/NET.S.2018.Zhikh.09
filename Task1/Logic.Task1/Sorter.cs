@@ -11,8 +11,7 @@ namespace Logic.Task1
         /// <typeparam name="T"></typeparam>
         /// <param name="array"> Array for sorting </param>
         /// <param name="compare"> Rules for comparing of arrays elements </param>
-        /// <param name="isAscending"> Type of sorting: Ascending/Decreasing </param>
-        public static void Sort<T>(T[] array, ICompare<T> compare, bool isAscending = true)
+        public static void Sort<T>(T[] array, ICompare<T> compare)
         {
             if (array == null)
             {
@@ -23,13 +22,13 @@ namespace Logic.Task1
             {
                 throw new ArgumentNullException($"Argument {nameof(compare)} can't be null!");
             }
-
-            int n = array.Length;
-            bool isSwap = true;
-            for (int i = 0; i < n && isSwap; i++)
+            
+            bool isSwap;
+            do
             {
                 isSwap = false;
-                for (int j = 0; j < n - 1; j++)
+
+                for (int j = 0; j < array.Length - 1; j++)
                 {
                     if (compare.Compare(array[j + 1], array[j]) < 0)
                     {
@@ -38,11 +37,7 @@ namespace Logic.Task1
                     }
                 }
             }
-
-            if (!isAscending)
-            {
-                Reverse(array);
-            }
+            while (isSwap);
         }
         #endregion
 
@@ -53,23 +48,6 @@ namespace Logic.Task1
 
             first = second;
             second = temp;
-        }
-
-        private static void Reverse<T>(T[] array)
-        {
-            int n = array.Length;
-            T[] reversedArray = new T[n];
-
-            int j = 0;
-            for (int i = n - 1; i >= 0; i--)
-            {
-                reversedArray[j++] = array[i];
-            }
-
-            for (int i = 0; i < n; i++)
-            {
-                array[i] = reversedArray[i];
-            }
         }
         #endregion
     }
