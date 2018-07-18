@@ -410,7 +410,7 @@ namespace Logic.Task1.Tests
         [Test]
         public void Sort_MaxCompareDec_SuccessfulTests()
         {
-            ICompare<int[]> compare = new MaxCompare();
+            ICompare<int[]> compare = new MaxCompare(false);
             foreach (var subarray in _resultMax)
             {
                 Array.Reverse(subarray);
@@ -418,7 +418,7 @@ namespace Logic.Task1.Tests
 
             for (int i = 0; i < _maxSourceData.Length; i++)
             {
-                Sorter.Sort(_maxSourceData[i], compare, false);
+                Sorter.Sort(_maxSourceData[i], compare);
 
                 if (!MatrixAreEquals(_maxSourceData[i], _resultMax[i]))
                 {
@@ -448,7 +448,7 @@ namespace Logic.Task1.Tests
         [Test]
         public void Sort_MinCompareDec_SuccessfulTests()
         {
-            ICompare<int[]> compare = new MinCompare();
+            ICompare<int[]> compare = new MinCompare(false);
             foreach (var subarray in _resultMin)
             {
                 Array.Reverse(subarray);
@@ -456,7 +456,7 @@ namespace Logic.Task1.Tests
 
             for (int i = 0; i < _minSourceData.Length; i++)
             {
-                Sorter.Sort(_minSourceData[i], compare, false);
+                Sorter.Sort(_minSourceData[i], compare);
 
                 if (!MatrixAreEquals(_minSourceData[i], _resultMin[i]))
                 {
@@ -486,7 +486,7 @@ namespace Logic.Task1.Tests
         [Test]
         public void Sort_SumCompareDec_SuccessfulTests()
         {
-            ICompare<int[]> compare = new SumCompare();
+            ICompare<int[]> compare = new SumCompare(false);
             foreach (var subarray in _resultSum)
             {
                 Array.Reverse(subarray);
@@ -494,7 +494,7 @@ namespace Logic.Task1.Tests
 
             for (int i = 0; i < _sumSourceData.Length; i++)
             {
-                Sorter.Sort(_sumSourceData[i], compare, false);
+                Sorter.Sort(_sumSourceData[i], compare);
 
                 if (!MatrixAreEquals(_sumSourceData[i], _resultSum[i]))
                 {

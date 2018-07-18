@@ -22,7 +22,7 @@ namespace Logic.Task1
             {
                 throw new ArgumentNullException($"Argument {nameof(compare)} can't be null!");
             }
-            
+
             bool isSwap;
             do
             {
