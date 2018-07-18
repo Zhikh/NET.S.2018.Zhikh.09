@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Logic.Task1.Tests
+﻿namespace Logic.Task1.Tests
 {
-    public static class IntExtenssion
+    internal static class IntExtenssion
     {
-        public static int GetMax(this int[] array)
+        internal static int GetMax(this int[] array)
         {
-            int result = array[0];
+            int i = 0;
+            int result = array[i++];
 
-            for (int i = 1; i < array.Length; i++)
+            for (; i < array.Length; i++)
             {
                 if (array[i] > result)
                 {
@@ -23,16 +18,29 @@ namespace Logic.Task1.Tests
             return result;
         }
 
-        public static int GetMin(this int[] array)
+        internal static int GetMin(this int[] array)
         {
-            int result = array[0];
+            int i = 0;
+            int result = array[i++];
 
-            for (int i = 1; i < array.Length; i++)
+            for (; i < array.Length; i++)
             {
                 if (array[i] < result)
                 {
                     result = array[i];
                 }
+            }
+
+            return result;
+        }
+
+        internal static int GetSum(this int[] array)
+        {
+            int result = 0;
+
+            foreach (var element in array)
+            {
+                result += element;
             }
 
             return result;
