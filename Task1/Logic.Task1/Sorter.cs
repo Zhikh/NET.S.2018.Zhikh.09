@@ -4,7 +4,7 @@ namespace Logic.Task1
 {
     public static class Sorter
     {
-        public static void Sort<T>(T[] array) where T : IComparable<T>
+        public static void Sort<T>(T[] array, ICompare<T> compare)
         {
             if (array == null)
             {
@@ -12,15 +12,16 @@ namespace Logic.Task1
             }
 
             int n = array.Length;
-
-            // TODO: add flags
-            for (int i = 0; i < n; i++)
+            bool IsSwap = true;
+            for (int i = 0; i < n && IsSwap; i++)
             {
+                IsSwap = false;
                 for (int j = 0; j < n - 1; j++)
                 {
-                    if (array[j + 1].CompareTo(array[j]) < 0)
+                    if (compare.Compare(array[j + 1], array[j]) < 0)
                     {
                         Swap(ref array[j], ref array[j + 1]);
+                        IsSwap = true;
                     }
                 }
             }
