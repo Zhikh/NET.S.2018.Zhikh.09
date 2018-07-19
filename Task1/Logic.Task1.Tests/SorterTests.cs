@@ -375,26 +375,22 @@ namespace Logic.Task1.Tests
         #region Exceptions
         [Test]
         public void Sort_NullArrayMaxCompare_ArgumentNullException()
-            => Assert.Catch<ArgumentNullException>(() => Sorter.Sort(null, new MaxCompare()));
+            => Assert.Catch<ArgumentNullException>(() => Sorter.Sort(null, new MaxComparer()));
 
         [Test]
         public void Sort_NullArrayMinCompare_ArgumentNullException()
-            => Assert.Catch<ArgumentNullException>(() => Sorter.Sort(null, new MinCompare()));
+            => Assert.Catch<ArgumentNullException>(() => Sorter.Sort(null, new MinComparer()));
 
         [Test]
         public void Sort_NullArraySumCompare_ArgumentNullException()
-            => Assert.Catch<ArgumentNullException>(() => Sorter.Sort(null, new SumCompare()));
-
-        [Test]
-        public void Sort_ArrayNullCompare_ArgumentNullException()
-            => Assert.Catch<ArgumentNullException>(() => Sorter.Sort(_maxSourceData[0], null));
+            => Assert.Catch<ArgumentNullException>(() => Sorter.Sort(null, new SumComparer()));
         #endregion
 
         #region MaxCompare tests
         [Test]
         public void Sort_MaxCompareAsc_SuccessfulTests()
         {
-            ICompare<int[]> compare = new MaxCompare();
+            IComparer<int[]> compare = new MaxComparer();
 
             for (int i = 0; i < _maxSourceData.Length; i++)
             {
@@ -402,7 +398,23 @@ namespace Logic.Task1.Tests
 
                 if (!MatrixAreEquals(_maxSourceData[i], _resultMax[i]))
                 {
-                    Assert.Fail($"Arrays of {0} index don't equal! ", i);
+                    Assert.Fail($"Arrays of {i} index don't equal! ");
+                }
+            }
+        }
+
+        [Test]
+        public void Sort_MaxCompareAscDelegate_SuccessfulTests()
+        {
+            var comparer = new MaxComparer();
+
+            for (int i = 0; i < _maxSourceData.Length; i++)
+            {
+                Sorter.Sort(_maxSourceData[i], comparer.Compare);
+                
+                if (!MatrixAreEquals(_maxSourceData[i], _resultMax[i]))
+                {
+                    Assert.Fail($"Arrays of {i} index don't equal! ");
                 }
             }
         }
@@ -410,7 +422,7 @@ namespace Logic.Task1.Tests
         [Test]
         public void Sort_MaxCompareDec_SuccessfulTests()
         {
-            ICompare<int[]> compare = new MaxCompare(false);
+            IComparer<int[]> compare = new MaxComparer(false);
             foreach (var subarray in _resultMax)
             {
                 Array.Reverse(subarray);
@@ -422,7 +434,7 @@ namespace Logic.Task1.Tests
 
                 if (!MatrixAreEquals(_maxSourceData[i], _resultMax[i]))
                 {
-                    Assert.Fail($"Arrays of {0} index don't equal! ", i);
+                    Assert.Fail($"Arrays of {i} index don't equal! ");
                 }
             }
         }
@@ -432,7 +444,7 @@ namespace Logic.Task1.Tests
         [Test]
         public void Sort_MinCompareAsc_SuccessfulTests()
         {
-            ICompare<int[]> compare = new MinCompare();
+            IComparer<int[]> compare = new MinComparer();
 
             for (int i = 0; i < _minSourceData.Length; i++)
             {
@@ -440,7 +452,23 @@ namespace Logic.Task1.Tests
 
                 if (!MatrixAreEquals(_minSourceData[i], _resultMin[i]))
                 {
-                    Assert.Fail($"Arrays of {0} index don't equal! ", i);
+                    Assert.Fail($"Arrays of {i} index don't equal! ");
+                }
+            }
+        }
+
+        [Test]
+        public void Sort_MinCompareAscDelegate_SuccessfulTests()
+        {
+            var comparer = new MinComparer();
+
+            for (int i = 0; i < _minSourceData.Length; i++)
+            {
+                Sorter.Sort(_minSourceData[i], comparer.Compare);
+
+                if (!MatrixAreEquals(_minSourceData[i], _resultMin[i]))
+                {
+                    Assert.Fail($"Arrays of {i} index don't equal! ");
                 }
             }
         }
@@ -448,7 +476,7 @@ namespace Logic.Task1.Tests
         [Test]
         public void Sort_MinCompareDec_SuccessfulTests()
         {
-            ICompare<int[]> compare = new MinCompare(false);
+            IComparer<int[]> compare = new MinComparer(false);
             foreach (var subarray in _resultMin)
             {
                 Array.Reverse(subarray);
@@ -460,7 +488,7 @@ namespace Logic.Task1.Tests
 
                 if (!MatrixAreEquals(_minSourceData[i], _resultMin[i]))
                 {
-                    Assert.Fail($"Arrays of {0} index don't equal! ", i);
+                    Assert.Fail($"Arrays of {i} index don't equal! ");
                 }
             }
         }
@@ -470,7 +498,7 @@ namespace Logic.Task1.Tests
         [Test]
         public void Sort_SumCompareAsc_SuccessfulTests()
         {
-            ICompare<int[]> compare = new SumCompare();
+            IComparer<int[]> compare = new SumComparer();
 
             for (int i = 0; i < _sumSourceData.Length; i++)
             {
@@ -478,7 +506,23 @@ namespace Logic.Task1.Tests
 
                 if (!MatrixAreEquals(_sumSourceData[i], _resultSum[i]))
                 {
-                    Assert.Fail($"Arrays of {0} index don't equal! ", i);
+                    Assert.Fail($"Arrays of {i} index don't equal! ");
+                }
+            }
+        }
+
+        [Test]
+        public void Sort_SumCompareAscDelegate_SuccessfulTests()
+        {
+            var comparer = new SumComparer();
+
+            for (int i = 0; i < _sumSourceData.Length; i++)
+            {
+                Sorter.Sort(_sumSourceData[i], comparer.Compare);
+
+                if (!MatrixAreEquals(_sumSourceData[i], _resultSum[i]))
+                {
+                    Assert.Fail($"Arrays of {i} index don't equal! ");
                 }
             }
         }
@@ -486,7 +530,7 @@ namespace Logic.Task1.Tests
         [Test]
         public void Sort_SumCompareDec_SuccessfulTests()
         {
-            ICompare<int[]> compare = new SumCompare(false);
+            IComparer<int[]> compare = new SumComparer(false);
             foreach (var subarray in _resultSum)
             {
                 Array.Reverse(subarray);
@@ -498,7 +542,7 @@ namespace Logic.Task1.Tests
 
                 if (!MatrixAreEquals(_sumSourceData[i], _resultSum[i]))
                 {
-                    Assert.Fail($"Arrays of {i} index don't equal! ");
+                    Assert.Fail($"Arrays of {i} index don't equal!");
                 }
             }
         }
