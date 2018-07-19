@@ -10,7 +10,8 @@ namespace Logic.Task1
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="array"> Array for sorting </param>
-        /// <param name="compare"> Rules for comparing of arrays elements </param>
+        /// <param name="compare"> Rules for comparing of arrays elements </param> 
+        /// <exception cref="ArgumentNullException"> When array is null or object of IComparer is null </exception>
         public static void Sort<T>(T[] array, IComparer<T> compare)
         {
             if (array == null)
@@ -46,6 +47,7 @@ namespace Logic.Task1
         /// <typeparam name="T"></typeparam>
         /// <param name="array"> Array for sorting </param>
         /// <param name="compare"> Method for comparing of arrays elements </param>
+        /// <exception cref="ArgumentNullException"> When array is null </exception>
         public static void Sort<T>(T[] array, Comparison<T> compare)
         {
             Sort(array, new Nested<T>(compare));
