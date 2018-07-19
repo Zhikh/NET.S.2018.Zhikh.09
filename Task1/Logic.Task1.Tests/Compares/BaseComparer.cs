@@ -1,6 +1,6 @@
 ﻿namespace Logic.Task1.Tests.Compares
 {
-    public abstract class BaseCompare : ICompare<int[]>
+    public abstract class BaseComparer : IComparer<int[]>
     {
         protected readonly int _comparingResult;
 
@@ -8,7 +8,7 @@
         /// Set type of comparing
         /// </summary>
         /// <param name="isLess"></param>
-        public BaseCompare(bool isLess = true)
+        public BaseComparer(bool isLess = true)
         {
             _comparingResult = isLess ? 1 : -1;
         }

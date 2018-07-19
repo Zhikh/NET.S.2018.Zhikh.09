@@ -1,12 +1,12 @@
 ﻿namespace Logic.Task1.Tests.Compares
 {
-    public sealed class MaxCompare : BaseCompare, ICompare<int[]>
+    public sealed class MaxComparer : BaseComparer, IComparer<int[]>
     {
         /// <summary>
         /// Set type of comparing
         /// </summary>
         /// <param name="isLess"></param>
-        public MaxCompare(bool isAscending = true) : base(isAscending)
+        public MaxComparer(bool isAscending = true) : base(isAscending)
         {
         }
 

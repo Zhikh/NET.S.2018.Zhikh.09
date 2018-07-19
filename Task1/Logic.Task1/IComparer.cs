@@ -1,6 +1,6 @@
 ﻿namespace Logic.Task1
 {
-    public interface ICompare<T>
+    public interface IComparer<T>
     {
         /// <summary>
         /// Compare T elements

@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Logic.Task1
 {
-    public static class Sorter
+    class AnotherSorter
     {
         #region Public API
         /// <summary>
@@ -12,6 +16,11 @@ namespace Logic.Task1
         /// <param name="array"> Array for sorting </param>
         /// <param name="compare"> Rules for comparing of arrays elements </param>
         public static void Sort<T>(T[] array, IComparer<T> compare)
+        {
+            Sort(array, compare.Compare);
+        }
+
+        public static void Sort<T>(T[] array, Comparison<T> compare)
         {
             if (array == null)
             {
@@ -30,7 +39,7 @@ namespace Logic.Task1
 
                 for (int j = 0; j < array.Length - 1; j++)
                 {
-                    if (compare.Compare(array[j + 1], array[j]) < 0)
+                    if (compare(array[j + 1], array[j]) < 0)
                     {
                         Swap(ref array[j], ref array[j + 1]);
                         isSwap = true;
@@ -39,35 +48,9 @@ namespace Logic.Task1
             }
             while (isSwap);
         }
-
-        /// <summary>
-        /// Sorts array
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="array"> Array for sorting </param>
-        /// <param name="compare"> Method for comparing of arrays elements </param>
-        public static void Sort<T>(T[] array, Comparison<T> compare)
-        {
-            Sort(array, new Nested<T>(compare));
-        }
         #endregion
 
         #region Private methods
-        private class Nested<T> : IComparer<T>
-        {
-            private Comparison<T> _compareMethod;
-
-            public Nested(Comparison<T> compare)
-            {
-                _compareMethod = compare;
-            }
-
-            public int Compare(T left, T right)
-            {
-                return _compareMethod(left, right);
-            }
-        }
-
         private static void Swap<T>(ref T first, ref T second)
         {
             T temp = first;

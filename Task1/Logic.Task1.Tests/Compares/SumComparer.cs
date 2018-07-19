@@ -1,12 +1,12 @@
 ﻿namespace Logic.Task1.Tests.Compares
 {
-    public sealed class SumCompare : BaseCompare, ICompare<int[]>
+    public sealed class SumComparer : BaseComparer, IComparer<int[]>
     {
         /// <summary>
         /// Set type of comparing
         /// </summary>
         /// <param name="isLess"></param>
-        public SumCompare(bool isAscending = true) : base(isAscending)
+        public SumComparer(bool isAscending = true) : base(isAscending)
         {
         }
 

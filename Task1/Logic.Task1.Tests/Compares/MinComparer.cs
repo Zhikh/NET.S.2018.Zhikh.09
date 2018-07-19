@@ -1,12 +1,12 @@
 ﻿namespace Logic.Task1.Tests.Compares
 {
-    public sealed class MinCompare : BaseCompare, ICompare<int[]> 
+    public sealed class MinComparer : BaseComparer, IComparer<int[]> 
     {
         /// <summary>
         /// Set type of comparing
         /// </summary>
         /// <param name="isLess"></param>
-        public MinCompare(bool isAscending = true) : base(isAscending)
+        public MinComparer(bool isAscending = true) : base(isAscending)
         {
         }
 
