@@ -5,6 +5,7 @@ using Task2.BLL.Interface.Entities;
 using Task2.BLL.Interface.Services;
 using Task2.BLL.Mappers;
 using Task2.DAL.Interface.Repositories;
+using Task2.DAL.Interface.Strategies;
 
 namespace Task2.BLL
 {
@@ -13,10 +14,16 @@ namespace Task2.BLL
         private readonly IAccountRepository _accountRepository;
         private readonly IPersonRepository _personRepository;
 
-        public AccountService(IAccountRepository accountRepository, IPersonRepository personRepository)
+        private IAccountNumberGenerator<int> _accountNumberGenerator;
+
+        public AccountService(IAccountRepository accountRepository, IPersonRepository personRepository, IAccountNumberGenerator<int> numberGenerator)
         {
-            _accountRepository = accountRepository;
-            _personRepository = personRepository;
+            _accountRepository = accountRepository ?? 
+                throw new ArgumentNullException($"The {nameof(accountRepository)} can't be null!");
+            _personRepository = personRepository ?? 
+                throw new ArgumentNullException($"The {nameof(personRepository)} can't be null!");
+            _accountNumberGenerator = numberGenerator ?? 
+                throw new ArgumentNullException($"The {nameof(numberGenerator)} can't be null!");
         }
 
         /// <summary>
@@ -90,7 +97,10 @@ namespace Task2.BLL
             if (person == null)
             {
                 person = entity.Owner;
+                _personRepository.Create(person.ToDalPerson());
             }
+
+            entity.Number = _accountNumberGenerator.GenerateNumber(entity.GetHashCode());
 
             _accountRepository.Create(entity.ToDalAccount());
 

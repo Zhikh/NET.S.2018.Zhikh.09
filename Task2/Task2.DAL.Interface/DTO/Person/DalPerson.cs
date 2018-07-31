@@ -64,6 +64,6 @@ namespace Task2.DAL.Interfaces.DTO
             }
         }
         
-        public ICollection<DalAccount> Accounts { get;}
+        public IEnumerable<DalAccount> Accounts { get; set; }
     }
 }

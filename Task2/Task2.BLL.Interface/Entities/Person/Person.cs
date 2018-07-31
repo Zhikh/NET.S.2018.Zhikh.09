@@ -53,7 +53,7 @@ namespace Task2.BLL.Interface.Entities
 
         public string Email { get; set; }
 
-        public ICollection<AccountBase> Accounts { get; }
+        public IEnumerable<AccountBase> Accounts { get; set; }
       
     }
 }
