@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Task2.BLL.Exceptions;
 using Task2.DAL.Interface.Strategies;
 
 namespace Task2.BLL.Interface.Entities
@@ -60,20 +61,26 @@ namespace Task2.BLL.Interface.Entities
             InvoiceAmount += value;
         }
 
-        public void Withdraw( decimal value)
+        public void Withdraw(decimal value)
         {
             if (InvoiceAmount == 0)
             {
-                throw new ArgumentException("The invoice is empty!");
+                throw new InvalidAccountOperationException("The invoice is empty!");
             }
 
             if (InvoiceAmount - value < 0)
             {
-                throw new ArgumentException("There is not enough money to perform the operation!");
+                throw new InvalidAccountOperationException("There is not enough money to perform the operation!");
             }
 
             Bonuses -= (int)(value / AccountType.BalanceCost);
             InvoiceAmount -= value;
+        }
+
+        public void Transfer(AccountBase account, decimal value)
+        {
+            Withdraw(value);
+            account.Deposit(value);
         }
 
         public override bool Equals(object obj)

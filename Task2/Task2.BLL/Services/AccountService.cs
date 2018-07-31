@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Task2.BLL.Exceptions;
 using Task2.BLL.Interface.Entities;
 using Task2.BLL.Interface.Services;
 using Task2.BLL.Mappers;
@@ -51,6 +52,11 @@ namespace Task2.BLL
         /// <param name="value"> Amount of money </param>
         public void Deposit(string accounNumber, decimal value)
         {
+            if (value <= 0)
+            {
+                throw new ArgumentException($"The {nameof(value)} can't be less than 0 or be 0!");
+            }
+
             AccountBase account = _accountRepository.GetByValue(accounNumber).ToAccountBase();
 
             if (account == null)
@@ -98,6 +104,11 @@ namespace Task2.BLL
         /// <param name="value"> Amount of money </param>
         public void Withdraw(string accounNumber, decimal value)
         {
+            if (value <= 0)
+            {
+                throw new ArgumentException($"The {nameof(value)} can't be less than 0 or be 0!");
+            }
+
             AccountBase account = _accountRepository.GetByValue(accounNumber).ToAccountBase();
 
             if (account == null)
@@ -108,6 +119,37 @@ namespace Task2.BLL
             account.Withdraw(value);
             
             _accountRepository.Update(account.ToDalAccount());
+        }
+
+        /// <summary>
+        /// It is the operation of withdrawing money from the account.
+        /// </summary>
+        /// <param name="accounNumber"> Number of account </param>
+        /// <param name="value"> Amount of money </param>
+        public void Transfer(string sourceAccountNumber, string destinationAccountNumber, decimal value)
+        {
+            if (value <= 0)
+            {
+                throw new ArgumentException($"The {nameof(value)} can't be less than 0 or be 0!");
+            }
+
+            AccountBase sourceAccount = _accountRepository.GetByValue(sourceAccountNumber).ToAccountBase();
+
+            AccountBase destinationAccount = _accountRepository.GetByValue(destinationAccountNumber).ToAccountBase();
+
+            if (sourceAccount == null)
+            {
+                throw new InvalidAccountOperationException($"This account {sourceAccountNumber} doesn't exist!");
+            }
+
+            if (destinationAccount == null)
+            {
+                throw new InvalidAccountOperationException($"This account {destinationAccountNumber} doesn't exist!");
+            }
+
+            sourceAccount.Transfer(destinationAccount, value);
+
+            _accountRepository.Update(sourceAccount.ToDalAccount());
         }
     }
 }
