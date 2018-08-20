@@ -9,17 +9,19 @@ namespace Task2.BLL.Interface.Entities
     {
         private Person _owner;
         private AccountType _accountType;
-        private string _number;
 
-        //public AccountBase(IAccountNumberGenerator<int> strategy)
-        //{
-        //    AccountNumberGenerator = strategy ?? throw new ArgumentNullException(nameof(strategy) + " can't be null!");
-            
-        //    InvoiceAmount = 0;
-        //    Bonuses = 0;
-        //}
+        public AccountBase()
+        {
+            InvoiceAmount = 0;
+            Bonuses = 0;
+        }
 
-        //public IAccountNumberGenerator<int> AccountNumberGenerator { get; }
+        public AccountBase(IAccountNumberGenerator<int> strategy): this()
+        {
+            AccountNumberGenerator = strategy ?? throw new ArgumentNullException(nameof(strategy) + " can't be null!");
+        }
+
+        public IAccountNumberGenerator<int> AccountNumberGenerator { get; }
 
         public string Number { get; set; }
 

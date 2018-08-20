@@ -7,6 +7,7 @@ namespace Task2.BLL.Interface.Entities
     {
         private string _firstName;
         private string _lastName;
+        private string _serialNumber;
 
         public Person()
         {
@@ -53,7 +54,25 @@ namespace Task2.BLL.Interface.Entities
 
         public string Email { get; set; }
 
-        public IEnumerable<AccountBase> Accounts { get; set; }
+        public string SerialNumber
+        {
+            get
+            {
+                return _serialNumber;
+            }
+
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentException(nameof(LastName) + " can't be null or empty!");
+                }
+
+                _serialNumber = value;
+            }
+        }
+
+        public ICollection<AccountBase> Accounts { get; set; }
       
     }
 }
