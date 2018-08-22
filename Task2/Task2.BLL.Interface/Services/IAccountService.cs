@@ -1,10 +1,13 @@
-﻿using Task2.BLL.Interface.Entities;
+﻿using System.Collections.Generic;
+using Task2.BLL.Interface.Entities;
 
 namespace Task2.BLL.Interface.Services
 {
     public interface IAccountService
     {
-        //IRepository<TEntity> _accountRepository { get; set; }
+        AccountBase GetAccount(string accountNumber);
+
+        IEnumerable<AccountBase> GetUserAccounts(Person owner);
 
         void Open(AccountBase entity);
 

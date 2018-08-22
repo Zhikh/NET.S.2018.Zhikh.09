@@ -7,60 +7,55 @@ namespace DAL.Task2.Repositories
     public class FakePersonRepository : BaseRepository<DalPerson>, IPersonRepository
     {
         #region Private and internal methods
-        private void UpdateAdress(DalAdressData entity, DalAdressData updatedEntity)
-        {
-            if (!string.IsNullOrEmpty(updatedEntity.Country))
-            {
-                entity.Country = updatedEntity.Country;
-            }
+        //private void UpdateAdress(DalAdressData entity, DalAdressData updatedEntity)
+        //{
+        //    if (!string.IsNullOrEmpty(updatedEntity.Country))
+        //    {
+        //        entity.Country = updatedEntity.Country;
+        //    }
 
-            if (!string.IsNullOrEmpty(updatedEntity.State))
-            {
-                entity.State = updatedEntity.State;
-            }
+        //    if (!string.IsNullOrEmpty(updatedEntity.State))
+        //    {
+        //        entity.State = updatedEntity.State;
+        //    }
 
-            if (!string.IsNullOrEmpty(updatedEntity.City))
-            {
-                entity.City = updatedEntity.City;
-            }
+        //    if (!string.IsNullOrEmpty(updatedEntity.City))
+        //    {
+        //        entity.City = updatedEntity.City;
+        //    }
 
-            if (!string.IsNullOrEmpty(updatedEntity.Street))
-            {
-                entity.Street = updatedEntity.Street;
-            }
-        }
+        //    if (!string.IsNullOrEmpty(updatedEntity.Street))
+        //    {
+        //        entity.Street = updatedEntity.Street;
+        //    }
+        //}
 
         private void UpdateContact(DalContactData entity, DalContactData updatedEntity)
         {
-            if (!string.IsNullOrEmpty(updatedEntity.ContactPhone))
-            {
-                entity.ContactPhone = updatedEntity.ContactPhone;
-            }
-
             if (!string.IsNullOrEmpty(updatedEntity.Email))
             {
-                entity.ContactPhone = updatedEntity.Email;
+                entity.Email = updatedEntity.Email;
             }
         }
 
-        private void UpdatePassport(DalPassportData entity, DalPassportData updatedEntity)
-        {
-            if (!string.IsNullOrEmpty(updatedEntity.IdentityNumber))
-            {
-                entity.IdentityNumber = updatedEntity.IdentityNumber;
-            }
+        //private void UpdatePassport(DalPassportData entity, DalPassportData updatedEntity)
+        //{
+        //    if (!string.IsNullOrEmpty(updatedEntity.IdentityNumber))
+        //    {
+        //        entity.IdentityNumber = updatedEntity.IdentityNumber;
+        //    }
 
-            if (!string.IsNullOrEmpty(updatedEntity.SerialNumber))
-            {
-                entity.IdentityNumber = updatedEntity.SerialNumber;
-            }
-        }
+        //    if (!string.IsNullOrEmpty(updatedEntity.SerialNumber))
+        //    {
+        //        entity.IdentityNumber = updatedEntity.SerialNumber;
+        //    }
+        //}
 
         internal override DalPerson FindEntity(string value)
         {
             foreach (var entity in Entities)
             {
-                if (entity.Passport.SerialNumber == value)
+                if (entity.SerialNumber == value)
                 {
                     return entity;
                 }
@@ -88,25 +83,25 @@ namespace DAL.Task2.Repositories
                 person.LastName = entity.FirstName;
             }
 
-            if (entity.Address != null)
-            {
-                UpdateAdress(person.Address, entity.Address);
-            }
+            //if (entity.Address != null)
+            //{
+            //    UpdateAdress(person.Address, entity.Address);
+            //}
 
             if (entity.Contact != null)
             {
                 UpdateContact(person.Contact, entity.Contact);
             }
 
-            if (entity.Passport != null)
-            {
-                UpdatePassport(person.Passport, entity.Passport);
-            }
+        //    if (entity.Passport != null)
+        //    {
+        //        UpdatePassport(person.Passport, entity.Passport);
+        //    }
         }
 
         internal override bool IsInvalid(DalPerson entity)
-            => string.IsNullOrEmpty(entity.FirstName) || string.IsNullOrEmpty(entity.LastName) ||
-                entity.Address == null || entity.Contact == null || entity.Passport == null;
+            => string.IsNullOrEmpty(entity.FirstName) || string.IsNullOrEmpty(entity.LastName) || 
+            entity.Contact == null || entity.SerialNumber == null;
         #endregion
     }
 }

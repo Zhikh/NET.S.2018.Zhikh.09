@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Task2.BLL.Interface.Entities;
 using Task2.DAL.Interfaces.DTO;
 
@@ -8,28 +9,40 @@ namespace Task2.BLL.Mappers
     {
         public static DalPerson ToDalPerson(this Person person)
         {
+            if (person == null)
+            {
+                return null;
+            }
+
             return new DalPerson
             {
                 FirstName = person.FirstName,
                 LastName = person.LastName,
                 SecondName = person.SecondName,
+                SerialNumber = person.SerialNumber,
                 Contact = new DalContactData
                 {
                     Email = person.Email
                 },
-                Accounts = person.Accounts.ToDalAccount()
+                Accounts = person.Accounts.ToDalAccount().ToList()
             };
         }
 
         public static Person ToPerson(this DalPerson person)
         {
+            if (person == null)
+            {
+                return null;
+            }
+
             return new Person
             {
                 FirstName = person.FirstName,
                 LastName = person.LastName,
                 SecondName = person.SecondName,
+                SerialNumber = person.SerialNumber,
                 Email = person.Contact.Email,
-                Accounts = person.Accounts.ToAccount()
+                Accounts = person.Accounts.ToAccount().ToList()
             };
         }
 

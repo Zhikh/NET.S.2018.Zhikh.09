@@ -10,6 +10,7 @@ namespace Task2.DAL.Interfaces.DTO
 
         private string _firstName;
         private string _lastName;
+        private string _serialNumber;
 
         public int Id { get; set; }
 
@@ -50,6 +51,24 @@ namespace Task2.DAL.Interfaces.DTO
         }
 
         public string SecondName { get; set; }
+
+        public string SerialNumber
+        {
+            get
+            {
+                return _serialNumber;
+            }
+
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentException(nameof(SerialNumber) + " can't be null or empty!");
+                }
+
+                _serialNumber = value;
+            }
+        }
 
         public DalContactData Contact
         {
