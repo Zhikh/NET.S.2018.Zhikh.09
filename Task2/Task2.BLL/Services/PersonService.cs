@@ -5,34 +5,61 @@ using System.Text;
 using System.Threading.Tasks;
 using Task2.BLL.Interface.Entities;
 using Task2.BLL.Interface.Services;
+using Task2.BLL.Mappers;
+using Task2.DAL.Interface.Repositories;
 
 namespace Task2.BLL.Services
 {
     public class PersonService : IPersonService
     {
-        public void Create(Person person)
+        private readonly IPersonRepository _personRepository;
+
+        public PersonService(IPersonRepository personRepository)
         {
-            throw new NotImplementedException();
+            _personRepository = personRepository ?? throw new ArgumentNullException(nameof(personRepository));
         }
 
-        public void Delete(Person person)
+        public bool Create(Person person)
         {
-            throw new NotImplementedException();
+            if (person == null)
+            {
+                throw new ArgumentNullException(nameof(person));
+            }
+
+            Person repoPerson = Get(person.SerialNumber);
+           
+            if (repoPerson != null)
+            {
+                return false;
+            }
+
+            // TODO: add return value for repository.Create
+            _personRepository.Create(person.ToDalPerson());
+
+            return true;
         }
 
-        public void Get(string value)
+        public Person Get(string serialNumber)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(serialNumber))
+            {
+                throw new ArgumentException("message", nameof(serialNumber));
+            }
+
+            return _personRepository.GetByValue(serialNumber).ToPerson();
         }
 
         public IEnumerable<Person> GetAll()
-        {
-            throw new NotImplementedException();
-        }
+            => _personRepository.GetAll().ToPerson();
 
         public void Update(Person person)
         {
-            throw new NotImplementedException();
+            if (person == null)
+            {
+                throw new ArgumentNullException(nameof(person));
+            }
+
+            _personRepository.Update(person.ToDalPerson());
         }
     }
 }
