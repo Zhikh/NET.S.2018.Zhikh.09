@@ -14,18 +14,21 @@ namespace Task2.BLL.Mappers
                 return null;
             }
 
-            return new DalPerson
+            var dalPerson = new DalPerson
             {
                 FirstName = person.FirstName,
                 LastName = person.LastName,
                 SecondName = person.SecondName,
                 SerialNumber = person.SerialNumber,
-                Contact = new DalContactData
-                {
-                    Email = person.Email
-                },
                 Accounts = person.Accounts.ToDalAccount().ToList()
             };
+
+            dalPerson.Contact = new DalContactData
+            {
+                Email = person.Email
+            };
+
+            return dalPerson;
         }
 
         public static Person ToPerson(this DalPerson person)

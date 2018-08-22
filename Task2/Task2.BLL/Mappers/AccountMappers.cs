@@ -8,14 +8,24 @@ namespace Task2.BLL.Mappers
     {
         public static DalAccount ToDalAccount(this AccountBase baseAccount)
         {
+            var dalPerson = new DalPerson
+            {
+                FirstName = baseAccount.Owner.FirstName,
+                LastName = baseAccount.Owner.LastName,
+                SecondName = baseAccount.Owner.SecondName,
+                SerialNumber = baseAccount.Owner.SerialNumber,
+                Accounts = baseAccount.Owner.Accounts.ToDalAccount()
+            };
+
             return new DalAccount
             {
                 Number = baseAccount.Number,
-                Owner = baseAccount.Owner.ToDalPerson(),
+                Owner = dalPerson,
                 InvoiceAmount = baseAccount.InvoiceAmount,
                 Bonuses = baseAccount.Bonuses,
                 AccountType = baseAccount.AccountType.ToDalAccountType()
             };
+
         }
 
         public static IEnumerable<DalAccount> ToDalAccount(this IEnumerable<AccountBase> baseAccounts)
