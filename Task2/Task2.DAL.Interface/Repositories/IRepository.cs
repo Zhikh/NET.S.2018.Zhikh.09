@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using Task2.DAL.Interface.DTO;
 
 namespace Task2.DAL.Interface.Repositories
@@ -33,20 +35,19 @@ namespace Task2.DAL.Interface.Repositories
         /// <summary>
         /// Get entity by value
         /// </summary>
-        /// <param name="value"> Value for searching </param>
+        /// <param name="func"> Expression for searching </param>
         /// <returns> Entity </returns>
-        TEntity GetByValue(string value);
+        TEntity GetByPredicate(Expression<Func<TEntity, bool>> func);
 
         /// <summary>
         /// Get all entities
         /// </summary>
-        /// <returns></returns>
+        /// <returns> Collection of Entities</returns>
         IEnumerable<TEntity> GetAll();
 
         /// <summary>
         /// Save changes in one transaction
         /// </summary>
-        /// <returns></returns>
         void Save();
     }
 }
