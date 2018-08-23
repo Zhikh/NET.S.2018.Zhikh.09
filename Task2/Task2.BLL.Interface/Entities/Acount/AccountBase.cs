@@ -16,13 +16,6 @@ namespace Task2.BLL.Interface.Entities
             Bonuses = 0;
         }
 
-        public AccountBase(IAccountNumberGenerator<int> strategy): this()
-        {
-            AccountNumberGenerator = strategy ?? throw new ArgumentNullException(nameof(strategy) + " can't be null!");
-        }
-
-        public IAccountNumberGenerator<int> AccountNumberGenerator { get; }
-
         public string Number { get; set; }
 
         public Person Owner
@@ -35,8 +28,6 @@ namespace Task2.BLL.Interface.Entities
             set
             {
                 _owner = value ?? throw new ArgumentException("Owner can't be null!");
-
-               // Number = AccountNumberGenerator.GenerateNumber(Owner.GetHashCode());
             }
         }
 

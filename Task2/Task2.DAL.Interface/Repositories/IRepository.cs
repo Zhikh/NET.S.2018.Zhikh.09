@@ -44,10 +44,5 @@ namespace Task2.DAL.Interface.Repositories
         /// </summary>
         /// <returns> Collection of Entities</returns>
         IEnumerable<TEntity> GetAll();
-
-        /// <summary>
-        /// Save changes in one transaction
-        /// </summary>
-        void Save();
     }
 }
