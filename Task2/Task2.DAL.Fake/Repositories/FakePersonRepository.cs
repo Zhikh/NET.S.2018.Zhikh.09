@@ -66,7 +66,16 @@ namespace DAL.Task2.Repositories
 
         internal override void Update(DalPerson entity)
         {
-            DalPerson person = Entities.FindFirst(entity);
+            DalPerson person = null;
+
+            foreach (var element in Entities)
+            {
+                if (element.SerialNumber == entity.SerialNumber)
+                {
+                    person = element;
+                    break;
+                }
+            }
 
             if (person == null)
             {
@@ -83,20 +92,10 @@ namespace DAL.Task2.Repositories
                 person.LastName = entity.FirstName;
             }
 
-            //if (entity.Address != null)
-            //{
-            //    UpdateAdress(person.Address, entity.Address);
-            //}
-
             if (entity.Contact != null)
             {
                 UpdateContact(person.Contact, entity.Contact);
             }
-
-        //    if (entity.Passport != null)
-        //    {
-        //        UpdatePassport(person.Passport, entity.Passport);
-        //    }
         }
 
         internal override bool IsInvalid(DalPerson entity)

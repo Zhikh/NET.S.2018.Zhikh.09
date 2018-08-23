@@ -8,6 +8,11 @@ namespace Task2.BLL.Mappers
     {
         public static DalAccount ToDalAccount(this AccountBase baseAccount)
         {
+            if (baseAccount == null)
+            {
+                return null;
+            }
+
             var dalPerson = new DalPerson
             {
                 FirstName = baseAccount.Owner.FirstName,
@@ -38,6 +43,11 @@ namespace Task2.BLL.Mappers
 
         public static AccountBase ToAccountBase(this DalAccount dalAccount)
         {
+            if (dalAccount == null)
+            {
+                return null;
+            }
+
             return new AccountBase
             {
                 Number = dalAccount.Number,

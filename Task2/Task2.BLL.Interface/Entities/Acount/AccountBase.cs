@@ -36,7 +36,7 @@ namespace Task2.BLL.Interface.Entities
             {
                 _owner = value ?? throw new ArgumentException("Owner can't be null!");
 
-                Number = AccountNumberGenerator.GenerateNumber(Owner.GetHashCode());
+               // Number = AccountNumberGenerator.GenerateNumber(Owner.GetHashCode());
             }
         }
 

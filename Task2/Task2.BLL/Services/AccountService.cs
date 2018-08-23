@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Task2.BLL.Exceptions;
 using Task2.BLL.Interface.Entities;
@@ -7,23 +8,19 @@ using Task2.BLL.Mappers;
 using Task2.DAL.Interface.Repositories;
 using Task2.DAL.Interface.Strategies;
 
-namespace Task2.BLL
+namespace Task2.BLL.Services
 {
     public class AccountService : IAccountService
     {
         private readonly IAccountRepository _accountRepository;
-        private readonly IPersonRepository _personRepository;
+        private readonly IAccountNumberGenerator<int> _accountNumberGenerator;
+        private readonly IPersonService _personService;
 
-        private IAccountNumberGenerator<int> _accountNumberGenerator;
-
-        public AccountService(IAccountRepository accountRepository, IPersonRepository personRepository, IAccountNumberGenerator<int> numberGenerator)
+        public AccountService(IAccountRepository accountRepository, IAccountNumberGenerator<int> accountNumberGenerator, IPersonService personService)
         {
-            _accountRepository = accountRepository ?? 
-                throw new ArgumentNullException($"The {nameof(accountRepository)} can't be null!");
-            _personRepository = personRepository ?? 
-                throw new ArgumentNullException($"The {nameof(personRepository)} can't be null!");
-            _accountNumberGenerator = numberGenerator ?? 
-                throw new ArgumentNullException($"The {nameof(numberGenerator)} can't be null!");
+            _accountRepository = accountRepository ?? throw new ArgumentNullException(nameof(accountRepository));
+            _accountNumberGenerator = accountNumberGenerator ?? throw new ArgumentNullException(nameof(accountNumberGenerator));
+            _personService = personService ?? throw new ArgumentNullException(nameof(personService));
         }
 
         /// <summary>
@@ -76,6 +73,28 @@ namespace Task2.BLL
             _accountRepository.Update(account.ToDalAccount());
         }
 
+        public AccountBase GetAccount(string AccountNumber)
+        {
+            if (string.IsNullOrEmpty(AccountNumber))
+            {
+                throw new ArgumentException("message", nameof(AccountNumber));
+            }
+
+            return _accountRepository.GetByValue(AccountNumber).ToAccountBase();
+        }
+
+        public IEnumerable<AccountBase> GetUserAccounts(Person person)
+        {
+            if (person == null)
+            {
+                throw new ArgumentNullException(nameof(person));
+            }
+
+            IEnumerable<AccountBase> accounts = _accountRepository.GetAll().ToAccount();
+
+            return accounts?.Where(a => a.Owner == person);
+        }
+
         /// <summary>
         /// Opens account
         /// </summary>
@@ -87,24 +106,14 @@ namespace Task2.BLL
                 throw new ArgumentNullException("Account can't be null!");
             }
 
-            if (entity.Owner == null)
-            {
-                throw new ArgumentNullException("Owner of account can't be null!");
-            }
-            
-            Person person = _personRepository.GetAll().ToPerson().First( x => x == entity.Owner);
-
-            if (person == null)
-            {
-                person = entity.Owner;
-                _personRepository.Create(person.ToDalPerson());
-            }
+            _personService.Create(entity.Owner);
 
             entity.Number = _accountNumberGenerator.GenerateNumber(entity.GetHashCode());
-
+            // TODO: add return value on create for checking
             _accountRepository.Create(entity.ToDalAccount());
 
-            person.Accounts.Add(entity);
+            entity.Owner.Accounts.Add(entity);
+            _personService.Update(entity.Owner);
         }
 
         /// <summary>
