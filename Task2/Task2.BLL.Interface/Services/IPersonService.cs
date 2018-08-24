@@ -7,10 +7,14 @@ namespace Task2.BLL.Interface.Services
     {
         bool Create(Person person);
 
-        Person Get(string value);
+        Person GetPerson(string value);
+
+        Person GetPersonById(int id);
 
         IEnumerable<Person> GetAll();
 
         void Update(Person person);
+
+        void Delete(Person person);
     }
 }
