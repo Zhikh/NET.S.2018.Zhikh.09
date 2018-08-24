@@ -264,3 +264,5 @@ NET.S.2018.Zhikh.09.sln
 *.config
 AssemblyInfo.cs
 *.StyleCop
+*.resx
+Migrations.Designer.cs
