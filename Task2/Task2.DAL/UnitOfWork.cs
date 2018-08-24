@@ -16,7 +16,6 @@ namespace Task2.DAL
         public DbContext Context { get; private set; }
 
         #region Dispose
-
         public void Dispose()
         {
             Dispose(true);
@@ -40,7 +39,6 @@ namespace Task2.DAL
         {
             Dispose(false);
         }
-
         #endregion
 
         public void SaveChanges()
