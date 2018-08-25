@@ -5,24 +5,26 @@ using Task2.DAL.Interface.Strategies;
 
 namespace Task2.BLL.Interface.Entities
 {
-    public sealed class AccountBase
+    public sealed class Account
     {
+        #region Private fields
         private Person _owner;
         private AccountType _accountType;
+        #endregion
 
-        public AccountBase()
+        #region Public API
+        public Account()
         {
             InvoiceAmount = 0;
             Bonuses = 0;
         }
 
-        public AccountBase(IAccountNumberGenerator<int> strategy) : this()
+        public Account(IAccountNumberGenerator<int> strategy) : this()
         {
             AccountNumberGenerator = strategy ?? throw new ArgumentNullException(nameof(strategy) + " can't be null!");
         }
 
         public IAccountNumberGenerator<int> AccountNumberGenerator { get; }
-
 
         public string Number { get; set; }
 
@@ -78,7 +80,7 @@ namespace Task2.BLL.Interface.Entities
             InvoiceAmount -= value;
         }
 
-        public void Transfer(AccountBase account, decimal value)
+        public void Transfer(Account account, decimal value)
         {
             Withdraw(value);
             account.Deposit(value);
@@ -86,7 +88,7 @@ namespace Task2.BLL.Interface.Entities
 
         public override bool Equals(object obj)
         {
-            var account = obj as AccountBase;
+            var account = obj as Account;
             return account != null &&
                    base.Equals(obj) &&
                    this.Number == account.Number &&
@@ -107,5 +109,6 @@ namespace Task2.BLL.Interface.Entities
             hashCode = (hashCode * -1521134295) + EqualityComparer<AccountType>.Default.GetHashCode(this.AccountType);
             return hashCode;
         }
+        #endregion
     }
 }

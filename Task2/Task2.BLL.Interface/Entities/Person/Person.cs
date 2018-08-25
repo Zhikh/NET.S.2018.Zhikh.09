@@ -11,7 +11,7 @@ namespace Task2.BLL.Interface.Entities
 
         public Person()
         {
-            Accounts = new List<AccountBase>();
+            Accounts = new List<Account>();
         }
 
         public string FirstName
@@ -72,7 +72,7 @@ namespace Task2.BLL.Interface.Entities
             }
         }
 
-        public ICollection<AccountBase> Accounts { get; set; }
+        public ICollection<Account> Accounts { get; set; }
       
     }
 }

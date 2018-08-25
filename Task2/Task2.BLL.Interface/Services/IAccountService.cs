@@ -5,11 +5,11 @@ namespace Task2.BLL.Interface.Services
 {
     public interface IAccountService
     {
-        AccountBase GetAccount(string accountNumber);
+        Account GetAccount(string accountNumber);
 
-        IEnumerable<AccountBase> GetUserAccounts(Person owner);
+        IEnumerable<Account> GetUserAccounts(Person owner);
 
-        void Open(AccountBase entity);
+        void Open(Account entity);
 
         void Deposit(string accounNumber, decimal value);
 

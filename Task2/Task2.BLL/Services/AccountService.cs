@@ -32,11 +32,11 @@ namespace Task2.BLL.Services
         /// <summary>
         /// Opens account
         /// </summary>
-        /// <param name="account"> Entity of <see cref="AccountBase"> </param>
+        /// <param name="account"> Entity of <see cref="Account"> </param>
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="entity"/> is null.
         /// </exception>
-        public void Open(AccountBase entity)
+        public void Open(Account entity)
         {
             if (entity == null)
             {
@@ -77,7 +77,7 @@ namespace Task2.BLL.Services
                 throw new ArgumentException($"The {nameof(value)} can't be less than 0 or be 0!");
             }
 
-            AccountBase account = _accountRepository.GetByPredicate(a => a.Number == accountNumber).ToAccountBase();
+            Account account = _accountRepository.GetByPredicate(a => a.Number == accountNumber).ToAccountBase();
 
             if (account == null)
             {
@@ -114,7 +114,7 @@ namespace Task2.BLL.Services
                 throw new ArgumentException($"The {nameof(value)} can't be less than 0 or be 0!");
             }
 
-            AccountBase account = _accountRepository.
+            Account account = _accountRepository.
                 GetByPredicate(a => a.Number == accountNumber).ToAccountBase();
 
             if (account == null)
@@ -159,9 +159,9 @@ namespace Task2.BLL.Services
                 throw new ArgumentException($"The {nameof(value)} can't be less than 0 or be 0!");
             }
 
-            AccountBase sourceAccount = _accountRepository.
+            Account sourceAccount = _accountRepository.
                 GetByPredicate(a => a.Number == sourceAccountNumber).ToAccountBase();
-            AccountBase destinationAccount = _accountRepository.
+            Account destinationAccount = _accountRepository.
                 GetByPredicate(a => a.Number == destinationAccountNumber).ToAccountBase();
 
             if (sourceAccount == null)
@@ -198,7 +198,7 @@ namespace Task2.BLL.Services
                 throw new ArgumentException("Account number can't be null or empty!");
             }
             
-            AccountBase account = _accountRepository.GetByPredicate(a => a.Number == accountNumber).ToAccountBase();
+            Account account = _accountRepository.GetByPredicate(a => a.Number == accountNumber).ToAccountBase();
 
             if (account == null)
             {
@@ -213,11 +213,11 @@ namespace Task2.BLL.Services
         /// Returns account with <paramref name="accountNumber"/>
         /// </summary>
         /// <param name="accountNumber"> Number of account </param>
-        /// <returns> Entity of <see cref="AccountBase"/></returns>
+        /// <returns> Entity of <see cref="Account"/></returns>
         /// <exception cref="ArgumentException">
         ///     <paramref name="accountNumber"/> is null or empty.
         /// </exception>
-        public AccountBase GetAccount(string accountNumber)
+        public Account GetAccount(string accountNumber)
         {
             if (string.IsNullOrEmpty(accountNumber))
             {
@@ -228,27 +228,27 @@ namespace Task2.BLL.Services
         }
 
         /// <summary>
-        /// Returns a collection of <see cref="AccountBase"/> objects
+        /// Returns a collection of <see cref="Account"/> objects
         /// </summary>
         /// <param name="person"> Person for searching </param>
-        /// <returns> A collection of <see cref="AccountBase"/> objects </returns>
+        /// <returns> A collection of <see cref="Account"/> objects </returns>
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="person"/> is null.
         /// </exception>
-        public IEnumerable<AccountBase> GetUserAccounts(Person person)
+        public IEnumerable<Account> GetUserAccounts(Person person)
         {
             if (person == null)
             {
                 throw new ArgumentNullException(nameof(person));
             }
 
-            IEnumerable<AccountBase> accounts = _accountRepository.GetAll().ToAccount();
+            IEnumerable<Account> accounts = _accountRepository.GetAll().ToAccount();
 
             return accounts.Where(a => a.Owner == person);
         }
 
         /// <summary>
-        /// Returns an object of <see cref="AccountBase"/>
+        /// Returns an object of <see cref="Account"/>
         /// </summary>
         /// <param name="unitOfWork"> Object of <see cref="IUnitOfWork"> </param>
         /// <param name="accountRepository"> Object of <see cref="IAccountService"> </param>

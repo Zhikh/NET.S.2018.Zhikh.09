@@ -6,7 +6,12 @@ namespace Task2.BLL.Mappers
 {
     public static class AccountMappers
     {
-        public static DalAccount ToDalAccount(this AccountBase baseAccount)
+        /// <summary>
+        /// Converts entity of <see cref="Account"/> in <see cref="DalAccount"/>
+        /// </summary>
+        /// <param name="baseAccount"> Entity for converting from <see cref="Account"/> </param>
+        /// <returns> Entity of  <see cref="DalAccount"/> </returns>
+        public static DalAccount ToDalAccount(this Account baseAccount)
         {
             if (baseAccount == null)
             {
@@ -33,7 +38,12 @@ namespace Task2.BLL.Mappers
 
         }
 
-        public static IEnumerable<DalAccount> ToDalAccount(this IEnumerable<AccountBase> baseAccounts)
+        /// <summary>
+        /// Converts collection of <see cref="Account"/> in collectiono of <see cref="DalAccount"/>
+        /// </summary>
+        /// <param name="baseAccount"> Collection for converting from <see cref="Account"/> </param>
+        /// <returns> Collection of <see cref="DalAccount"/> </returns>
+        public static IEnumerable<DalAccount> ToDalAccount(this IEnumerable<Account> baseAccounts)
         {
             foreach (var element in baseAccounts)
             {
@@ -41,14 +51,14 @@ namespace Task2.BLL.Mappers
             }
         }
 
-        public static AccountBase ToAccountBase(this DalAccount dalAccount)
+        public static Account ToAccountBase(this DalAccount dalAccount)
         {
             if (dalAccount == null)
             {
                 return null;
             }
 
-            return new AccountBase
+            return new Account
             {
                 Number = dalAccount.Number,
                 Owner = dalAccount.Owner.ToPerson(),
@@ -58,7 +68,7 @@ namespace Task2.BLL.Mappers
             };
         }
 
-        public static IEnumerable<AccountBase> ToAccount(this IEnumerable<DalAccount> dalAccounts)
+        public static IEnumerable<Account> ToAccount(this IEnumerable<DalAccount> dalAccounts)
         {
             foreach (var element in dalAccounts)
             {

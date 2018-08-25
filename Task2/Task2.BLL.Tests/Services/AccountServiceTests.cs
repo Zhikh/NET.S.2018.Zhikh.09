@@ -2,7 +2,11 @@
 using DAL.Task2.Repositories;
 using NUnit.Framework;
 using Task2.BLL.Interface.Entities;
+using Task2.BLL.Interface.Services;
+using Task2.BLL.Services;
 using Task2.DAL.Fake.Strategies;
+using Task2.DAL.Interface.Repositories;
+using Task2.DAL.Interface.Strategies;
 
 namespace Task2.BLL.Tests
 {
@@ -10,45 +14,56 @@ namespace Task2.BLL.Tests
     public class AccountServiceTests
     {
         #region Test data
-        private AccountService _account = new AccountService(new FakeAccountRepository(), new FakePersonRepository());
-        //private DataProvider _dataProvider = DataProvider.Instance;
+        private IAccountService _account;
+        private Account _accountData;
+        private Account _anotherAccountData;
+        private IAccountNumberGenerator<int> _numberGenerator;
 
-        private AccountBase _accountData = new AccountBase(new FakeAccountNumberGenerator())
+        [SetUp]
+        public void InitData()
         {
-            Owner = new Person
-            {
-                LastName = "Smbd",
-                FirstName = "Smbd",
-                Email = "podg@test.com",
-            },
+            _numberGenerator = new FakeAccountNumberGenerator();
+            _account = new AccountService(new FakeAccountRepository(), _numberGenerator, new PersonService(new FakePersonRepository()));
 
-            InvoiceAmount = 100,
-            Bonuses = 0,
-            AccountType = new AccountType
+            _accountData = new Account(new FakeAccountNumberGenerator())
             {
-                Name = ":)",
-                BalanceCost = 100,
-                ReplenishmentCost = 10
-            }
-        };
-        private AccountBase _anotherAccountData = new AccountBase(new FakeAccountNumberGenerator())
-        {
-            Owner = new Person
+                Owner = new Person
+                {
+                    LastName = "Smbd",
+                    FirstName = "Smbd",
+                    Email = "podg@test.com",
+                    SerialNumber = "12345678FF"
+                },
+
+                InvoiceAmount = 100,
+                Bonuses = 0,
+                AccountType = new AccountType
+                {
+                    Name = ":)",
+                    BalanceCost = 100,
+                    ReplenishmentCost = 10
+                }
+            };
+
+            _anotherAccountData = new Account(new FakeAccountNumberGenerator())
             {
-                LastName = "Smbd",
-                FirstName = "Smbd",
-                Email = "podg@test.com",
-                   
-            },
-            InvoiceAmount = 100,
-            Bonuses = 0,
-            AccountType = new AccountType
-            {
-                Name = ":)",
-                BalanceCost = 100,
-                ReplenishmentCost = 10
-            }
-        };
+                Owner = new Person
+                {
+                    LastName = "Smbd",
+                    FirstName = "Smbd",
+                    Email = "podg@test.com",
+                    SerialNumber = "12345678FA"
+                },
+                InvoiceAmount = 100,
+                Bonuses = 0,
+                AccountType = new AccountType
+                {
+                    Name = ":)",
+                    BalanceCost = 100,
+                    ReplenishmentCost = 10
+                }
+            };
+        }
         #endregion
 
         #region Exceptions
@@ -57,45 +72,78 @@ namespace Task2.BLL.Tests
             => Assert.Throws<ArgumentNullException>(() => _account.Open(null));
 
         [Test]
-        public void Deposit_NullEntity_ArgumentNullException()
+        public void Deposit_NullNumber_ArgumentNullException()
            => Assert.Throws<ArgumentNullException>(() => _account.Deposit(null, 90));
 
         [Test]
-        public void Withdrawal_NullEntity_ArgumentNullException()
+        public void Withdrawal_NullNumber_ArgumentNullException()
             => Assert.Throws<ArgumentNullException>(() => _account.Withdraw(null, 40));
 
+        // TODO: fix me 
         [Test]
-        public void Create_SameEntity_ArgumentException()
+        public void Open_SameEntity_ArgumentException()
         {
-            _account.Create(_accountData);
-            Assert.Throws<ArgumentException>(() => _account.Create(_accountData));
+            _account.Open(_accountData);
+            Assert.Throws<ArgumentException>(() => _account.Open(_accountData));
         }
         #endregion
-        
+
+        #region Create account
         [Test]
-        public void Delete_PersonEntity_DeleteFromCollection()
+        public void Open_AccountBase_CorrectResult()
         {
-            _account.Create(_anotherAccountData);
+            _account.Open(_accountData);
 
-            AccountBase account = _account.GetByValue(_anotherAccountData.Number);
-            _account.Delete(account.Id);
+            Account accountBase = _account.GetAccount(_numberGenerator.GenerateNumber(_accountData.GetHashCode()));
 
-            AccountBase actual = _account.GetById(account.Id);
-            Assert.AreEqual(null, actual);
+            Assert.AreEqual(_accountData, accountBase);
         }
+        #endregion
 
+        #region Close
         [Test]
-        public void Update_PersonEntity_DeleteFromCollection()
+        public void Close_AccountBase_CorrectResult()
         {
-            _account.Create(_anotherAccountData);
-
-            _anotherAccountData.InvoiceAmount = 120;
-            AccountBase account = _account.GetByValue(_anotherAccountData.Number);
-            account.InvoiceAmount = _anotherAccountData.InvoiceAmount;
-            _account.Update(account);
-
-            AccountBase actual = _account.GetById(account.Id);
-            Assert.AreEqual(_anotherAccountData, actual);
+            _account.Open(_accountData);
+            _account.Close(_accountData.Number);
         }
+        #endregion
+
+        #region Deposit
+        #endregion
+
+        #region Withdraw
+        #endregion
+
+        #region GetAccount
+        #endregion
+
+        #region GetUserAccounts
+        #endregion
+        //[Test]
+        //public void Delete_PersonEntity_DeleteFromCollection()
+        //{
+        //    _account.Create(_anotherAccountData);
+
+        //    AccountBase account = _account.GetByValue(_anotherAccountData.Number);
+        //    _account.Delete(account.Id);
+
+        //    AccountBase actual = _account.GetById(account.Id);
+        //    Assert.AreEqual(null, actual);
+        //}
+
+        //[Test]
+        //public void Update_PersonEntity_DeleteFromCollection()
+        //{
+        //    _account.Create(_anotherAccountData);
+
+        //    _anotherAccountData.InvoiceAmount = 120;
+        //    AccountBase account = _account.GetByValue(_anotherAccountData.Number);
+        //    account.InvoiceAmount = _anotherAccountData.InvoiceAmount;
+        //    _account.Update(account);
+
+        //    AccountBase actual = _account.GetById(account.Id);
+        //    Assert.AreEqual(_anotherAccountData, actual);
+        //}
     }
 }
