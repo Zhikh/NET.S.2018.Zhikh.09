@@ -55,13 +55,11 @@ namespace Task2.ORM
                 .Property(e => e.PassportSeries)
                 .IsFixedLength();
 
-            modelBuilder.Entity<Passport>()
-                .Property(e => e.Number)
-                .IsFixedLength();
-
-            modelBuilder.Entity<Passport>()
-                .Property(e => e.IdNumber)
-                .IsFixedLength();
+            modelBuilder.Entity<Person>()
+                .HasMany(e => e.Accounts)
+                .WithRequired(e => e.Person)
+                .HasForeignKey(e => e.OwnerId)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Person>()
                 .HasOptional(e => e.ContactData)

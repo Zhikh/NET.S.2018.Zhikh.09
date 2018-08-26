@@ -25,5 +25,7 @@ namespace Task2.ORM
         public int TypeId { get; set; }
 
         public virtual AccountType AccountType { get; set; }
+
+        public virtual Person Person { get; set; }
     }
 }
