@@ -1,10 +1,10 @@
-﻿using DAL.Task2.Repositories;
-using Ninject;
+﻿using Ninject;
 using Task2.BLL.Interface.Services;
 using Task2.BLL.Services;
 using Task2.DAL.Fake.Strategies;
 using Task2.DAL.Interface.Repositories;
 using Task2.DAL.Interface.Strategies;
+using Task2.DAL.Repositories;
 
 namespace Task2.DependencyResolver
 {
@@ -17,8 +17,8 @@ namespace Task2.DependencyResolver
             kernel.Bind<IPersonService>().To<PersonService>();
 
             // repositories
-            kernel.Bind<IAccountRepository>().To<FakeAccountRepository>();
-            kernel.Bind<IPersonRepository>().To<FakePersonRepository>();
+            kernel.Bind<IAccountRepository>().To<AccountRepository>();
+            kernel.Bind<IPersonRepository>().To<PersonRepository>();
 
             // strategy
             kernel.Bind<IAccountNumberGenerator<int>>().To<FakeAccountNumberGenerator>();

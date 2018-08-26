@@ -48,7 +48,7 @@ namespace Task2.DAL.Repositories
 
         public DalPerson GetById(int id)
         {
-            return context.Set<Person>().FirstOrDefault(person => person.Id == id).ToDalPerson(); ;
+            return context.Set<Person>().FirstOrDefault(person => person.Id == id).ToDalPerson();
         }
 
         public DalPerson GetByPredicate(Expression<Func<DalPerson, bool>> predicate)
