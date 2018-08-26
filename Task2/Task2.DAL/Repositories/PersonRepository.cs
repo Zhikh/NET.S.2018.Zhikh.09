@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Task2.DAL.Interface.Repositories;
 using Task2.DAL.Interfaces.DTO;
 using Task2.DAL.Mappers;
@@ -28,22 +26,7 @@ namespace Task2.DAL.Repositories
                 throw new ArgumentNullException(nameof(entity));
             }
 
-            var user = new Person()
-            {
-                FirstName = entity.FirstName,
-                LastName = entity.LastName,
-                MiddleName = entity.SecondName,
-                ContactData = new ContactData()
-                {
-                    Email = entity.Contact.Email
-                },
-                Passport = new Passport()
-                {
-                    PassportSeries = entity.SerialNumber
-                }
-            };
-
-            context.Set<Person>().Add(user);
+            context.Set<Person>().Add(entity.ToPerson());
         }
 
         public void Delete(DalPerson entity)
@@ -60,18 +43,7 @@ namespace Task2.DAL.Repositories
 
         public IEnumerable<DalPerson> GetAll()
         {
-            return context.Set<Person>().Select(person => new DalPerson()
-            {
-                Id = person.Id,
-                FirstName = person.FirstName,
-                LastName = person.LastName,
-                SecondName = person.MiddleName,
-                SerialNumber = person.Passport.Number,
-                Contact = new DalContactData
-                {
-                    Email = person.ContactData.Email
-                }
-            });
+            return context.Set<Person>().ToDalPersons();
         }
 
         public DalPerson GetById(int id)
@@ -81,21 +53,34 @@ namespace Task2.DAL.Repositories
 
         public DalPerson GetByPredicate(Expression<Func<DalPerson, bool>> predicate)
         {
-            if (predicate == null) return null;
+            if (predicate == null)
+            {
+                return null;
+            }
 
-            return context.Set<Person>().SingleOrDefault(predicate);
+            IEnumerable<DalPerson> persons = context.Set<Person>().ToDalPersons();
+
+            return persons.FirstOrDefault(predicate);
         }
 
         public void Update(DalPerson entity)
         {
             var entityToUpdate = context.Set<Person>().First(e => e.Id == entity.Id);
-            return UpdateEntity(entityToUpdate, entity);
+
+            UpdateEntity(entityToUpdate, entity.ToPerson());
         }
 
-        protected bool UpdateEntity(Person entityToUpdate, Person updatedEntity)
+        private bool UpdateEntity(Person entityToUpdate, Person updatedEntity)
         {
-            if (entityToUpdate == null) return false;
-            if (updatedEntity == null) return false;
+            if (entityToUpdate == null)
+            {
+                return false;
+            }
+
+            if (updatedEntity == null)
+            {
+                return false;
+            }
 
             try
             {
