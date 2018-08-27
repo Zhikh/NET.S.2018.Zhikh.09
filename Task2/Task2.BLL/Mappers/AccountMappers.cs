@@ -41,7 +41,7 @@ namespace Task2.BLL.Mappers
         /// <summary>
         /// Converts collection of <see cref="Account"/> in collectiono of <see cref="DalAccount"/>
         /// </summary>
-        /// <param name="baseAccount"> Collection for converting from <see cref="Account"/> </param>
+        /// <param name="baseAccounts"> Collection for converting from <see cref="Account"/> </param>
         /// <returns> Collection of <see cref="DalAccount"/> </returns>
         public static IEnumerable<DalAccount> ToDalAccount(this IEnumerable<Account> baseAccounts)
         {
@@ -51,6 +51,11 @@ namespace Task2.BLL.Mappers
             }
         }
 
+        /// <summary>
+        /// Converts entity of <see cref="DalAccount"/> in <see cref="Account"/>
+        /// </summary>
+        /// <param name="dalAccount"> Entity for converting from <see cref="DalAccount"/> </param>
+        /// <returns> Entity of  <see cref="Account"/> </returns>
         public static Account ToAccountBase(this DalAccount dalAccount)
         {
             if (dalAccount == null)
@@ -68,6 +73,11 @@ namespace Task2.BLL.Mappers
             };
         }
 
+        /// <summary>
+        /// Converts collection of <see cref="DalAccount"/> in collectiono of <see cref="Account"/>
+        /// </summary>
+        /// <param name="baseAccounts"> Collection for converting from <see cref="DalAccount"/> </param>
+        /// <returns> Collection of <see cref="Account"/> </returns>
         public static IEnumerable<Account> ToAccount(this IEnumerable<DalAccount> dalAccounts)
         {
             foreach (var element in dalAccounts)

@@ -7,6 +7,11 @@ namespace Task2.BLL.Mappers
 {
     public static class PersonMappers
     {
+        /// <summary>
+        /// Converts entity of <see cref="Person"/> in <see cref="DalPerson"/>
+        /// </summary>
+        /// <param name="person"> Entity for converting from <see cref="Person"/> </param>
+        /// <returns> Entity of  <see cref="DalPerson"/> </returns>
         public static DalPerson ToDalPerson(this Person person)
         {
             if (person == null)
@@ -31,6 +36,11 @@ namespace Task2.BLL.Mappers
             return dalPerson;
         }
 
+        /// <summary>
+        /// Converts entity of <see cref="DalPerson"/> in <see cref="Person"/>
+        /// </summary>
+        /// <param name="person"> Entity for converting from <see cref="DalPerson"/> </param>
+        /// <returns> Entity of  <see cref="Person"/> </returns>
         public static Person ToPerson(this DalPerson person)
         {
             if (person == null)
@@ -49,7 +59,12 @@ namespace Task2.BLL.Mappers
             };
         }
 
-        public static IEnumerable<Person> ToPerson(this IEnumerable<DalPerson> persons)
+        /// <summary>
+        /// Converts collection of <see cref="Person"/> in <see cref="DalPerson"/>
+        /// </summary>
+        /// <param name="person"> Collection for converting from <see cref="Person"/> </param>
+        /// <returns> Collection of  <see cref="DalPerson"/> </returns>
+        public static IEnumerable<Person> ToPersons(this IEnumerable<DalPerson> persons)
         {
             foreach (var element in persons)
             {
@@ -57,7 +72,12 @@ namespace Task2.BLL.Mappers
             }
         }
 
-        public static IEnumerable<DalPerson> ToDalPerson(this IEnumerable<Person> persons)
+        /// <summary>
+        /// Converts collection of <see cref="Person"/> in <see cref="DalPerson"/>
+        /// </summary>
+        /// <param name="person"> Collection for converting from <see cref="Person"/> </param>
+        /// <returns> Collection of  <see cref="DalPerson"/> </returns>
+        public static IEnumerable<DalPerson> ToDalPersons(this IEnumerable<Person> persons)
         {
             foreach (var element in persons)
             {
