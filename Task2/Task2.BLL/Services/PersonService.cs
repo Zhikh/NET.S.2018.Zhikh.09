@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using Task2.BLL.Interface;
 using Task2.BLL.Interface.Entities;
 using Task2.BLL.Interface.Services;
 using Task2.BLL.Mappers;
@@ -13,6 +15,7 @@ namespace Task2.BLL.Services
         #region Fields
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPersonRepository _personRepository;
+        private readonly ILogger _logger;
         private static readonly object _syncRoot = new object();
         private static volatile PersonService _instance;
         #endregion
@@ -22,6 +25,8 @@ namespace Task2.BLL.Services
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _personRepository = personRepository ?? throw new ArgumentNullException(nameof(personRepository));
+
+            _logger = new Logger();
         }
         #endregion
 
@@ -38,7 +43,28 @@ namespace Task2.BLL.Services
                 throw new ArgumentException("message", nameof(serialNumber));
             }
 
-            return _personRepository.GetByPredicate(p => p.SerialNumber == serialNumber).ToPerson();
+            Person result = NewMethod(serialNumber);
+
+            return result;
+        }
+
+        private Person NewMethod(string serialNumber)
+        {
+            var result = new Person();
+            try
+            {
+                result = _personRepository.GetByPredicate(p => p.SerialNumber == serialNumber).ToPerson();
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogFatal(ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -46,16 +72,43 @@ namespace Task2.BLL.Services
         /// </summary>
         /// <param name="id"> Person id </param>
         /// <returns> A <see cref="Person" /> object </returns>
-        public Person GetPersonById(int id) 
-            => _personRepository.GetById(id).ToPerson();
+        public Person GetPersonById(int id)
+        {
+            var result = new Person();
+            try
+            {
+                result = _personRepository.GetById(id).ToPerson();
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogFatal(ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+            }
+
+            return result;
+        }
 
         /// <summary>
         /// Returns a collection of <see cref="Person"/>
         /// </summary>
         /// <param name="serialNumber"> Passport serial number </param>
         /// <returns> A <see cref="Person" /> object </returns>
-        public IEnumerable<Person> GetAll() 
-            => _personRepository.GetAll().ToPersons();
+        public IEnumerable<Person> GetAll()
+        {
+            IEnumerable<Person> result = null;
+            try
+            {
+                result = _personRepository.GetAll().ToPersons();
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogFatal(ex.Message, ex);
+            }
+            return result;
+        }
 
         /// <summary>
         /// Creates the entity of <see cref="Person"/>
@@ -78,12 +131,24 @@ namespace Task2.BLL.Services
             {
                 return false;
             }
-            
-            _personRepository.Create(person.ToDalPerson());
-            _unitOfWork.SaveChanges();
 
-            // TODO: add nornal checking or exclude this !!!!!!!
-            return true;
+            bool result = false;
+            try
+            {
+                _personRepository.Create(person.ToDalPerson());
+                _unitOfWork.SaveChanges();
+                result = true;
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogFatal(ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+            }
+            
+            return result;
         }
 
         /// <summary>
@@ -100,8 +165,19 @@ namespace Task2.BLL.Services
                 throw new ArgumentNullException(nameof(person));
             }
 
-            _personRepository.Update(person.ToDalPerson());
-            _unitOfWork.SaveChanges();
+            try
+            {
+                _personRepository.Update(person.ToDalPerson());
+                _unitOfWork.SaveChanges();
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogFatal(ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+            }
         }
 
         /// <summary>
@@ -118,8 +194,19 @@ namespace Task2.BLL.Services
                 throw new ArgumentNullException(nameof(person));
             }
 
-            _personRepository.Delete(person.ToDalPerson());
-            _unitOfWork.SaveChanges();
+            try
+            {
+                _personRepository.Delete(person.ToDalPerson());
+                _unitOfWork.SaveChanges();
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogFatal(ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+            }
         }
 
         /// <summary>

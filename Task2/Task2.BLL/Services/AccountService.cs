@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using Task2.BLL.Exceptions;
+using Task2.BLL.Interface;
 using Task2.BLL.Interface.Entities;
 using Task2.BLL.Interface.Services;
 using Task2.BLL.Mappers;
@@ -16,6 +18,7 @@ namespace Task2.BLL.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAccountRepository _accountRepository;
         private readonly IPersonService _personService;
+        private readonly ILogger _logger;
         private static readonly object _syncRoot = new object();
         private static volatile AccountService _instance;
         #endregion
@@ -26,6 +29,8 @@ namespace Task2.BLL.Services
             _accountRepository = accountRepository ?? throw new ArgumentNullException(nameof(accountRepository));
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _personService = personService ?? throw new ArgumentNullException(nameof(personService));
+
+            _logger = new Logger();
         }
         #endregion
 
@@ -44,13 +49,24 @@ namespace Task2.BLL.Services
                 throw new ArgumentNullException("Account can't be null!");
             }
 
-            _personService.Create(entity.Owner);
-            _accountRepository.Create(entity.ToDalAccount());
+            try
+            {
+                _personService.Create(entity.Owner);
+                _accountRepository.Create(entity.ToDalAccount());
 
-            entity.Owner.Accounts.Add(entity);
-            _personService.Update(entity.Owner);
+                entity.Owner.Accounts.Add(entity);
+                _personService.Update(entity.Owner);
 
-            _unitOfWork.SaveChanges();
+                _unitOfWork.SaveChanges();
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogFatal(ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+            }
         }
 
         /// <summary>
@@ -85,10 +101,21 @@ namespace Task2.BLL.Services
                 throw new InvalidAccountOperationException($"This account {accountNumber} doesn't exist!");
             }
 
-            account.Deposit(value);
+            try
+            {
+                account.Deposit(value);
 
-            _accountRepository.Update(account.ToDalAccount());
-            _unitOfWork.SaveChanges();
+                _accountRepository.Update(account.ToDalAccount());
+                _unitOfWork.SaveChanges();
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogFatal(ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+            }
         }
 
         /// <summary>
@@ -123,10 +150,21 @@ namespace Task2.BLL.Services
                 throw new InvalidAccountOperationException($"This account {accountNumber} doesn't exist!");
             }
 
-            account.Withdraw(value);
+            try
+            {
+                account.Withdraw(value);
 
-            _accountRepository.Update(account.ToDalAccount());
-            _unitOfWork.SaveChanges();
+                _accountRepository.Update(account.ToDalAccount());
+                _unitOfWork.SaveChanges();
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogFatal(ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+            }
         }
 
         /// <summary>
@@ -175,11 +213,22 @@ namespace Task2.BLL.Services
                 throw new InvalidAccountOperationException($"This account {destinationAccountNumber} doesn't exist!");
             }
 
-            sourceAccount.Transfer(destinationAccount, value);
+            try
+            {
+                sourceAccount.Transfer(destinationAccount, value);
 
-            _accountRepository.Update(sourceAccount.ToDalAccount());
-            _accountRepository.Update(destinationAccount.ToDalAccount());
-            _unitOfWork.SaveChanges();
+                _accountRepository.Update(sourceAccount.ToDalAccount());
+                _accountRepository.Update(destinationAccount.ToDalAccount());
+                _unitOfWork.SaveChanges();
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogFatal(ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+            }
         }
 
         /// <summary>
@@ -205,9 +254,20 @@ namespace Task2.BLL.Services
             {
                 throw new InvalidAccountOperationException($"This account {accountNumber} doesn't exist!");
             }
-            
-            _accountRepository.Delete(account.ToDalAccount());
-            _unitOfWork.SaveChanges();
+
+            try
+            {
+                _accountRepository.Delete(account.ToDalAccount());
+                _unitOfWork.SaveChanges();
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogFatal(ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+            }
         }
 
         /// <summary>
@@ -225,14 +285,36 @@ namespace Task2.BLL.Services
                 throw new ArgumentException("The parameter {0} can't be null or empty!", nameof(accountNumber));
             }
 
-            return _accountRepository.GetByPredicate(a => a.Number == accountNumber).ToAccountBase();
+            var result = new Account();
+            try
+            {
+                result = _accountRepository.GetByPredicate(a => a.Number == accountNumber).ToAccountBase();
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogFatal(ex.Message, ex);
+            }
+
+            return result;
         }
 
         /// <summary>
         /// Returns a collection of <see cref="Account"/> objects
         /// </summary>
         /// <returns> A collection of <see cref="Account"/> objects </returns>
-        public IEnumerable<Account> GetAll() => _accountRepository.GetAll().ToAccount();
+        public IEnumerable<Account> GetAll()
+        {
+            IEnumerable<Account> result = null;
+            try
+            {
+                result = _accountRepository.GetAll().ToAccount();
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogFatal(ex.Message, ex);
+            }
+            return result;
+        }
 
         /// <summary>
         /// Returns a collection of <see cref="Account"/> objects
@@ -248,10 +330,18 @@ namespace Task2.BLL.Services
             {
                 throw new ArgumentNullException(nameof(person));
             }
-
-            IEnumerable<Account> accounts = _accountRepository.GetAll().ToAccount();
-
-            return accounts.Where(a => a.Owner == person);
+            
+            IEnumerable<Account> result = null;
+            try
+            {
+                IEnumerable<Account> accounts = _accountRepository.GetAll().ToAccount();
+                result = accounts.Where(a => a.Owner == person);
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogFatal(ex.Message, ex);
+            }
+            return result;
         }
 
         /// <summary>
