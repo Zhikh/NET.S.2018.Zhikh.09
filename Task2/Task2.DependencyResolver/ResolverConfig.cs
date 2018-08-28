@@ -15,8 +15,9 @@ namespace Task2.DependencyResolver
     {
         public static void ConfigurateResolver(this IKernel kernel)
         {
+            var context = new BankModel();
             // unit of work
-            kernel.Bind<IUnitOfWork>().To<UnitOfWork>().WithConstructorArgument("context", new BankModel()); 
+            kernel.Bind<IUnitOfWork>().To<UnitOfWork>().WithConstructorArgument("context", context); 
 
             // services
             kernel.Bind<IPersonService>().ToMethod(
@@ -28,8 +29,8 @@ namespace Task2.DependencyResolver
                 kernel.Get<IAccountRepository>(), kernel.Get<IPersonService>()));
 
             // repositories
-            kernel.Bind<IAccountRepository>().To<AccountRepository>().WithConstructorArgument("context", new BankModel());
-            kernel.Bind<IPersonRepository>().To<PersonRepository>().WithConstructorArgument("context", new BankModel());
+            kernel.Bind<IAccountRepository>().To<AccountRepository>().WithConstructorArgument("context", context);
+            kernel.Bind<IPersonRepository>().To<PersonRepository>().WithConstructorArgument("context", context);
 
             // strategy
             kernel.Bind<IAccountNumberGenerator<int>>().To<FakeAccountNumberGenerator>();
