@@ -37,7 +37,7 @@ namespace Task2.DAL.Interface.Repositories
         /// </summary>
         /// <param name="func"> Expression for searching </param>
         /// <returns> Entity </returns>
-        TEntity GetByPredicate(Expression<Func<TEntity, bool>> func);
+        TEntity GetByPredicate(Func<TEntity, bool> func);
 
         /// <summary>
         /// Get all entities

@@ -24,7 +24,11 @@ namespace Task2.BLL.Mappers
                 LastName = baseAccount.Owner.LastName,
                 SecondName = baseAccount.Owner.SecondName,
                 SerialNumber = baseAccount.Owner.SerialNumber,
-                Accounts = baseAccount.Owner.Accounts.ToDalAccount()
+                Accounts = baseAccount.Owner.Accounts.ToDalAccount(),
+                Contact = new DalContactData
+                {
+                    Email = baseAccount.Owner.Email
+                }
             };
 
             return new DalAccount

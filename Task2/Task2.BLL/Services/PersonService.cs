@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Task2.BLL.Interface.Entities;
 using Task2.BLL.Interface.Services;
 using Task2.BLL.Mappers;
+using Task2.DAL.Interface;
 using Task2.DAL.Interface.Repositories;
 
 namespace Task2.BLL.Services
@@ -54,7 +55,7 @@ namespace Task2.BLL.Services
         /// <param name="serialNumber"> Passport serial number </param>
         /// <returns> A <see cref="Person" /> object </returns>
         public IEnumerable<Person> GetAll() 
-            => _personRepository.GetAll().ToPerson();
+            => _personRepository.GetAll().ToPersons();
 
         /// <summary>
         /// Creates the entity of <see cref="Person"/>
@@ -134,7 +135,7 @@ namespace Task2.BLL.Services
         /// <remarks>
         /// If instance of <see cref="IPersonService"> was created, parameters will not play any roll.
         /// </remarks>
-        public static PersonService Instance(IUnitOfWork unitOfWork = null, IPersonRepository personRepository = null)
+        public static PersonService GetInstance(IUnitOfWork unitOfWork = null, IPersonRepository personRepository = null)
         {
             if (_instance == null)
             {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Task2.DAL.Interface.Repositories
+namespace Task2.DAL.Interface
 {
     public interface IUnitOfWork : IDisposable
     {

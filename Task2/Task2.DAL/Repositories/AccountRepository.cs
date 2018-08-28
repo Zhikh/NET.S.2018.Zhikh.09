@@ -51,7 +51,7 @@ namespace Task2.DAL.Repositories
             return context.Set<Account>().FirstOrDefault(a => a.Id == id).ToDalAccount();
         }
 
-        public DalAccount GetByPredicate(Expression<Func<DalAccount, bool>> predicate)
+        public DalAccount GetByPredicate(Func<DalAccount, bool> predicate)
         {
             if (predicate == null)
             {

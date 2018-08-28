@@ -51,7 +51,7 @@ namespace Task2.DAL.Repositories
             return context.Set<Person>().FirstOrDefault(person => person.Id == id).ToDalPerson();
         }
 
-        public DalPerson GetByPredicate(Expression<Func<DalPerson, bool>> predicate)
+        public DalPerson GetByPredicate(Func<DalPerson, bool> predicate)
         {
             if (predicate == null)
             {
@@ -65,7 +65,7 @@ namespace Task2.DAL.Repositories
 
         public void Update(DalPerson entity)
         {
-            var entityToUpdate = context.Set<Person>().First(e => e.Id == entity.Id);
+            var entityToUpdate = context.Set<Person>()?.First(e => e.Id == entity.Id);
 
             UpdateEntity(entityToUpdate, entity.ToPerson());
         }

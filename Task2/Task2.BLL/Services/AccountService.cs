@@ -5,6 +5,7 @@ using Task2.BLL.Exceptions;
 using Task2.BLL.Interface.Entities;
 using Task2.BLL.Interface.Services;
 using Task2.BLL.Mappers;
+using Task2.DAL.Interface;
 using Task2.DAL.Interface.Repositories;
 
 namespace Task2.BLL.Services
@@ -230,6 +231,12 @@ namespace Task2.BLL.Services
         /// <summary>
         /// Returns a collection of <see cref="Account"/> objects
         /// </summary>
+        /// <returns> A collection of <see cref="Account"/> objects </returns>
+        public IEnumerable<Account> GetAll() => _accountRepository.GetAll().ToAccount();
+
+        /// <summary>
+        /// Returns a collection of <see cref="Account"/> objects
+        /// </summary>
         /// <param name="person"> Person for searching </param>
         /// <returns> A collection of <see cref="Account"/> objects </returns>
         /// <exception cref="ArgumentNullException">
@@ -262,7 +269,7 @@ namespace Task2.BLL.Services
         /// <remarks>
         /// If instance of <see cref="AccountService"> was created, parameters will not play any roll.
         /// </remarks>
-        public static AccountService Instance(IUnitOfWork unitOfWork = null, IAccountRepository accountRepository = null, 
+        public static AccountService GetInstance(IUnitOfWork unitOfWork = null, IAccountRepository accountRepository = null, 
             IPersonService personService = null)
         {
             if (_instance == null)

@@ -5,6 +5,8 @@ namespace Task2.BLL.Interface.Services
 {
     public interface IAccountService
     {
+        IEnumerable<Account> GetAll();
+
         Account GetAccount(string accountNumber);
 
         IEnumerable<Account> GetUserAccounts(Person owner);
@@ -14,6 +16,8 @@ namespace Task2.BLL.Interface.Services
         void Deposit(string accounNumber, decimal value);
 
         void Withdraw(string accounNumber, decimal value);
+
+        void Transfer(string sourceAccountNumber, string destinationAccountNumber, decimal value);
 
         void Close(string accounNumber);
     }
