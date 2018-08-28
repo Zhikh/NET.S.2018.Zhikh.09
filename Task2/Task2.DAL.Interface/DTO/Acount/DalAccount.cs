@@ -12,6 +12,8 @@ namespace Task2.DAL.Interfaces.DTO
 
         public string Number { get; set; }
 
+        public bool IsOpen { get; set; }
+
         public DalPerson Owner
         {
             get

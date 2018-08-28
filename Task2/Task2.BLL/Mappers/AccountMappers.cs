@@ -37,7 +37,8 @@ namespace Task2.BLL.Mappers
                 Owner = dalPerson,
                 InvoiceAmount = baseAccount.InvoiceAmount,
                 Bonuses = baseAccount.Bonuses,
-                AccountType = baseAccount.AccountType.ToDalAccountType()
+                AccountType = baseAccount.AccountType.ToDalAccountType(),
+                IsOpen = baseAccount.IsOpen
             };
 
         }
@@ -73,7 +74,8 @@ namespace Task2.BLL.Mappers
                 Owner = dalAccount.Owner.ToPerson(),
                 InvoiceAmount = dalAccount.InvoiceAmount,
                 Bonuses = dalAccount.Bonuses,
-                AccountType = dalAccount.AccountType.ToAccountType()
+                AccountType = dalAccount.AccountType.ToAccountType(),
+                IsOpen = dalAccount.IsOpen
             };
         }
 

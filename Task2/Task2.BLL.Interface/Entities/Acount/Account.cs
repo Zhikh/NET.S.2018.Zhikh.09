@@ -41,6 +41,8 @@ namespace Task2.BLL.Interface.Entities
             }
         }
 
+        public bool IsOpen { get; set; }
+
         public decimal InvoiceAmount { get; set; }
 
         public int Bonuses { get; set; }

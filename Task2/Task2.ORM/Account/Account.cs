@@ -15,6 +15,8 @@ namespace Task2.ORM
         [StringLength(50)]
         public string Number { get; set; }
 
+        public bool IsOpen { get; set; }
+
         public int OwnerId { get; set; }
 
         [Column(TypeName = "money")]

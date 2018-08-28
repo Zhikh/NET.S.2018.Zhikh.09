@@ -39,7 +39,8 @@ namespace Task2.DAL.Mappers
                     Name = account.AccountType.Name,
                     BalanceCost = account.AccountType.DepositBonusCost,
                     ReplenishmentCost = account.AccountType.WithdrawBonusSost
-                }
+                },
+                IsOpen = account.IsOpen
             };
         }
 
@@ -83,7 +84,8 @@ namespace Task2.DAL.Mappers
                     Name = account.AccountType.Name,
                     DepositBonusCost = account.AccountType.BalanceCost,
                     WithdrawBonusSost = account.AccountType.ReplenishmentCost
-                }
+                },
+                IsOpen = account.IsOpen
             };
         }
 
