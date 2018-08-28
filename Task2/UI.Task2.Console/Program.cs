@@ -1,206 +1,118 @@
 ﻿using System;
-using System.Diagnostics;
-using Core.Task2.Entities;
-using Core.Task2.Strategies;
-using DAL.Task2.Repositories;
-using Logic.Task2;
-using static UI.Task2.ConsoleApp.AccountOperation;
+using System.Linq;
+using Ninject;
+using Task2.BLL.Interface.Entities;
+using Task2.BLL.Interface.Services;
+using Task2.DAL.Interface.Strategies;
+using Task2.DependencyResolver;
 
 namespace UI.Task2.ConsoleApp
 {
     class Program
     {
-        #region Test data
-        private static Account _accountData = new Account(new FakeAccountNumberGenerator())
+        private static readonly IKernel _resolver;
+        private static readonly Account[] _accountData;
+        private static readonly IAccountNumberGenerator<int> _numberGenerator;
+
+        static Program()
         {
-            Owner = new Person
+            _resolver = new StandardKernel();
+            _resolver.ConfigurateResolver();
+
+            _numberGenerator = _resolver.Get<IAccountNumberGenerator<int>>();
+
+            _accountData = new Account[]
             {
-                LastName = "Smbd1",
-                FirstName = "Smbd1",
-                Passport = new PassportData
+                new Account(_numberGenerator)
                 {
-                    IdentityNumber = "3024567V912VV5",
-                    SerialNumber = "VV2000233"
+                    Owner = new Person
+                    {
+                        LastName = "Smbd",
+                        FirstName = "Smbd",
+                        Email = "podg@test.com",
+                        SerialNumber = "12345678FF"
+                    },
+
+                    InvoiceAmount = 100,
+                    Bonuses = 0,
+                    AccountType = new AccountType
+                    {
+                        Name = ":)",
+                        BalanceCost = 100,
+                        ReplenishmentCost = 10
+                    }
                 },
-                Contact = new ContactData
+                new Account(_numberGenerator)
                 {
-                    Email = "podg@test.com",
-                    ContactPhone = "+ 375 29 399 05 33"
-                },
-                Address = new AdressData
-                {
-                    Country = "Somewhere",
-                    State = "Somewhere",
-                    City = "Somewhere",
-                    Street = "Without name"
+                    Owner = new Person
+                    {
+                        LastName = "Smbd1",
+                        FirstName = "Smbd1",
+                        Email = "podg1@test.com",
+                        SerialNumber = "11045678FF"
+                    },
+
+                    InvoiceAmount = 200,
+                    Bonuses = 0,
+                    AccountType = new AccountType
+                    {
+                        Name = ":)",
+                        BalanceCost = 100,
+                        ReplenishmentCost = 10
+                    }
                 }
-            },
-            InvoiceAmount = 100,
-            Bonuses = 0,
-            AccountType = new AccountType
-            {
-                Name = ":)",
-                BalanceCost = 100,
-                ReplenishmentCost = 10
-            }
-        };
-        private static Account _anotherAccountData = new Account(new FakeAccountNumberGenerator())
-        {
-            Owner = new Person
-            {
-                LastName = "Smbd2",
-                FirstName = "Smbd2",
-                Passport = new PassportData
-                {
-                    IdentityNumber = "3024567V912VV5",
-                    SerialNumber = "VV2000233"
-                },
-                Contact = new ContactData
-                {
-                    Email = "podg@test.com",
-                    ContactPhone = "+ 375 29 399 05 33"
-                },
-                Address = new AdressData
-                {
-                    Country = "Somewhere",
-                    State = "Somewhere",
-                    City = "Somewhere",
-                    Street = "Without name"
-                }
-            },
-            InvoiceAmount = 100,
-            Bonuses = 0,
-            AccountType = new AccountType
-            {
-                Name = ":)",
-                BalanceCost = 100,
-                ReplenishmentCost = 10
-            }
-        };
-        private static Account _newAccountData = new Account(new FakeAccountNumberGenerator())
-        {
-            Owner = new Person
-            {
-                LastName = "Smbd3",
-                FirstName = "Smbd3",
-                Passport = new PassportData
-                {
-                    IdentityNumber = "3024567V912VV0",
-                    SerialNumber = "AV2000233"
-                },
-                Contact = new ContactData
-                {
-                    Email = "pogg@test.com",
-                    ContactPhone = "+ 375 29 382 65 33"
-                },
-                Address = new AdressData
-                {
-                    Country = "Somewhere",
-                    State = "Somewhere",
-                    City = "Somewhere",
-                    Street = "Without name"
-                }
-            },
-            InvoiceAmount = 1900,
-            Bonuses = 20,
-            AccountType = new AccountType
-            {
-                Name = ":)",
-                BalanceCost = 10,
-                ReplenishmentCost = 10
-            }
-        };
-        #endregion
+            };
+        }
 
         static void Main(string[] args)
         {
-            try
+            IAccountService service = _resolver.Get<IAccountService>();
+
+            foreach (var account in _accountData)
             {
-                IRepository<Account> repository = new FakeAccountRepository();
-                
-                CheckCreationByRepository(repository);
-
-                IAccountService<Account> service = new AccountService();
-
-                service.Open(_newAccountData);
-                PrintAllAccounts(service._accountRepository);
-
-                CheckByInput(service);
-
-                Console.ReadKey();
+                service.Open(account);
+                Console.WriteLine(account);
             }
-            catch (ArgumentException ex)
-            {
-                Debug.WriteLine(ex.Message);
-                Debug.WriteLine(ex.StackTrace);
-                Console.WriteLine("Smth's gone wrong!");
-            }
-        }
+            Console.WriteLine("Opened accounts: ");
+            PrintAllAccounts(service);
 
-        private static void CheckByInput(IAccountService<Account> service)
-        {
-            bool IsExit = false;
-            Operation operation = Operation.Exit;
+            var accounts = service.GetAll();
 
-            do
-            {
-                Console.WriteLine($"Check operation: " +
-                    $"\n {(int)Operation.Open} - {Operation.Open} " +
-                    $"\n {(int)Operation.Deposit} - {Operation.Deposit}  " +
-                    $"\n {(int)Operation.Withdraw} - {Operation.Withdraw}  " +
-                    $"\n {(int)Operation.Close} - {Operation.Close} " +
-                    $"\n {(int)Operation.Exit} - {Operation.Exit} ");
-
-                if (int.TryParse(Console.ReadLine(), out int temp))
-                {
-                    operation = (Operation)Enum.ToObject(typeof(Operation), temp); 
-                }
-
-                switch (operation)
-                {
-                    case Operation.Open:
-                        Open(service);
-                        break;
-                    case Operation.Deposit:
-                        Deposite(service);
-                        break;
-                    case Operation.Withdraw:
-                        Withdraw(service);
-                        break;
-                    case Operation.Close:
-                        Close(service);
-                        break;
-                    default:
-                        IsExit = true;
-                        break;
-                }
-                PrintAllAccounts(service._accountRepository);
-            }
-            while (!IsExit);
-        }
-
-        private static void CheckCreationByRepository(IRepository<Account> repository)
-        {
-            Console.WriteLine("IRepository:");
-
-            repository.Create(_accountData);
-            PrintAllAccounts(repository);
-
-            repository.Create(_anotherAccountData);
-            PrintAllAccounts(repository);
-        }
-
-        private static void PrintAllAccounts(IRepository<Account> repository)
-        {
-            var accounts = repository.GetAll();
             foreach (var account in accounts)
             {
-                Console.WriteLine("Account number: " + account.Number);
-                Console.WriteLine("Owner info: " + account.Owner.FirstName + " " + account.Owner.LastName + 
-                    " (Amount of accounts: " + account.Owner.Accounts.Count + ")");
-                Console.WriteLine("Balance: " + account.InvoiceAmount);
-                Console.WriteLine("Bonuses: " + account.Bonuses);
-                Console.WriteLine("-------------");
+                service.Deposit(account.Number, 1000);
+            }
+
+            Console.WriteLine("After deposit operation: ");
+            PrintAllAccounts(service);
+
+            foreach (var account in accounts)
+            {
+                service.Withdraw(account.Number, 10);
+            }
+
+            Console.WriteLine("After withdraw operation: ");
+            PrintAllAccounts(service);
+
+            Account firstAccount = accounts.First();
+            Account lastAccount = accounts.Last();
+            service.Transfer(firstAccount.Number, lastAccount.Number, firstAccount.InvoiceAmount);
+
+
+            Console.WriteLine("After transfer operation: ");
+            Console.WriteLine(firstAccount);
+            Console.WriteLine(lastAccount);
+
+            service.Close(firstAccount.Number);
+            Console.WriteLine("After close operation: ");
+            PrintAllAccounts(service);
+        }
+
+        private static void PrintAllAccounts(IAccountService service)
+        {
+            foreach (var item in service.GetAll())
+            {
+                Console.WriteLine(item);
             }
         }
     }
