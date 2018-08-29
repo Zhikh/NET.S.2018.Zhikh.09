@@ -5,13 +5,16 @@ namespace Task2.DAL.Interfaces.DTO
 {
     public sealed class DalAccount: IEntity
     {
+        #region Fields
         private DalPerson _owner;
         private DalAccountType _accountType;
+        #endregion
 
+        #region Properties
         public int Id { get; set; }
-
+        
         public string Number { get; set; }
-
+        
         public bool IsOpen { get; set; }
 
         public DalPerson Owner
@@ -43,5 +46,6 @@ namespace Task2.DAL.Interfaces.DTO
                 _accountType = value ?? throw new ArgumentException("Account type can't be null!");
             }
         }
+        #endregion
     }
 }

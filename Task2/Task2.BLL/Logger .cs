@@ -31,7 +31,6 @@ namespace Task2.BLL
             NLog.LogManager.Configuration = config;
         }
 
-
         /// <summary>
         /// Saves error data to logger
         /// </summary>

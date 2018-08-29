@@ -5,8 +5,11 @@ namespace Task2.DAL.Interfaces.DTO
 {
     public sealed class DalAccountType : IEntity
     {
+        #region Fields
         private string _name;
+        #endregion
 
+        #region Properties
         public int Id { get; set; }
 
         public string Name
@@ -30,5 +33,6 @@ namespace Task2.DAL.Interfaces.DTO
         public decimal BalanceCost { get; set; }
 
         public decimal ReplenishmentCost { get; set; }
+        #endregion
     }
 }

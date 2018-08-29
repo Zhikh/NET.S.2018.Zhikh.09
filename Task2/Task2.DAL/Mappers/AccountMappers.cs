@@ -7,6 +7,12 @@ namespace Task2.DAL.Mappers
 {
     public static class AccountMappers
     {
+        #region Extensions
+        /// <summary>
+        /// Converts entity of <see cref="Account"/> in <see cref="DalAccount"/>
+        /// </summary>
+        /// <param name="account"> Entity for converting from <see cref="Account"/> </param>
+        /// <returns> Entity of  <see cref="DalAccount"/> </returns>
         public static DalAccount ToDalAccount(this Account account)
         {
             if (account == null)
@@ -44,11 +50,21 @@ namespace Task2.DAL.Mappers
             };
         }
 
+        /// <summary>
+        /// Converts collection of <see cref="Account"/> to collectiono of <see cref="DalAccount"/>
+        /// </summary>
+        /// <param name="accounts"> Collection for converting from <see cref="Account"/> </param>
+        /// <returns> Collection of <see cref="DalAccount"/> </returns>
         public static ICollection<DalAccount> ToDalAccounts(this IEnumerable<Account> accounts)
         {
             return ToMany(accounts, ToDalAccount);
         }
 
+        /// <summary>
+        /// Converts entity of <see cref="DalAccount"/> in <see cref="Account"/>
+        /// </summary>
+        /// <param name="account"> Entity for converting from <see cref="DalAccount"/> </param>
+        /// <returns> Entity of  <see cref="Account"/> </returns>
         public static Account ToAccount(this DalAccount account)
         {
             if (account == null)
@@ -89,11 +105,18 @@ namespace Task2.DAL.Mappers
             };
         }
 
+        /// <summary>
+        /// Converts collection of <see cref="DalAccount"/> in collectiono of <see cref="Account"/>
+        /// </summary>
+        /// <param name="accounts"> Collection for converting from <see cref="DalAccount"/> </param>
+        /// <returns> Collection of <see cref="Account"/> </returns>
         public static ICollection<Account> ToAccounts(this IEnumerable<DalAccount> accounts)
         {
             return ToMany(accounts, ToAccount);
         }
+        #endregion
 
+        #region Additional methods
         private static ICollection<TTo> ToMany<TFrom, TTo>(IEnumerable<TFrom> accounts, Func<TFrom, TTo> func)
         {
             if (accounts == null)
@@ -109,5 +132,6 @@ namespace Task2.DAL.Mappers
 
             return result;
         }
+        #endregion
     }
 }

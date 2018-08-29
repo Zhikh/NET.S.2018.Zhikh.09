@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Linq.Expressions;
 using Task2.DAL.Interface.Repositories;
 using Task2.DAL.Interfaces.DTO;
 using Task2.DAL.Mappers;
@@ -12,13 +11,30 @@ namespace Task2.DAL.Repositories
 {
     public class AccountRepository : IAccountRepository
     {
+        #region Fields
         private readonly DbContext context;
+        #endregion
 
+        #region Public API
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AccountRepository" />.
+        /// </summary>
+        /// <param name="context"> The instance of the <see cref="DbContext"/> class </param>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="context"/> is null.
+        /// </exception>
         public AccountRepository(DbContext context)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
+        /// <summary>
+        /// Adds entity of the <see cref="DalAccount"/> class to context
+        /// </summary>
+        /// <param name="entity"> Entity for saving </param>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="entity"/> is null.
+        /// </exception>
         public void Create(DalAccount entity)
         {
             if (entity == null)
@@ -29,6 +45,13 @@ namespace Task2.DAL.Repositories
             context.Set<Account>().Add(entity.ToAccount());
         }
 
+        /// <summary>
+        /// Removes entity of the <see cref="DalAccount"/> class from context
+        /// </summary>
+        /// <param name="entity"> Entity for removing </param>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="entity"/> is null.
+        /// </exception>
         public void Delete(DalAccount entity)
         {
             if (entity == null)
@@ -41,21 +64,35 @@ namespace Task2.DAL.Repositories
             context.Set<Account>().Remove(account);
         }
 
+        /// <summary>
+        /// Returns a collection of <see cref="DalAccount"/> objects
+        /// </summary>
+        /// <returns> A collection of <see cref="DalAccount"/> objects </returns>
         public IEnumerable<DalAccount> GetAll()
         {
             return context.Set<Account>().ToDalAccounts();
         }
 
+        /// <summary>
+        /// Returns account with <paramref name="id"/>
+        /// </summary>
+        /// <param name="id"> Id of account </param>
+        /// <returns> Entity of the <see cref="DalAccount"/> class </returns>
         public DalAccount GetById(int id)
         {
             return context.Set<Account>().FirstOrDefault(a => a.Id == id).ToDalAccount();
         }
 
+        /// <summary>
+        /// Returns entity of <see cref="DalAccount"/> finding by <paramref name="predicate"/>
+        /// </summary>
+        /// <param name="predicate"> Rule for searching </param>
+        /// <returns> Entity of the <see cref="DalAccount"/> class </returns>
         public DalAccount GetByPredicate(Func<DalAccount, bool> predicate)
         {
             if (predicate == null)
             {
-                return null;
+                throw new ArgumentNullException(nameof(predicate));
             }
 
             IEnumerable<DalAccount> accounts = context.Set<Account>().ToDalAccounts();
@@ -63,13 +100,19 @@ namespace Task2.DAL.Repositories
             return accounts.FirstOrDefault(predicate);
         }
 
+        /// <summary>
+        /// Updates account by values from entity of the <see cref="DalAccount"/> class
+        /// </summary>
+        /// <param name="entity">  Entity of the <see cref="DalAccount"/> class </param>
         public void Update(DalAccount entity)
         {
             var entityToUpdate = context.Set<Account>().First(e => e.Id == entity.Id);
 
             UpdateEntity(entityToUpdate, entity.ToAccount());
         }
+        #endregion
 
+        #region Additional methods
         private bool UpdateEntity(Account entityToUpdate, Account updatedEntity)
         {
             if (entityToUpdate == null)
@@ -92,5 +135,6 @@ namespace Task2.DAL.Repositories
                 return false;
             }
         }
+        #endregion
     }
 }

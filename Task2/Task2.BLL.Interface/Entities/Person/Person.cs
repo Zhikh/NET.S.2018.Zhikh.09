@@ -5,15 +5,24 @@ namespace Task2.BLL.Interface.Entities
 {
     public sealed class Person 
     {
+        #region Private fields
         private string _firstName;
         private string _lastName;
         private string _serialNumber;
+        #endregion
 
+        #region Public API
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Person" />.
+        /// </summary>
         public Person()
         {
             Accounts = new List<Account>();
         }
 
+        /// <summary>
+        /// First name of the person
+        /// </summary>
         public string FirstName
         {
             get
@@ -32,6 +41,9 @@ namespace Task2.BLL.Interface.Entities
             }
         }
 
+        /// <summary>
+        /// Last name of the person
+        /// </summary>
         public string LastName
         {
             get
@@ -50,10 +62,19 @@ namespace Task2.BLL.Interface.Entities
             }
         }
 
+        /// <summary>
+        /// Middle name of the person
+        /// </summary>
         public string SecondName { get; set; }
 
+        /// <summary>
+        /// Email of person
+        /// </summary>
         public string Email { get; set; }
 
+        /// <summary>
+        /// Passport serial number
+        /// </summary>
         public string SerialNumber
         {
             get
@@ -72,7 +93,10 @@ namespace Task2.BLL.Interface.Entities
             }
         }
 
+        /// <summary>
+        /// Accounts of the person
+        /// </summary>
         public ICollection<Account> Accounts { get; set; }
-      
+        #endregion
     }
 }

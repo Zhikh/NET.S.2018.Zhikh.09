@@ -15,12 +15,12 @@ namespace Task2.BLL.Services
     public class AccountService : IAccountService
     {
         #region Private fields
+        private static readonly object _syncRoot = new object();
+        private static volatile AccountService _instance;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAccountRepository _accountRepository;
         private readonly IPersonService _personService;
         private readonly ILogger _logger;
-        private static readonly object _syncRoot = new object();
-        private static volatile AccountService _instance;
         #endregion
 
         #region Constructors
@@ -36,8 +36,40 @@ namespace Task2.BLL.Services
 
         #region Public API
         /// <summary>
-        /// Opens account
+        /// Returns an object of <see cref="Account"/>
         /// </summary>
+        /// <param name="unitOfWork"> Object of <see cref="IUnitOfWork"> </param>
+        /// <param name="accountRepository"> Object of <see cref="IAccountService"> </param>
+        /// <param name="personService"> Object of <see cref="IPersonService"> </param>
+        /// <returns>  A <see cref="PersonService" /> object </returns>
+        /// <exception cref="ArgumentNullException">
+        ///      <paramref name="unitOfWork"/> is null.
+        ///      <paramref name="accountRepository"/> is null.
+        ///      <paramref name="personService"/> is null.
+        /// </exception>
+        /// <remarks>
+        /// If instance of <see cref="AccountService"> was created, parameters will not play any roll.
+        /// </remarks>
+        public static AccountService GetInstance(
+            IUnitOfWork unitOfWork = null,
+            IAccountRepository accountRepository = null,
+            IPersonService personService = null)
+        {
+            if (_instance == null)
+            {
+                lock (_syncRoot)
+                {
+                    if (_instance == null)
+                    {
+                        _instance = new AccountService(unitOfWork, accountRepository, personService);
+                    }
+                }
+            }
+
+            return _instance;
+        }
+
+        /// <summary> Opens new account </summary>
         /// <param name="account"> Entity of <see cref="Account"> </param>
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="entity"/> is null.
@@ -239,7 +271,7 @@ namespace Task2.BLL.Services
         ///     <paramref name="accountNumber"/> is null or empty.
         /// </exception>
         /// <exception cref="InvalidAccountOperationException">
-        ///     If account witn <paramref name="accountNumber"/> doesn't exist.
+        ///     If account with <paramref name="accountNumber"/> doesn't exist.
         /// </exception>
         public void Close(string accountNumber)
         {
@@ -313,6 +345,7 @@ namespace Task2.BLL.Services
             {
                 _logger.LogFatal(ex.Message, ex);
             }
+
             return result;
         }
 
@@ -341,39 +374,8 @@ namespace Task2.BLL.Services
             {
                 _logger.LogFatal(ex.Message, ex);
             }
+
             return result;
-        }
-
-        /// <summary>
-        /// Returns an object of <see cref="Account"/>
-        /// </summary>
-        /// <param name="unitOfWork"> Object of <see cref="IUnitOfWork"> </param>
-        /// <param name="accountRepository"> Object of <see cref="IAccountService"> </param>
-        /// <param name="personService"> Object of <see cref="IPersonService"> </param>
-        /// <returns>  A <see cref="PersonService" /> object </returns>
-        /// <exception cref="ArgumentNullException">
-        ///      <paramref name="unitOfWork"/> is null.
-        ///      <paramref name="accountRepository"/> is null.
-        ///      <paramref name="personService"/> is null.
-        /// </exception>
-        /// <remarks>
-        /// If instance of <see cref="AccountService"> was created, parameters will not play any roll.
-        /// </remarks>
-        public static AccountService GetInstance(IUnitOfWork unitOfWork = null, IAccountRepository accountRepository = null, 
-            IPersonService personService = null)
-        {
-            if (_instance == null)
-            {
-                lock (_syncRoot)
-                {
-                    if (_instance == null)
-                    {
-                        _instance = new AccountService(unitOfWork, accountRepository, personService);
-                    }
-                }
-            }
-
-            return _instance;
         }
         #endregion
     }

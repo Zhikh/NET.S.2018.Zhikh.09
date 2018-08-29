@@ -13,6 +13,10 @@ namespace Task2.DependencyResolver
 {
     public static class ResolverConfig
     {
+        /// <summary>
+        /// Creates bindings.
+        /// </summary>
+        /// <param name="kernel">  Provides a path to register bindings. </param>
         public static void ConfigurateResolver(this IKernel kernel)
         {
             var context = new BankModel();

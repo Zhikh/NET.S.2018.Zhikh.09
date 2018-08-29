@@ -7,6 +7,7 @@ namespace Task2.BLL.Mappers
 {
     public static class PersonMappers
     {
+        #region Extensions
         /// <summary>
         /// Converts entity of <see cref="Person"/> in <see cref="DalPerson"/>
         /// </summary>
@@ -84,5 +85,6 @@ namespace Task2.BLL.Mappers
                 yield return element.ToDalPerson();
             }
         }
+        #endregion
     }
 }

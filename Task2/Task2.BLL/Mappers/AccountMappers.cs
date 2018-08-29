@@ -6,6 +6,7 @@ namespace Task2.BLL.Mappers
 {
     public static class AccountMappers
     {
+        #region Extensions
         /// <summary>
         /// Converts entity of <see cref="Account"/> in <see cref="DalAccount"/>
         /// </summary>
@@ -40,11 +41,10 @@ namespace Task2.BLL.Mappers
                 AccountType = baseAccount.AccountType.ToDalAccountType(),
                 IsOpen = baseAccount.IsOpen
             };
-
         }
 
         /// <summary>
-        /// Converts collection of <see cref="Account"/> in collectiono of <see cref="DalAccount"/>
+        /// Converts collection of <see cref="Account"/> in collection of <see cref="DalAccount"/>
         /// </summary>
         /// <param name="baseAccounts"> Collection for converting from <see cref="Account"/> </param>
         /// <returns> Collection of <see cref="DalAccount"/> </returns>
@@ -80,7 +80,7 @@ namespace Task2.BLL.Mappers
         }
 
         /// <summary>
-        /// Converts collection of <see cref="DalAccount"/> in collectiono of <see cref="Account"/>
+        /// Converts collection of <see cref="DalAccount"/> in collection of <see cref="Account"/>
         /// </summary>
         /// <param name="baseAccounts"> Collection for converting from <see cref="DalAccount"/> </param>
         /// <returns> Collection of <see cref="Account"/> </returns>
@@ -91,5 +91,6 @@ namespace Task2.BLL.Mappers
                 yield return element.ToAccountBase();
             }
         }
+        #endregion
     }
 }

@@ -7,55 +7,16 @@ namespace DAL.Task2.Repositories
     public class FakePersonRepository : BaseRepository<DalPerson>, IPersonRepository
     {
         #region Private and internal methods
-        //private void UpdateAdress(DalAdressData entity, DalAdressData updatedEntity)
-        //{
-        //    if (!string.IsNullOrEmpty(updatedEntity.Country))
-        //    {
-        //        entity.Country = updatedEntity.Country;
-        //    }
-
-        //    if (!string.IsNullOrEmpty(updatedEntity.State))
-        //    {
-        //        entity.State = updatedEntity.State;
-        //    }
-
-        //    if (!string.IsNullOrEmpty(updatedEntity.City))
-        //    {
-        //        entity.City = updatedEntity.City;
-        //    }
-
-        //    if (!string.IsNullOrEmpty(updatedEntity.Street))
-        //    {
-        //        entity.Street = updatedEntity.Street;
-        //    }
-        //}
-
-        private void UpdateContact(DalContactData entity, DalContactData updatedEntity)
+        internal override DalPerson FindEntity(string serialNumber)
         {
-            if (!string.IsNullOrEmpty(updatedEntity.Email))
+            if (string.IsNullOrEmpty(serialNumber))
             {
-                entity.Email = updatedEntity.Email;
+                throw new ArgumentException("Value can't be null or empty!", nameof(serialNumber));
             }
-        }
 
-        //private void UpdatePassport(DalPassportData entity, DalPassportData updatedEntity)
-        //{
-        //    if (!string.IsNullOrEmpty(updatedEntity.IdentityNumber))
-        //    {
-        //        entity.IdentityNumber = updatedEntity.IdentityNumber;
-        //    }
-
-        //    if (!string.IsNullOrEmpty(updatedEntity.SerialNumber))
-        //    {
-        //        entity.IdentityNumber = updatedEntity.SerialNumber;
-        //    }
-        //}
-
-        internal override DalPerson FindEntity(string value)
-        {
             foreach (var entity in Entities)
             {
-                if (entity.SerialNumber == value)
+                if (entity.SerialNumber == serialNumber)
                 {
                     return entity;
                 }
@@ -66,6 +27,11 @@ namespace DAL.Task2.Repositories
 
         internal override void Update(DalPerson entity)
         {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
             DalPerson person = null;
 
             foreach (var element in Entities)
@@ -99,8 +65,24 @@ namespace DAL.Task2.Repositories
         }
 
         internal override bool IsInvalid(DalPerson entity)
-            => string.IsNullOrEmpty(entity.FirstName) || string.IsNullOrEmpty(entity.LastName) || 
-            entity.Contact == null || entity.SerialNumber == null;
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            return string.IsNullOrEmpty(entity.FirstName) || string.IsNullOrEmpty(entity.LastName) ||
+                       entity.Contact == null || entity.SerialNumber == null;
+        }
+
+        private void UpdateContact(DalContactData entity, DalContactData updatedEntity)
+        {
+            if (!string.IsNullOrEmpty(updatedEntity.Email))
+            {
+                entity.Email = updatedEntity.Email;
+            }
+        }
+
         #endregion
     }
 }

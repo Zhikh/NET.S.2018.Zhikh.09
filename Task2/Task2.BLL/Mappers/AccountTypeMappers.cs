@@ -5,6 +5,7 @@ namespace Task2.BLL.Mappers
 {
     public static class AccountTypeMappers
     {
+        #region Extensions
         /// <summary>
         /// Converts entity of <see cref="AccountType"/> in <see cref="DalAccountType"/>
         /// </summary>
@@ -44,5 +45,6 @@ namespace Task2.BLL.Mappers
                 Name = dalAccountType.Name
             };
         }
+        #endregion
     }
 }

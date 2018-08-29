@@ -4,8 +4,14 @@ namespace Task2.BLL.Interface.Entities
 {
     public sealed class AccountType
     {
+        #region Private fieds
         private string _name;
+        #endregion
 
+        #region Public API
+        /// <summary>
+        /// Name of account type
+        /// </summary>
         public string Name
         {
             get
@@ -24,8 +30,15 @@ namespace Task2.BLL.Interface.Entities
             }
         }
 
+        /// <summary>
+        /// Cost of one bonus point for deposit
+        /// </summary>
         public decimal BalanceCost { get; set; }
 
+        /// <summary>
+        /// Cost of one bonus point for withdraw
+        /// </summary>
         public decimal ReplenishmentCost { get; set; }
+        #endregion
     }
 }

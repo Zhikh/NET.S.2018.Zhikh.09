@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Task2.DAL.Interface.DTO;
 using Task2.DAL.Interface.Repositories;
 
@@ -8,13 +9,31 @@ namespace DAL.Task2.Repositories
     public abstract class BaseRepository<TEntity> : IRepository<TEntity>
         where TEntity : IEntity
     {
+        #region Public API
+        /// <summary>
+        ///  Initializes a new instance
+        /// </summary>
         public BaseRepository()
         {
             Entities = new List<TEntity>();
         }
 
+        /// <summary>
+        /// Collection of <see cref="TEntity"/>
+        /// </summary>
         public ICollection<TEntity> Entities { get; }
-        
+
+        /// <summary>
+        /// Adds entity of the <see cref="TEntity"/> class to context
+        /// </summary>
+        /// <param name="entity"> Entity for saving </param>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="entity"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="entity"/> is invalid.
+        ///     <paramref name="entity"/> isn't find.
+        /// </exception>
         public void Create(TEntity entity)
         {
             if (entity == null)
@@ -34,7 +53,14 @@ namespace DAL.Task2.Repositories
 
             Entities.Add(entity);
         }
-        
+
+        /// <summary>
+        /// Removes entity of the <see cref="TEntity"/> class
+        /// </summary>
+        /// <param name="entity"> Entity for removing </param>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="entity"/> is null.
+        /// </exception>
         public void Delete(TEntity entity)
         {
             if (entity == null)
@@ -44,7 +70,11 @@ namespace DAL.Task2.Repositories
 
             Entities.Remove(entity);
         }
-        
+
+        /// <summary>
+        /// Returns a collection of <see cref="TEntity"/> objects
+        /// </summary>
+        /// <returns> A collection of <see cref="TEntity"/> objects </returns>
         public IEnumerable<TEntity> GetAll() => Entities;
 
         public TEntity GetById(int id)
@@ -59,7 +89,12 @@ namespace DAL.Task2.Repositories
 
             return default(TEntity);
         }
-        
+
+        /// <summary>
+        /// Returns account with <paramref name="value"/>
+        /// </summary>
+        /// <param name="value"> Some value for searching </param>
+        /// <returns> Entity of the <see cref="TEntity"/> class </returns>
         public TEntity GetByValue(string value)
         {
             if (string.IsNullOrEmpty(value))
@@ -70,19 +105,35 @@ namespace DAL.Task2.Repositories
             return FindEntity(value);
         }
 
-        public void Save()
+        /// <summary>
+        /// Returns entity of <see cref="TEntity"/> finding by <paramref name="predicate"/>
+        /// </summary>
+        /// <param name="predicate"> Rule for searching </param>
+        /// <returns> Entity of the <see cref="TEntity"/> class </returns>
+        public TEntity GetByPredicate(Func<TEntity, bool> predicate)
         {
-            throw new NotImplementedException();
+            if (predicate == null)
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
+
+            return Entities.FirstOrDefault(predicate);
         }
 
+        /// <summary>
+        /// Updates account by values from entity of the <see cref="TEntity"/> class
+        /// </summary>
+        /// <param name="entity">  Entity of the <see cref="TEntity"/> class </param>
         void IRepository<TEntity>.Update(TEntity entity)
         {
             Update(entity);
         }
+        #endregion
 
+        #region Additional abstract methods
         internal abstract TEntity FindEntity(string value);
         internal abstract void Update(TEntity entity);
         internal abstract bool IsInvalid(TEntity entity);
-        
+        #endregion
     }
 }

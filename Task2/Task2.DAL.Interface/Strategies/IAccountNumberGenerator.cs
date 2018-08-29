@@ -2,6 +2,11 @@
 {
     public interface IAccountNumberGenerator<in T>
     {
-        string GenerateNumber(T ivalued);
+        /// <summary>
+        /// Returns account number
+        /// </summary>
+        /// <param name="value"> Value for generation </param>
+        /// <returns> Account number </returns>
+        string GenerateNumber(T value);
     }
 }

@@ -1,12 +1,13 @@
 ﻿using System;
-using DAL.Task2.Repositories;
 using NUnit.Framework;
 using Task2.BLL.Interface.Entities;
 using Task2.BLL.Interface.Services;
 using Task2.BLL.Services;
-using Task2.DAL.Fake.Strategies;
-using Task2.DAL.Interface.Repositories;
 using Task2.DAL.Interface.Strategies;
+using Moq;
+using Task2.DAL.Interface;
+using Task2.DAL.Interface.Repositories;
+using Task2.BLL.Mappers;
 
 namespace Task2.BLL.Tests
 {
@@ -15,17 +16,32 @@ namespace Task2.BLL.Tests
     {
         #region Test data
         private IAccountService _account;
+        private IAccountNumberGenerator<int> _numberGenerator;
+        private IUnitOfWork _unitOfWork;
+        private IPersonService _person;
         private Account _accountData;
         private Account _anotherAccountData;
-        private IAccountNumberGenerator<int> _numberGenerator;
+
+        private int _number;
 
         [SetUp]
         public void InitData()
         {
-            _numberGenerator = new FakeAccountNumberGenerator();
-            _account = new AccountService(new FakeAccountRepository(), _numberGenerator, new PersonService(new FakePersonRepository()));
+            var repo = new MockRepository(MockBehavior.Default);
+            var accountRepositoryMock = repo.Create<IAccountRepository>();
 
-            _accountData = new Account(new FakeAccountNumberGenerator())
+            accountRepositoryMock.Setup(c => c.Create(_accountData.ToDalAccount()));
+            accountRepositoryMock.Setup(c => c.Delete(_accountData.ToDalAccount()));
+
+            _numberGenerator = Mock.Of<IAccountNumberGenerator<int>>(d => d.GenerateNumber(It.IsAny<int>()) == $"{_number.ToString()}");
+            _unitOfWork = Mock.Of<IUnitOfWork>();
+
+            var personRepositoryMock = repo.Create<IPersonRepository>();
+            _person = PersonService.GetInstance(_unitOfWork, personRepositoryMock.Object);
+
+            _account = AccountService.GetInstance(_unitOfWork, accountRepositoryMock.Object, _person);
+
+            _accountData = new Account(_numberGenerator)
             {
                 Owner = new Person
                 {
@@ -44,8 +60,9 @@ namespace Task2.BLL.Tests
                     ReplenishmentCost = 10
                 }
             };
+            _number++;
 
-            _anotherAccountData = new Account(new FakeAccountNumberGenerator())
+            _anotherAccountData = new Account(_numberGenerator)
             {
                 Owner = new Person
                 {
@@ -63,6 +80,7 @@ namespace Task2.BLL.Tests
                     ReplenishmentCost = 10
                 }
             };
+            _number++;
         }
         #endregion
 

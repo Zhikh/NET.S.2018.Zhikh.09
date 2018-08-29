@@ -6,12 +6,14 @@ namespace Task2.DAL.Interfaces.DTO
 {
     public sealed class DalPerson : IEntity
     {
+        #region Fields
         private DalContactData _contactData;
-
         private string _firstName;
         private string _lastName;
         private string _serialNumber;
+        #endregion
 
+        #region Properties
         public int Id { get; set; }
 
         public string FirstName
@@ -84,5 +86,6 @@ namespace Task2.DAL.Interfaces.DTO
         }
         
         public IEnumerable<DalAccount> Accounts { get; set; }
+        #endregion
     }
 }

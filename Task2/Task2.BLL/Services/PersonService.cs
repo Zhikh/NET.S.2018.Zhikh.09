@@ -13,11 +13,11 @@ namespace Task2.BLL.Services
     public class PersonService : IPersonService
     {
         #region Fields
+        private static readonly object _syncRoot = new object();
+        private static volatile PersonService _instance;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPersonRepository _personRepository;
         private readonly ILogger _logger;
-        private static readonly object _syncRoot = new object();
-        private static volatile PersonService _instance;
         #endregion
 
         #region Constructors
@@ -32,6 +32,35 @@ namespace Task2.BLL.Services
 
         #region Public API
         /// <summary>
+        /// Returns an object of <see cref="Person"/>
+        /// </summary>
+        /// <param name="unitOfWork"> Object of <see cref="IUnitOfWork"> </param>
+        /// <param name="personRepository"> Object of <see cref="IPersonRepository"> </param>
+        /// <returns>  A <see cref="PersonService" /> object </returns>
+        /// <exception cref="ArgumentNullException">
+        ///      <paramref name="unitOfWork"/> is null.
+        ///      <paramref name="personRepository"/> is null.
+        /// </exception>
+        /// <remarks>
+        /// If instance of <see cref="IPersonService"> was created, parameters will not play any roll.
+        /// </remarks>
+        public static PersonService GetInstance(IUnitOfWork unitOfWork = null, IPersonRepository personRepository = null)
+        {
+            if (_instance == null)
+            {
+                lock (_syncRoot)
+                {
+                    if (_instance == null)
+                    {
+                        _instance = new PersonService(unitOfWork, personRepository);
+                    }
+                }
+            }
+
+            return _instance;
+        }
+
+        /// <summary>
         /// Returns an entity of <see cref="Person"/>
         /// </summary>
         /// <param name="serialNumber"> Passport serial number </param>
@@ -43,14 +72,7 @@ namespace Task2.BLL.Services
                 throw new ArgumentException("message", nameof(serialNumber));
             }
 
-            Person result = NewMethod(serialNumber);
-
-            return result;
-        }
-
-        private Person NewMethod(string serialNumber)
-        {
-            var result = new Person();
+            Person result = null;
             try
             {
                 result = _personRepository.GetByPredicate(p => p.SerialNumber == serialNumber).ToPerson();
@@ -66,7 +88,7 @@ namespace Task2.BLL.Services
 
             return result;
         }
-
+        
         /// <summary>
         /// Returns an entity of <see cref="Person"/>
         /// </summary>
@@ -94,7 +116,6 @@ namespace Task2.BLL.Services
         /// <summary>
         /// Returns a collection of <see cref="Person"/>
         /// </summary>
-        /// <param name="serialNumber"> Passport serial number </param>
         /// <returns> A <see cref="Person" /> object </returns>
         public IEnumerable<Person> GetAll()
         {
@@ -107,6 +128,7 @@ namespace Task2.BLL.Services
             {
                 _logger.LogFatal(ex.Message, ex);
             }
+
             return result;
         }
 
@@ -207,35 +229,6 @@ namespace Task2.BLL.Services
             {
                 _logger.LogError(ex.Message, ex);
             }
-        }
-
-        /// <summary>
-        /// Returns an object of <see cref="Person"/>
-        /// </summary>
-        /// <param name="unitOfWork"> Object of <see cref="IUnitOfWork"> </param>
-        /// <param name="personRepository"> Object of <see cref="IPersonRepository"> </param>
-        /// <returns>  A <see cref="PersonService" /> object </returns>
-        /// <exception cref="ArgumentNullException">
-        ///      <paramref name="unitOfWork"/> is null.
-        ///      <paramref name="personRepository"/> is null.
-        /// </exception>
-        /// <remarks>
-        /// If instance of <see cref="IPersonService"> was created, parameters will not play any roll.
-        /// </remarks>
-        public static PersonService GetInstance(IUnitOfWork unitOfWork = null, IPersonRepository personRepository = null)
-        {
-            if (_instance == null)
-            {
-                lock (_syncRoot)
-                {
-                    if (_instance == null)
-                    {
-                        _instance = new PersonService(unitOfWork, personRepository);
-                    }
-                }
-            }
-
-            return _instance;
         }
         #endregion
     }
