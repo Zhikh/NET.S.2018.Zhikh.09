@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Task2.BLL.Exceptions;
 using Task2.DAL.Interface.Strategies;
+
+[assembly: InternalsVisibleTo("Task2.BLL")]
 
 namespace Task2.BLL.Interface.Entities
 {
@@ -95,7 +98,7 @@ namespace Task2.BLL.Interface.Entities
         /// Adds <paramref name="value"/> to account balance
         /// </summary>
         /// <param name="value"> Deposit value </param>
-        public void Deposit(decimal value)
+        internal void Deposit(decimal value)
         {
             Bonuses += (int)(value / AccountType.ReplenishmentCost);
             InvoiceAmount += value;
@@ -105,7 +108,7 @@ namespace Task2.BLL.Interface.Entities
         /// Takes away <paramref name="value"/> from account balance
         /// </summary>
         /// <param name="value"> Withdraw value </param>
-        public void Withdraw(decimal value)
+        internal void Withdraw(decimal value)
         {
             if (InvoiceAmount == 0)
             {
@@ -126,7 +129,7 @@ namespace Task2.BLL.Interface.Entities
         /// </summary>
         /// <param name="account"> Account for getting </param>
         /// <param name="value"> Amount of money for transfer </param>
-        public void Transfer(Account account, decimal value)
+        internal void Transfer(Account account, decimal value)
         {
             Withdraw(value);
             account.Deposit(value);
