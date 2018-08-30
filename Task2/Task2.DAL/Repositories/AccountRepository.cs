@@ -104,6 +104,9 @@ namespace Task2.DAL.Repositories
         /// Updates account by values from entity of the <see cref="DalAccount"/> class
         /// </summary>
         /// <param name="entity"> Entity of the <see cref="DalAccount"/> class </param>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="entity"/> is null.
+        /// </exception>
         public bool Update(DalAccount entity)
         {
             if (entity == null)
