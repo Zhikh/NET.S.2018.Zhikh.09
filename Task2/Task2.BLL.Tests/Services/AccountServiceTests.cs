@@ -1,13 +1,15 @@
 ﻿using System;
 using NUnit.Framework;
+using Moq;
 using Task2.BLL.Interface.Entities;
 using Task2.BLL.Interface.Services;
 using Task2.BLL.Services;
-using Task2.DAL.Interface.Strategies;
-using Moq;
 using Task2.DAL.Interface;
 using Task2.DAL.Interface.Repositories;
+using System.Collections.Generic;
 using Task2.BLL.Mappers;
+using System.Linq;
+using Task2.DAL.Interfaces.DTO;
 
 namespace Task2.BLL.Tests
 {
@@ -15,33 +17,9 @@ namespace Task2.BLL.Tests
     public class AccountServiceTests
     {
         #region Test data
-        private IAccountService _account;
-        private IAccountNumberGenerator<int> _numberGenerator;
-        private IUnitOfWork _unitOfWork;
-        private IPersonService _person;
-        private Account _accountData;
-        private Account _anotherAccountData;
-
-        private int _number;
-
-        [SetUp]
-        public void InitData()
+        private IList<Account> _accounts = new List<Account>
         {
-            var repo = new MockRepository(MockBehavior.Default);
-            var accountRepositoryMock = repo.Create<IAccountRepository>();
-
-            accountRepositoryMock.Setup(c => c.Create(_accountData.ToDalAccount()));
-            accountRepositoryMock.Setup(c => c.Delete(_accountData.ToDalAccount()));
-
-            _numberGenerator = Mock.Of<IAccountNumberGenerator<int>>(d => d.GenerateNumber(It.IsAny<int>()) == $"{_number.ToString()}");
-            _unitOfWork = Mock.Of<IUnitOfWork>();
-
-            var personRepositoryMock = repo.Create<IPersonRepository>();
-            _person = PersonService.GetInstance(_unitOfWork, personRepositoryMock.Object);
-
-            _account = AccountService.GetInstance(_unitOfWork, accountRepositoryMock.Object, _person);
-
-            _accountData = new Account(_numberGenerator)
+            new Account
             {
                 Owner = new Person
                 {
@@ -50,19 +28,17 @@ namespace Task2.BLL.Tests
                     Email = "podg@test.com",
                     SerialNumber = "12345678FF"
                 },
-
+                Number = "1",
                 InvoiceAmount = 100,
                 Bonuses = 0,
                 AccountType = new AccountType
                 {
                     Name = ":)",
-                    BalanceCost = 100,
-                    ReplenishmentCost = 10
+                    DepositCost = 100,
+                    WithdrawCost = 10
                 }
-            };
-            _number++;
-
-            _anotherAccountData = new Account(_numberGenerator)
+            },
+            new Account
             {
                 Owner = new Person
                 {
@@ -76,92 +52,168 @@ namespace Task2.BLL.Tests
                 AccountType = new AccountType
                 {
                     Name = ":)",
-                    BalanceCost = 100,
-                    ReplenishmentCost = 10
+                    DepositCost = 100,
+                    WithdrawCost = 10
                 }
-            };
-            _number++;
-        }
+            }
+        };
+
+        private AccountType _accountType = new AccountType
+        {
+            Name = "test",
+            DepositCost = 10,
+            WithdrawCost = 10
+        };
+
+        private int _startBonuses = 0;
+        private decimal _startBalance = 1000;
+        private decimal[] _sourceData = { 10, 20, 50, 100 };
+        private decimal[] _withdrawResult = { 990, 970, 920, 820 };
+        private decimal[] _withdrawBonuses = { 0, 0, 0, -1 };
+        private decimal[] _depositResult = { 1010, 1030, 1080, 1180 };
+        private decimal[] _depositBonuses = { 0, 0, 0, 1 };
         #endregion
+
+        private IAccountService _accountService;
+        private List<DalAccount> _dalAccounts;
+        [SetUp]
+        public void Init()
+        {
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            var mockPersonService = new Mock<IPersonService>();
+            _dalAccounts = _accounts.ToDalAccount().ToList();
+            _accountService = AccountService.GetInstance(mockUnitOfWork.Object, CreateRepository(_dalAccounts),
+                mockPersonService.Object);
+        }
 
         #region Exceptions
         [Test]
         public void Open_NullEntity_ArgumentNullException()
-            => Assert.Throws<ArgumentNullException>(() => _account.Open(null));
+            => Assert.Throws<ArgumentNullException>(() => _accountService.Open(null));
 
         [Test]
         public void Deposit_NullNumber_ArgumentNullException()
-           => Assert.Throws<ArgumentNullException>(() => _account.Deposit(null, 90));
+           => Assert.Throws<ArgumentNullException>(() => _accountService.Deposit(null, 90));
 
         [Test]
         public void Withdrawal_NullNumber_ArgumentNullException()
-            => Assert.Throws<ArgumentNullException>(() => _account.Withdraw(null, 40));
-
-        // TODO: fix me 
+            => Assert.Throws<ArgumentNullException>(() => _accountService.Withdraw(null, 40));
+        
         [Test]
         public void Open_SameEntity_ArgumentException()
         {
-            _account.Open(_accountData);
-            Assert.Throws<ArgumentException>(() => _account.Open(_accountData));
+            _accountService.Open(_accounts[0]);
+            Assert.Throws<ArgumentException>(() => _accountService.Open(_accounts[0]));
         }
         #endregion
 
         #region Create account
         [Test]
-        public void Open_AccountBase_CorrectResult()
+        public void Open_Account_CorrectResult()
         {
-            _account.Open(_accountData);
+            foreach (var account in _accounts)
+            {
+                _accountService.Open(account);
+            }
 
-            Account accountBase = _account.GetAccount(_numberGenerator.GenerateNumber(_accountData.GetHashCode()));
-
-            Assert.AreEqual(_accountData, accountBase);
+            foreach (var account in _accounts)
+            {
+                Account accountBase = _accountService.GetAccount(account.Number);
+                Assert.AreEqual(account, accountBase);
+            }
         }
         #endregion
 
         #region Close
         [Test]
-        public void Close_AccountBase_CorrectResult()
+        public void Close_Account_CorrectResult()
         {
-            _account.Open(_accountData);
-            _account.Close(_accountData.Number);
+            _accountService.Open(_accounts[0]);
+            _accountService.Close(_accounts[0].Number);
+
+            var account = _accountService.GetAccount(_accounts[0].Number);
+
+            Assert.AreEqual(false, account.IsOpen);
         }
         #endregion
 
         #region Deposit
+        [Test]
+        public void Deposit_Account_CorrectResult()
+        {
+            AssertOperation(_accountService.Deposit, "testDepositNumber", _depositResult, _depositBonuses);
+        }
         #endregion
 
         #region Withdraw
-        #endregion
-
-        #region GetAccount
+        [Test]
+        public void Withdraw_Account_CorrectResult()
+        {
+            AssertOperation(_accountService.Withdraw, "tesWithdrawNumber", _withdrawResult, _withdrawBonuses);
+        }
         #endregion
 
         #region GetUserAccounts
         #endregion
-        //[Test]
-        //public void Delete_PersonEntity_DeleteFromCollection()
-        //{
-        //    _account.Create(_anotherAccountData);
 
-        //    AccountBase account = _account.GetByValue(_anotherAccountData.Number);
-        //    _account.Delete(account.Id);
+        #region Additional methods
+        private void AssertOperation(Action<string, decimal> action, string number,
+            decimal[] expectedInvoiceAmount, decimal[] expectedBonuses)
+        {
+            Account account = _accounts[0];
+            account.Number = number;
+            account.InvoiceAmount = _startBalance;
+            account.Bonuses = _startBonuses;
 
-        //    AccountBase actual = _account.GetById(account.Id);
-        //    Assert.AreEqual(null, actual);
-        //}
+            _accountService.Open(account);
 
-        //[Test]
-        //public void Update_PersonEntity_DeleteFromCollection()
-        //{
-        //    _account.Create(_anotherAccountData);
+            for (int i = 0; i < _sourceData.Length; i++)
+            {
+                action(number, _sourceData[i]);
 
-        //    _anotherAccountData.InvoiceAmount = 120;
-        //    AccountBase account = _account.GetByValue(_anotherAccountData.Number);
-        //    account.InvoiceAmount = _anotherAccountData.InvoiceAmount;
-        //    _account.Update(account);
+                var temp = _accountService.GetAccount(number);
 
-        //    AccountBase actual = _account.GetById(account.Id);
-        //    Assert.AreEqual(_anotherAccountData, actual);
-        //}
+                Assert.AreEqual(expectedInvoiceAmount[i], temp.InvoiceAmount);
+                Assert.AreEqual(expectedBonuses[i], temp.Bonuses);
+            }
+        }
+
+        private IAccountRepository CreateRepository(List<DalAccount> data)
+        {
+            var mock = new Mock<IAccountRepository>();
+
+            mock.Setup(x => x.Create(It.IsAny<DalAccount>()))
+                .Callback(new Action<DalAccount>(x =>
+                {
+                    x.Id = data.Count;
+                    data.Add(x);
+                }));
+
+            mock.Setup(x => x.Update(It.IsAny<DalAccount>()))
+                .Callback(new Action<DalAccount>(x =>
+                {
+                    var i = data.FindIndex(q => q.Id.Equals(x.Id));
+                    data[i] = x;
+                }));
+            
+            mock.Setup(x => x.Delete(It.IsAny<DalAccount>()))
+                .Callback(new Action<DalAccount>(x => 
+                {
+                    var account = data.Find(q => q.Id.Equals(x.Id));
+                    account.IsOpen = false;
+                }));
+
+            mock.Setup(x => x.GetAll()).Returns(data);
+
+            mock.Setup(x => x.GetById( It.IsAny<int>()))
+                .Returns((int i) => data.Where(
+                x => x.Id == i).Single());
+
+            mock.Setup(x => x.GetByPredicate(It.IsAny<Func<DalAccount, bool>>()))
+                .Returns((Func<DalAccount, bool> expr) => data.First(expr));
+
+            return mock.Object;
+        }
+        #endregion
     }
 }
