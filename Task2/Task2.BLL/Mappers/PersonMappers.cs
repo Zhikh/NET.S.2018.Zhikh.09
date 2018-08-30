@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Task2.BLL.Interface.Entities;
 using Task2.DAL.Interfaces.DTO;
@@ -56,7 +57,7 @@ namespace Task2.BLL.Mappers
                 SecondName = person.SecondName,
                 SerialNumber = person.SerialNumber,
                 Email = person.Contact.Email,
-                Accounts = person.Accounts.ToAccount().ToList()
+                Accounts = person.Accounts.ToAccounts().ToList()
             };
         }
 
@@ -65,12 +66,9 @@ namespace Task2.BLL.Mappers
         /// </summary>
         /// <param name="person"> Collection for converting from <see cref="Person"/> </param>
         /// <returns> Collection of  <see cref="DalPerson"/> </returns>
-        public static IEnumerable<Person> ToPersons(this IEnumerable<DalPerson> persons)
+        public static ICollection<Person> ToPersons(this IEnumerable<DalPerson> persons)
         {
-            foreach (var element in persons)
-            {
-                yield return element.ToPerson();
-            }
+            return ToMany(persons, ToPerson);
         }
 
         /// <summary>
@@ -78,12 +76,27 @@ namespace Task2.BLL.Mappers
         /// </summary>
         /// <param name="person"> Collection for converting from <see cref="Person"/> </param>
         /// <returns> Collection of  <see cref="DalPerson"/> </returns>
-        public static IEnumerable<DalPerson> ToDalPersons(this IEnumerable<Person> persons)
+        public static ICollection<DalPerson> ToDalPersons(this IEnumerable<Person> persons)
         {
+            return ToMany(persons, ToDalPerson);
+        }
+        #endregion
+
+        #region Additional methods
+        private static ICollection<TTo> ToMany<TFrom, TTo>(IEnumerable<TFrom> persons, Func<TFrom, TTo> func)
+        {
+            if (persons == null)
+            {
+                return null;
+            }
+
+            var result = new List<TTo>();
             foreach (var element in persons)
             {
-                yield return element.ToDalPerson();
+                result.Add(func(element));
             }
+
+            return result;
         }
         #endregion
     }

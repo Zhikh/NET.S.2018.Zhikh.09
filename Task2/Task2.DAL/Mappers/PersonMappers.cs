@@ -40,7 +40,7 @@ namespace Task2.DAL.Mappers
         /// </summary>
         /// <param name="person"> Collection for converting from <see cref="Person"/> </param>
         /// <returns> Collection of  <see cref="DalPerson"/> </returns>
-        public static IEnumerable<DalPerson> ToDalPersons(this IEnumerable<Person> person)
+        public static ICollection<DalPerson> ToDalPersons(this IEnumerable<Person> person)
         {
             return ToMany(person, ToDalPerson);
         }
@@ -80,7 +80,7 @@ namespace Task2.DAL.Mappers
         /// </summary>
         /// <param name="person"> Collection for converting from <see cref="DalPerson"/> </param>
         /// <returns> Collection of  <see cref="Person"/> </returns>
-        public static IEnumerable<Person> ToPersons(this IEnumerable<DalPerson> person)
+        public static ICollection<Person> ToPersons(this IEnumerable<DalPerson> person)
         {
             return ToMany(person, ToPerson);
         }

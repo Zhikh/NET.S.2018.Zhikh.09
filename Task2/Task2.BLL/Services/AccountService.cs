@@ -126,7 +126,7 @@ namespace Task2.BLL.Services
                 throw new ArgumentException($"The {nameof(value)} can't be less than 0 or be 0!");
             }
 
-            Account account = _accountRepository.GetByPredicate(a => a.Number == accountNumber).ToAccountBase();
+            Account account = _accountRepository.GetByPredicate(a => a.Number == accountNumber).ToAccount();
 
             if (account == null)
             {
@@ -175,7 +175,7 @@ namespace Task2.BLL.Services
             }
 
             Account account = _accountRepository.
-                GetByPredicate(a => a.Number == accountNumber).ToAccountBase();
+                GetByPredicate(a => a.Number == accountNumber).ToAccount();
 
             if (account == null)
             {
@@ -231,9 +231,9 @@ namespace Task2.BLL.Services
             }
 
             Account sourceAccount = _accountRepository.
-                GetByPredicate(a => a.Number == sourceAccountNumber).ToAccountBase();
+                GetByPredicate(a => a.Number == sourceAccountNumber).ToAccount();
             Account destinationAccount = _accountRepository.
-                GetByPredicate(a => a.Number == destinationAccountNumber).ToAccountBase();
+                GetByPredicate(a => a.Number == destinationAccountNumber).ToAccount();
 
             if (sourceAccount == null)
             {
@@ -280,7 +280,7 @@ namespace Task2.BLL.Services
                 throw new ArgumentException("Account number can't be null or empty!");
             }
             
-            Account account = _accountRepository.GetByPredicate(a => a.Number == accountNumber).ToAccountBase();
+            Account account = _accountRepository.GetByPredicate(a => a.Number == accountNumber).ToAccount();
 
             if (account == null)
             {
@@ -320,7 +320,7 @@ namespace Task2.BLL.Services
             var result = new Account();
             try
             {
-                result = _accountRepository.GetByPredicate(a => a.Number == accountNumber).ToAccountBase();
+                result = _accountRepository.GetByPredicate(a => a.Number == accountNumber).ToAccount();
             }
             catch (SqlException ex)
             {
@@ -339,7 +339,7 @@ namespace Task2.BLL.Services
             IEnumerable<Account> result = null;
             try
             {
-                result = _accountRepository.GetAll().ToAccount();
+                result = _accountRepository.GetAll().ToAccounts();
             }
             catch (SqlException ex)
             {
@@ -367,7 +367,7 @@ namespace Task2.BLL.Services
             IEnumerable<Account> result = null;
             try
             {
-                IEnumerable<Account> accounts = _accountRepository.GetAll().ToAccount();
+                IEnumerable<Account> accounts = _accountRepository.GetAll().ToAccounts();
                 result = accounts.Where(a => a.Owner == person);
             }
             catch (SqlException ex)

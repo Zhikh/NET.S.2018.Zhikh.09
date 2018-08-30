@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Task2.BLL.Interface.Entities;
 using Task2.DAL.Interfaces.DTO;
 
@@ -46,36 +48,41 @@ namespace Task2.BLL.Mappers
         /// <summary>
         /// Converts collection of <see cref="Account"/> in collection of <see cref="DalAccount"/>
         /// </summary>
-        /// <param name="baseAccounts"> Collection for converting from <see cref="Account"/> </param>
+        /// <param name="accounts"> Collection for converting from <see cref="Account"/> </param>
         /// <returns> Collection of <see cref="DalAccount"/> </returns>
-        public static IEnumerable<DalAccount> ToDalAccount(this IEnumerable<Account> baseAccounts)
+        public static ICollection<DalAccount> ToDalAccount(this IEnumerable<Account> accounts)
         {
-            foreach (var element in baseAccounts)
-            {
-                yield return element.ToDalAccount();
-            }
+            return ToMany(accounts, ToDalAccount);
         }
 
         /// <summary>
         /// Converts entity of <see cref="DalAccount"/> in <see cref="Account"/>
         /// </summary>
-        /// <param name="dalAccount"> Entity for converting from <see cref="DalAccount"/> </param>
+        /// <param name="account"> Entity for converting from <see cref="DalAccount"/> </param>
         /// <returns> Entity of  <see cref="Account"/> </returns>
-        public static Account ToAccountBase(this DalAccount dalAccount)
+        public static Account ToAccount(this DalAccount account)
         {
-            if (dalAccount == null)
+            if (account == null)
             {
                 return null;
             }
 
             return new Account
             {
-                Number = dalAccount.Number,
-                Owner = dalAccount.Owner.ToPerson(),
-                InvoiceAmount = dalAccount.InvoiceAmount,
-                Bonuses = dalAccount.Bonuses,
-                AccountType = dalAccount.AccountType.ToAccountType(),
-                IsOpen = dalAccount.IsOpen
+                Number = account.Number,
+                Owner = new Person()
+                {
+                    FirstName = account.Owner.FirstName,
+                    SecondName = account.Owner.SecondName,
+                    LastName = account.Owner.LastName,
+                    SerialNumber = account.Owner.SerialNumber,
+                    Email = account.Owner.Contact.Email,
+                    Accounts = account.Owner.Accounts.ToAccounts().ToList()
+                },
+                InvoiceAmount = account.InvoiceAmount,
+                Bonuses = account.Bonuses,
+                AccountType = account.AccountType.ToAccountType(),
+                IsOpen = account.IsOpen
             };
         }
 
@@ -84,12 +91,27 @@ namespace Task2.BLL.Mappers
         /// </summary>
         /// <param name="baseAccounts"> Collection for converting from <see cref="DalAccount"/> </param>
         /// <returns> Collection of <see cref="Account"/> </returns>
-        public static IEnumerable<Account> ToAccount(this IEnumerable<DalAccount> dalAccounts)
+        public static ICollection<Account> ToAccounts(this IEnumerable<DalAccount> accounts)
         {
-            foreach (var element in dalAccounts)
+            return ToMany(accounts, ToAccount);
+        }
+        #endregion
+
+        #region Additional methods
+        private static ICollection<TTo> ToMany<TFrom, TTo>(IEnumerable<TFrom> accounts, Func<TFrom, TTo> func)
+        {
+            if (accounts == null)
             {
-                yield return element.ToAccountBase();
+                return null;
             }
+
+            var result = new List<TTo>();
+            foreach (var element in accounts)
+            {
+                result.Add(func(element));
+            }
+
+            return result;
         }
         #endregion
     }
