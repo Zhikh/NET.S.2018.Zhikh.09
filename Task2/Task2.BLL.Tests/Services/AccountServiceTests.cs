@@ -23,9 +23,9 @@ namespace Task2.BLL.Tests
             {
                 Owner = new Person
                 {
-                    LastName = "Smbd",
-                    FirstName = "Smbd",
-                    Email = "podg@test.com",
+                    LastName = "Smbd0",
+                    FirstName = "Smbd0",
+                    Email = "podg1@test.com",
                     SerialNumber = "12345678FF"
                 },
                 Number = "1",
@@ -42,9 +42,9 @@ namespace Task2.BLL.Tests
             {
                 Owner = new Person
                 {
-                    LastName = "Smbd",
-                    FirstName = "Smbd",
-                    Email = "podg@test.com",
+                    LastName = "Smbd1",
+                    FirstName = "Smbd1",
+                    Email = "podg2@test.com",
                     SerialNumber = "12345678FA"
                 },
                 InvoiceAmount = 100,
@@ -76,6 +76,7 @@ namespace Task2.BLL.Tests
 
         private IAccountService _accountService;
         private List<DalAccount> _dalAccounts;
+
         [SetUp]
         public void Init()
         {
