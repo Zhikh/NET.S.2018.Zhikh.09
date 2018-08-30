@@ -97,6 +97,26 @@ namespace Task2.BLL.Interface.Entities
         /// Accounts of the person
         /// </summary>
         public ICollection<Account> Accounts { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var person = obj as Person;
+            return person != null &&
+                   FirstName == person.FirstName &&
+                   LastName == person.LastName &&
+                   Email == person.Email &&
+                   SerialNumber == person.SerialNumber;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -1093064289;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(FirstName);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(LastName);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Email);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(SerialNumber);
+            return hashCode;
+        }
         #endregion
     }
 }
