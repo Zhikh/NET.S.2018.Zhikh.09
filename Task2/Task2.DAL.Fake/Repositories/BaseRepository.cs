@@ -124,15 +124,15 @@ namespace DAL.Task2.Repositories
         /// Updates account by values from entity of the <see cref="TEntity"/> class
         /// </summary>
         /// <param name="entity">  Entity of the <see cref="TEntity"/> class </param>
-        void IRepository<TEntity>.Update(TEntity entity)
+        bool IRepository<TEntity>.Update(TEntity entity)
         {
-            Update(entity);
+            return Update(entity);
         }
         #endregion
 
         #region Additional abstract methods
         internal abstract TEntity FindEntity(string value);
-        internal abstract void Update(TEntity entity);
+        internal abstract bool Update(TEntity entity);
         internal abstract bool IsInvalid(TEntity entity);
         #endregion
     }

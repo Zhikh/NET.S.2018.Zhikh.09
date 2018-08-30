@@ -25,7 +25,7 @@ namespace DAL.Task2.Repositories
             return null;
         }
 
-        internal override void Update(DalPerson entity)
+        internal override bool Update(DalPerson entity)
         {
             if (entity == null)
             {
@@ -45,7 +45,7 @@ namespace DAL.Task2.Repositories
 
             if (person == null)
             {
-                throw new ArgumentException("This person doesn't exist!");
+                return false;
             }
 
             if (!string.IsNullOrEmpty(entity.LastName))
@@ -62,6 +62,8 @@ namespace DAL.Task2.Repositories
             {
                 UpdateContact(person.Contact, entity.Contact);
             }
+
+            return true;
         }
 
         internal override bool IsInvalid(DalPerson entity)

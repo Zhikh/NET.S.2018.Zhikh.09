@@ -61,7 +61,7 @@ namespace Task2.DAL.Repositories
 
             var account = context.Set<Account>().Single(a => a.Id == entity.Id);
 
-            context.Set<Account>().Remove(account);
+            account.IsOpen = false;
         }
 
         /// <summary>

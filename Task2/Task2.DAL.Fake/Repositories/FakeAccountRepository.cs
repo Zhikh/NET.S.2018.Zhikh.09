@@ -25,7 +25,7 @@ namespace DAL.Task2.Repositories
             return null;
         }
 
-        internal sealed override void Update(DalAccount entity)
+        internal sealed override bool Update(DalAccount entity)
         {
             if (entity == null)
             {
@@ -36,7 +36,7 @@ namespace DAL.Task2.Repositories
 
             if (account == null)
             {
-                throw new ArgumentException("This account doesn't exist!");
+                return false;
             }
 
             if (entity.AccountType != null)
@@ -53,6 +53,8 @@ namespace DAL.Task2.Repositories
             {
                 account.InvoiceAmount = entity.InvoiceAmount;
             }
+
+            return true;
         }
 
         internal sealed override bool IsInvalid(DalAccount entity)
