@@ -133,6 +133,11 @@ namespace Task2.BLL.Services
                 throw new InvalidAccountOperationException($"This account {accountNumber} doesn't exist!");
             }
 
+            if (!account.IsOpen)
+            {
+                throw new InvalidAccountOperationException($"This account {accountNumber} doesn't exist!");
+            }
+
             try
             {
                 account.Deposit(value);
@@ -178,6 +183,11 @@ namespace Task2.BLL.Services
                 GetByPredicate(a => a.Number == accountNumber).ToAccount();
 
             if (account == null)
+            {
+                throw new InvalidAccountOperationException($"This account {accountNumber} doesn't exist!");
+            }
+
+            if (!account.IsOpen)
             {
                 throw new InvalidAccountOperationException($"This account {accountNumber} doesn't exist!");
             }
@@ -240,7 +250,17 @@ namespace Task2.BLL.Services
                 throw new InvalidAccountOperationException($"This account {sourceAccountNumber} doesn't exist!");
             }
 
+            if (!sourceAccount.IsOpen)
+            {
+                throw new InvalidAccountOperationException($"This account {sourceAccountNumber} doesn't exist!");
+            }
+
             if (destinationAccount == null)
+            {
+                throw new InvalidAccountOperationException($"This account {destinationAccountNumber} doesn't exist!");
+            }
+
+            if (!destinationAccount.IsOpen)
             {
                 throw new InvalidAccountOperationException($"This account {destinationAccountNumber} doesn't exist!");
             }
@@ -283,6 +303,11 @@ namespace Task2.BLL.Services
             Account account = _accountRepository.GetByPredicate(a => a.Number == accountNumber).ToAccount();
 
             if (account == null)
+            {
+                throw new InvalidAccountOperationException($"This account {accountNumber} doesn't exist!");
+            }
+
+            if (!account.IsOpen)
             {
                 throw new InvalidAccountOperationException($"This account {accountNumber} doesn't exist!");
             }
