@@ -33,12 +33,12 @@ namespace Task2.BLL.Interface.Entities
         /// <summary>
         /// Cost of one bonus point for deposit
         /// </summary>
-        public decimal BalanceCost { get; set; }
+        public decimal DepositCost { get; set; }
 
         /// <summary>
         /// Cost of one bonus point for withdraw
         /// </summary>
-        public decimal ReplenishmentCost { get; set; }
+        public decimal WithdrawCost { get; set; }
         #endregion
     }
 }

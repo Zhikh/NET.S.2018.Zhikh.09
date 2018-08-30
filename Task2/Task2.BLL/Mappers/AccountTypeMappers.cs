@@ -20,8 +20,8 @@ namespace Task2.BLL.Mappers
 
             return new DalAccountType
             {
-                BalanceCost = accountType.BalanceCost,
-                ReplenishmentCost = accountType.ReplenishmentCost,
+                BalanceCost = accountType.DepositCost,
+                ReplenishmentCost = accountType.WithdrawCost,
                 Name = accountType.Name
             };
         }
@@ -40,8 +40,8 @@ namespace Task2.BLL.Mappers
 
             return new AccountType
             {
-                BalanceCost = dalAccountType.BalanceCost,
-                ReplenishmentCost = dalAccountType.ReplenishmentCost,
+                DepositCost = dalAccountType.BalanceCost,
+                WithdrawCost = dalAccountType.ReplenishmentCost,
                 Name = dalAccountType.Name
             };
         }

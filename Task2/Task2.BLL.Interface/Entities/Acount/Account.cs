@@ -100,7 +100,7 @@ namespace Task2.BLL.Interface.Entities
         /// <param name="value"> Deposit value </param>
         internal void Deposit(decimal value)
         {
-            Bonuses += (int)(value / AccountType.ReplenishmentCost);
+            Bonuses += (int)(value / AccountType.WithdrawCost);
             InvoiceAmount += value;
         }
 
@@ -120,7 +120,7 @@ namespace Task2.BLL.Interface.Entities
                 throw new InvalidAccountOperationException("There is not enough money to perform the operation!");
             }
 
-            Bonuses -= (int)(value / AccountType.BalanceCost);
+            Bonuses -= (int)(value / AccountType.DepositCost);
             InvoiceAmount -= value;
         }
 
