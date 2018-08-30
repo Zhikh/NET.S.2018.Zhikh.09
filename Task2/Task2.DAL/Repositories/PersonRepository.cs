@@ -104,30 +104,26 @@ namespace Task2.DAL.Repositories
         /// Updates person by values from entity of the <see cref="DalPerson"/> class
         /// </summary>
         /// <param name="entity">  Entity of the <see cref="DalPerson"/> class </param>
-        public void Update(DalPerson entity)
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="entity"/> is null.
+        /// </exception>
+        public bool Update(DalPerson entity)
         {
-            var entityToUpdate = context.Set<Person>().First(e => e.Id == entity.Id);
-
-            UpdateEntity(entityToUpdate, entity.ToPerson());
-        }
-        #endregion
-
-        #region Additional methods
-        private bool UpdateEntity(Person entityToUpdate, Person updatedEntity)
-        {
-            if (entityToUpdate == null)
+            if (entity == null)
             {
-                return false;
+                throw new ArgumentNullException(nameof(entity));
             }
 
-            if (updatedEntity == null)
+            Person entityToUpdate = context.Set<Person>().First(e => e.Id == entity.Id);
+
+            if (entityToUpdate == null)
             {
                 return false;
             }
 
             try
             {
-                context.Entry(entityToUpdate).CurrentValues.SetValues(updatedEntity);
+                context.Entry(entityToUpdate).CurrentValues.SetValues(entity.ToPerson());
                 return true;
             }
             catch (Exception)

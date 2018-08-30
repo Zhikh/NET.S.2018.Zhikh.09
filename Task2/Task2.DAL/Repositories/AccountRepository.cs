@@ -103,31 +103,24 @@ namespace Task2.DAL.Repositories
         /// <summary>
         /// Updates account by values from entity of the <see cref="DalAccount"/> class
         /// </summary>
-        /// <param name="entity">  Entity of the <see cref="DalAccount"/> class </param>
-        public void Update(DalAccount entity)
+        /// <param name="entity"> Entity of the <see cref="DalAccount"/> class </param>
+        public bool Update(DalAccount entity)
         {
-            var entityToUpdate = context.Set<Account>().First(e => e.Id == entity.Id);
-
-            UpdateEntity(entityToUpdate, entity.ToAccount());
-        }
-        #endregion
-
-        #region Additional methods
-        private bool UpdateEntity(Account entityToUpdate, Account updatedEntity)
-        {
-            if (entityToUpdate == null)
+            if (entity == null)
             {
-                return false;
+                throw new ArgumentNullException(nameof(entity));
             }
 
-            if (updatedEntity == null)
+            Account entityToUpdate = context.Set<Account>().First(e => e.Id == entity.Id);
+
+            if (entityToUpdate == null)
             {
                 return false;
             }
 
             try
             {
-                context.Entry(entityToUpdate).CurrentValues.SetValues(updatedEntity);
+                context.Entry(entityToUpdate).CurrentValues.SetValues(entity.ToAccount());
                 return true;
             }
             catch (Exception)

@@ -17,7 +17,7 @@ namespace Task2.DAL.Interface.Repositories
         /// Update entity
         /// </summary>
         /// <param name="entity"> Update entity </param>
-        void Update(TEntity entity);
+        bool Update(TEntity entity);
 
         /// <summary>
         /// Delete entity
