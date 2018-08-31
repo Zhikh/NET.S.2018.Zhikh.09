@@ -27,7 +27,8 @@ namespace Task2.BLL.Mappers
                 LastName = person.LastName,
                 SecondName = person.SecondName,
                 SerialNumber = person.SerialNumber,
-                Accounts = person.Accounts.ToDalAccount().ToList()
+                Accounts = person.Accounts.ToDalAccount().ToList(),
+                IsDeleted = person.IsDeleted
             };
 
             dalPerson.Contact = new DalContactData
@@ -57,7 +58,8 @@ namespace Task2.BLL.Mappers
                 SecondName = person.SecondName,
                 SerialNumber = person.SerialNumber,
                 Email = person.Contact.Email,
-                Accounts = person.Accounts.ToAccounts().ToList()
+                Accounts = person.Accounts.ToAccounts().ToList(),
+                IsDeleted = person.IsDeleted
             };
         }
 

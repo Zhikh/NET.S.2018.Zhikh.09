@@ -31,7 +31,8 @@ namespace Task2.DAL.Mappers
                 {
                     Email = person.ContactData.Email
                 },
-                Accounts = person.Accounts.ToDalAccounts()
+                Accounts = person.Accounts.ToDalAccounts(),
+                IsDeleted = person.IsDeleted
             };
         }
 
@@ -71,7 +72,8 @@ namespace Task2.DAL.Mappers
                 {
                     Email = person.Contact.Email
                 },
-                Accounts = person.Accounts.ToAccounts()
+                Accounts = person.Accounts.ToAccounts(),
+                IsDeleted = person.IsDeleted
             };
         }
 

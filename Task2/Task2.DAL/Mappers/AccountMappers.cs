@@ -35,7 +35,8 @@ namespace Task2.DAL.Mappers
                     {
                         Email = account.Person.ContactData.Email
                     },
-                    Accounts = account.Person.Accounts.ToDalAccounts()
+                    Accounts = account.Person.Accounts.ToDalAccounts(),
+                    IsDeleted = account.Person.IsDeleted
                 },
                 InvoiceAmount = account.Invoice,
                 Bonuses = account.Bonuses,
@@ -90,7 +91,8 @@ namespace Task2.DAL.Mappers
                     {
                         Email = account.Owner.Contact.Email
                     },
-                    Accounts = account.Owner.Accounts.ToAccounts()
+                    Accounts = account.Owner.Accounts.ToAccounts(),
+                    IsDeleted = account.Owner.IsDeleted
                 },
                 Invoice = account.InvoiceAmount,
                 Bonuses = account.Bonuses,

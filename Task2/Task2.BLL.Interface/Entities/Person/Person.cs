@@ -94,6 +94,11 @@ namespace Task2.BLL.Interface.Entities
         }
 
         /// <summary>
+        /// True if person was deleted
+        /// </summary>
+        public bool IsDeleted { get; set; }
+
+        /// <summary>
         /// Accounts of the person
         /// </summary>
         public ICollection<Account> Accounts { get; set; }

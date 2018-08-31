@@ -16,6 +16,8 @@ namespace Task2.DAL.Interfaces.DTO
         #region Properties
         public int Id { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         public string FirstName
         {
             get
