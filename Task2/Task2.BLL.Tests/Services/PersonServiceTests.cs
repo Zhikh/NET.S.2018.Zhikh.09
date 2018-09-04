@@ -38,6 +38,7 @@ namespace Task2.BLL.Tests.Services
 
         private IPersonService _personService;
         private List<DalPerson> _dalPersons;
+        static object _locker = new object();
 
         [SetUp]
         public void Init()
@@ -66,6 +67,71 @@ namespace Task2.BLL.Tests.Services
             => Assert.Catch<ArgumentException>(() => _personService.GetPerson(null));
         #endregion
 
+        [Test]
+        public void GetAll_Person_CorrectResult()
+        {
+            foreach (var person in _persons)
+            {
+                _personService.Create(person);
+            }
+            
+            var actual = _personService.GetAll();
+            Assert.AreEqual(_persons, actual);
+        }
+
+        [Test]
+        public void Create_Person_CorrectResult()
+        {
+            foreach (var person in _persons)
+            {
+                _personService.Create(person);
+            }
+
+            foreach (var person in _persons)
+            {
+                Person temp = _personService.GetPerson(person.SerialNumber);
+                Assert.AreEqual(person, temp);
+            }
+        }
+
+        [Test]
+        public void Delete_Person_CorrectResult()
+        {
+            foreach (var person in _persons)
+            {
+                _personService.Delete(person);
+            }
+
+            foreach (var person in _persons)
+            {
+                Person temp = _personService.GetPerson(person.SerialNumber);
+                Assert.AreEqual(true, temp.IsDeleted);
+            }
+        }
+
+        // FIX: problem with id
+        [Test]
+        public void Update_Person_CorrectResult()
+        {
+            foreach (var person in _persons)
+            {
+                _personService.Create(person);
+            }
+
+            foreach (var person in _persons)
+            {
+                person.LastName += "Test";
+
+                _personService.Update(person);
+            }
+
+            foreach (var person in _persons)
+            {
+                Person temp = _personService.GetPerson(person.SerialNumber);
+                Assert.AreEqual(person, temp);
+            }
+        }
+
         #region Addition methods
         private IPersonRepository CreateRepository(List<DalPerson> data)
         {
@@ -74,8 +140,11 @@ namespace Task2.BLL.Tests.Services
             mock.Setup(x => x.Create(It.IsAny<DalPerson>()))
                 .Callback(new Action<DalPerson>(x =>
                 {
-                    x.Id = data.Count;
-                    data.Add(x);
+                    lock (_locker)
+                    {
+                        x.Id = data.Count;
+                        data.Add(x);
+                    }
                 }));
 
             mock.Setup(x => x.Update(It.IsAny<DalPerson>()))
@@ -88,7 +157,13 @@ namespace Task2.BLL.Tests.Services
             mock.Setup(x => x.Delete(It.IsAny<DalPerson>()))
                 .Callback(new Action<DalPerson>(x =>
                 {
-                    var account = data.Find(q => q.Id.Equals(x.Id));
+                    foreach (var person in data)
+                    {
+                        if (person.Id == x.Id)
+                        {
+                            person.IsDeleted = true;
+                        }
+                    }
                 }));
 
             mock.Setup(x => x.GetAll()).Returns(data);
