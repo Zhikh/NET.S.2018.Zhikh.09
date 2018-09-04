@@ -218,6 +218,8 @@ namespace Task2.BLL.Services
 
             try
             {
+                person.IsDeleted = true;
+
                 _personRepository.Delete(person.ToDalPerson());
                 _unitOfWork.SaveChanges();
             }

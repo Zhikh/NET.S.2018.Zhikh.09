@@ -38,8 +38,8 @@ namespace UI.Task2.ConsoleApp
                     AccountType = new AccountType
                     {
                         Name = ":)",
-                        BalanceCost = 100,
-                        ReplenishmentCost = 10
+                        DepositCost = 100,
+                        WithdrawCost = 10
                     }
                 },
                 new Account(_numberGenerator)
@@ -57,8 +57,8 @@ namespace UI.Task2.ConsoleApp
                     AccountType = new AccountType
                     {
                         Name = ":)",
-                        BalanceCost = 100,
-                        ReplenishmentCost = 10
+                        DepositCost = 100,
+                        WithdrawCost = 10
                     }
                 }
             };
