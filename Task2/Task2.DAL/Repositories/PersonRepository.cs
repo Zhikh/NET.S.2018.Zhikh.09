@@ -61,7 +61,7 @@ namespace Task2.DAL.Repositories
 
             var person = context.Set<Person>().Single(u => u.Id == entity.Id);
 
-            context.Set<Person>().Remove(person);
+            person.IsDeleted = true;
         }
 
         /// <summary>
