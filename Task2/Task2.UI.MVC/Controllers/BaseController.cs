@@ -1,16 +1,26 @@
 ﻿using System.Web.Mvc;
 using Task2.BLL.Interface.Services;
 using Ninject;
+using Task2.DependencyResolver;
 
 namespace Task2.UI.MVC.Controllers
 {
     public class BaseController : Controller
     {
-        [Inject]
+        private readonly IKernel resolver;
+        
         public IPersonService PersonService { get; set; }
 
-        [Inject]
         public IAccountService AccountService { get; set; }
+
+        public BaseController()
+        {
+            resolver = new StandardKernel();
+            resolver.ConfigurateResolver();
+
+            PersonService = resolver.Get<IPersonService>();
+            AccountService = resolver.Get<IAccountService>();
+        }
 
         protected ActionResult RedirectToLocal(string returnUrl)
         {
