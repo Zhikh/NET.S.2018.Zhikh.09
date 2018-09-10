@@ -21,8 +21,17 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Persons", "About", "Home")</li>
-                    <li>@Html.ActionLink("Accounts", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Persons", "Index", "Person")</li>
+                    <li class="nav-item dropdown navbar-dark bg-dark">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Accounts
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="">@Html.ActionLink("Account list", "GetAll", "Account", null, new { @class = "btn btn-link" })</a>
+                            <a class="dropdown-item" href="">@Html.ActionLink("Deposit", "Deposit", "Account", null, new { @class = "btn btn-link" })</a>
+                            <a class="dropdown-item" href="">@Html.ActionLink("Wuthdraw", "Wuthdraw", "Account", null, new { @class = "btn btn-link" })</a>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
