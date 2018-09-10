@@ -6,7 +6,7 @@ using Task2.UI.MVC.Models.Person;
 
 namespace Task2.UI.MVC.Models.Account
 {
-    internal sealed class AccountModel
+    public sealed class AccountModel
     {
         public string Number { get; set; }
 

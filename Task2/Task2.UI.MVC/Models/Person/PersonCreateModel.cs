@@ -8,7 +8,7 @@ using Task2.UI.MVC.Infrastructure.Attributes;
 
 namespace Task2.UI.MVC.Models.Person
 {
-    internal sealed class PersonCreateModel
+    public class PersonCreateModel
     {
         [Display(Name = "First name")]
         public string FirstName { get; set; }
@@ -24,7 +24,7 @@ namespace Task2.UI.MVC.Models.Person
         public string SerialNumber { get; set; }
 
         // TODO: check it
-        [Remote("ValidateEmail", "ModelValidation")]
+      //  [Remote("ValidateEmail", "ModelValidation")]
         [Display(Name = "Email")]
         public string Email { get; set; }
     }

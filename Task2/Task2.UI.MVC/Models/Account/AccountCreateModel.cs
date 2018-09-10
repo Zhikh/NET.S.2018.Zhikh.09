@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Task2.UI.MVC.Models.Account
 {
-    internal sealed class AccountCreateModel
+    public sealed class AccountCreateModel
     {
         public decimal Balance { get; set; }
     }
