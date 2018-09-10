@@ -1,10 +1,12 @@
 ﻿@model Task2.UI.MVC.Models.Person.PersonCreateModel
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
+    @HtmlHelper.DisplayMessage(ViewBag.Message)
+
     <div class="form-horizontal">
         <h4>PersonCreateModel</h4>
         <hr />

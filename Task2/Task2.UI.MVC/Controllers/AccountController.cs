@@ -6,9 +6,8 @@ using System.Web.Mvc;
 
 namespace Task2.UI.MVC.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
-        // GET: Account
         public ActionResult Index()
         {
             return View();
@@ -33,11 +32,5 @@ namespace Task2.UI.MVC.Controllers
         {
             return View();
         }
-
-        //[HttpPost]
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
     }
 }

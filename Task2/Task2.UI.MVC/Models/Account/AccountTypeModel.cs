@@ -12,9 +12,9 @@ namespace Task2.UI.MVC.Models.Account
         public string Name { get; set; }
 
         [Display(Name = "Cost of deposit operation")]
-        public int DepositCost { get; set; }
+        public decimal DepositCost { get; set; }
 
         [Display(Name = "Cost of withdraw operation")]
-        public int WithdrawCost { get; set; }
+        public decimal WithdrawCost { get; set; }
     }
 }
