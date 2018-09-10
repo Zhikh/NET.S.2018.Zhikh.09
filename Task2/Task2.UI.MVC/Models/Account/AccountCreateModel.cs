@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Task2.UI.MVC.Models.Account
 {
-    public sealed class AccountCreateModel
+    public sealed class AccountCreateModel : AccountModel
     {
-        public decimal Balance { get; set; }
+        [Display(Name = "Account type")]
+        public AccountTypeModel AccountType { get; set; }
     }
 }
